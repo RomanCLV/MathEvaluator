@@ -1,2 +1,2 @@
 # MathEvaluator
-A C# library to evaluate mathematical expressions
+A C# library to evaluate mathematical expressions.
