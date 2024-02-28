@@ -41,7 +41,7 @@ namespace MathEvaluatorNetFramework.Expressions
             InternalSet(expression, false);
         }
 
-        internal Expression(string expression, bool isExpressionCleaned) : this()
+        private Expression(string expression, bool isExpressionCleaned) : this()
         {
             InternalSet(expression, isExpressionCleaned);
         }
@@ -523,7 +523,7 @@ namespace MathEvaluatorNetFramework.Expressions
         private IEvaluable CheckSubstraction(string expression)
         {
             return expression[0] == '-' ?
-                new NegativeExpression(expression.Substring(1), true) :
+                new NegativeOperator(new Expression(expression.Substring(1), true)) :
                 CheckOperand(expression, '-', "substraction", (l, r) => new Substraction(l, r));
         }
 
@@ -539,7 +539,7 @@ namespace MathEvaluatorNetFramework.Expressions
 
         private IEvaluable CheckPower(string expression)
         {
-            return CheckOperand(expression, '^', "power", (b, p) => new PowerExpression(b, p));
+            return CheckOperand(expression, '^', "power", (b, p) => new PowerOperator(b, p));
         }
 
         private List<int> FindSplitIndex(string expression, char c)

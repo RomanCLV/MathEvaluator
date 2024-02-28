@@ -62,8 +62,9 @@
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\NotDefinedVariableException.cs" />
     <Compile Include="Expressions\Expression.cs" />
-    <Compile Include="Expressions\NegativeExpression.cs" />
-    <Compile Include="Expressions\PowerExpression.cs" />
+    <Compile Include="Operators\NegativeOperator.cs" />
+    <Compile Include="Operators\Operator2.cs" />
+    <Compile Include="Operators\PowerOperator.cs" />
     <Compile Include="IEvaluable.cs" />
     <Compile Include="MathEvaluator.cs" />
     <Compile Include="Expressions\ValueExpression.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Operators\Addition.cs" />
     <Compile Include="Operators\Division.cs" />
     <Compile Include="Operators\Multiplication.cs" />
-    <Compile Include="Operators\Operand.cs" />
+    <Compile Include="Operators\Operator.cs" />
     <Compile Include="Operators\Substraction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Variable.cs" />

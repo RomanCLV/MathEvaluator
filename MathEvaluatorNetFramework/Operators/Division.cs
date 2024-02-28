@@ -7,12 +7,21 @@ using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators
 {
-    internal class Division : Operand
+    internal class Division : Operator2
     {
         public Division(IEvaluable left, IEvaluable right) : base(left, right)
         {
         }
 
+        /// <summary>
+        /// Evaluate the division between the two given evaluable entities.
+        /// </summary>
+        /// <param name="variables">The used variables in the evaluable entities.</param>
+        /// <returns>The division between the two given evaluable entities.<br />
+        /// If the denominator equals to 0, then if <see cref="MathEvaluator.RaiseDivideByZeroException"/> is true, raise a <see cref="DivideByZeroException"/>.
+        /// If the numerator is not equals to 0, then returns <see cref="double.NegativeInfinity"/> or <see cref="double.PositiveInfinity"/>.<br />
+        /// If the numerator and the denominator are equal to 0, then if <see cref="MathEvaluator.RaiseDomainException"/> is true, raise a <see cref="DomainException"/> else return <see cref="double.NaN"/>.
+        /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
             double right = _right.Evaluate(variables);

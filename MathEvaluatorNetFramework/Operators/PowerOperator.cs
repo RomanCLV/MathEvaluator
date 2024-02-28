@@ -1,33 +1,28 @@
-﻿using MathEvaluatorNetFramework.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Exceptions;
 
-namespace MathEvaluatorNetFramework.Expressions
+namespace MathEvaluatorNetFramework.Operators
 {
-    internal class PowerExpression : IEvaluable
+    internal class PowerOperator : Operator2
     {
-        private readonly IEvaluable _base;
-        private readonly IEvaluable _power;
-
-        public PowerExpression(IEvaluable baseEvaluable, IEvaluable powerEvaluable)
+        public PowerOperator(IEvaluable baseEvaluable, IEvaluable powerEvaluable) : base(baseEvaluable, powerEvaluable)
         {
-            _base = baseEvaluable;
-            _power = powerEvaluable;
         }
 
         /// <summary>
         /// Evaluate two evaluable entities as base^power.
         /// </summary>
-        /// <param name="variables"></param>
+        /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>If base and power are equal to 0, throw a <see cref="DomainException"/> if <see cref="MathEvaluator.RaiseDomainException"/> is <c>true</c>, else return <see cref="double.NaN"/>. Else return base^power using <see cref="Math.Pow(double, double)"/>.</returns>
         /// <exception cref="DomainException"></exception>
-        public double Evaluate(params Variable[] variables)
+        public override double Evaluate(params Variable[] variables)
         {
-            double baseResult = _base.Evaluate(variables);
-            double powerResult = _power.Evaluate(variables);
+            double baseResult = _left.Evaluate(variables);
+            double powerResult = _right.Evaluate(variables);
             double result;
             if (baseResult == 0.0 && powerResult == 0.0)
             {
