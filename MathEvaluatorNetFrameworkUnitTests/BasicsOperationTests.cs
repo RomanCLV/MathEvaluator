@@ -81,6 +81,42 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
+        public void Test_Addition_5()
+        {
+            string expression = "-8,3+12.5";
+            double expected = 4.2;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, 0.001);
+        }
+
+        [TestMethod]
+        public void Test_Addition_6()
+        {
+            string expression = "-8,4+12.5";
+            double expected = 4.1;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void Test_Negative_1()
         {
             string expression = "-(5)";
@@ -137,8 +173,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Negative_4()
         {
-            string expression = "-(-5+3)";
-            double expected = 2.0;
+            string expression = "-(-5-3)";
+            double expected = 8.0;
             double result = 0.0;
             try
             {
@@ -301,6 +337,24 @@ namespace MathEvaluatorNetFrameworkUnitTests
         {
             string expression = "-4*-5";
             double expected = 20.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Multiplication_6()
+        {
+            string expression = "(-4)*(-3)";
+            double expected = 12.0;
             double result = 0.0;
             try
             {

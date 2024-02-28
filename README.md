@@ -30,7 +30,7 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | -(5) | -5 |
 | -(5+3) | -8 |
 | -(-5+3) | 2 |
-| -(-5-3) | 16 |
+| -(-5-3) | 8 |
 | -(-(-5)) | -5 |
 | 8-3 | 5 |
 | 5*2 | 10 |
