@@ -52,6 +52,7 @@
     <Compile Include="BasicsOperationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PowerTests.cs" />
+    <Compile Include="FactorialTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

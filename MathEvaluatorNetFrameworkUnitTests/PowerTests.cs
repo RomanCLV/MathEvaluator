@@ -1,7 +1,7 @@
-﻿using MathEvaluatorNetFramework;
-using MathEvaluatorNetFramework.Exceptions;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using MathEvaluatorNetFramework;
+using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFrameworkUnitTests
 {
