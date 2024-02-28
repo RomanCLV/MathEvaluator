@@ -373,8 +373,7 @@ namespace MathEvaluatorNetFramework.Expressions
 
         private void SetCleanedExpression(string expression)
         {
-            double d;
-            if (double.TryParse(expression.Replace('.', ','), out d) || double.TryParse(expression, out d))
+            if (double.TryParse(expression.Replace('.', ','), out double d) || double.TryParse(expression, out d))
             {
                 _evaluable = new ValueExpression(d);
             }
@@ -394,6 +393,10 @@ namespace MathEvaluatorNetFramework.Expressions
             if (_evaluable == null && expression.Contains('/'))
             {
                 _evaluable = CheckDivision(expression);
+            }
+            if (_evaluable == null && expression.Contains('^'))
+            {
+                _evaluable = CheckPower(expression);
             }
             if (_evaluable == null)
             {
@@ -421,6 +424,11 @@ namespace MathEvaluatorNetFramework.Expressions
         private IEvaluable CheckDivision(string expression)
         {
             return CheckOperand(expression, '/', "division", (l, r) => new Division(l, r));
+        }
+
+        private IEvaluable CheckPower(string expression)
+        {
+            return CheckOperand(expression, '^', "power", (l, r) => new PowerExpression(l, r));
         }
 
         private List<int> FindSplitIndex(string expression, char c)

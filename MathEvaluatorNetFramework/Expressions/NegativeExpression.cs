@@ -8,11 +8,11 @@ namespace MathEvaluatorNetFramework.Expressions
 {
     internal class NegativeExpression : IEvaluable
     {
-        private readonly Expression _expression;
+        private readonly IEvaluable _evaluable;
 
-        public NegativeExpression(Expression expression)
+        public NegativeExpression(IEvaluable expression)
         {
-            _expression = expression;
+            _evaluable = expression;
         }
 
         public NegativeExpression(string expression) : this(new Expression(expression))
@@ -25,12 +25,12 @@ namespace MathEvaluatorNetFramework.Expressions
 
         public double Evaluate(params Variable[] variables)
         {
-            return -_expression.Evaluate();
+            return -_evaluable.Evaluate();
         }
 
         public double Evaluate()
         {
-            return -_expression.Evaluate();
+            return -_evaluable.Evaluate();
         }
     }
 }

@@ -5,17 +5,18 @@ using MathEvaluatorNetFramework;
 namespace MathEvaluatorNetFrameworkUnitTests
 {
     [TestClass]
-    public class MathEvaluatorNetFrameworkUnitTests
+    public class BasicsOperationTests
     {
         [TestMethod]
         public void Test_Addition_1()
         {
             string expression = "2 + 10";
             double expected = 12.0;
-            double result = 0;
+            double result = 0.0;
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -33,6 +34,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -50,6 +52,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -67,6 +70,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -84,6 +88,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -101,6 +106,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -118,6 +124,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -135,6 +142,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -152,6 +160,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -169,6 +178,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -186,6 +196,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -203,6 +214,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -220,6 +232,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -237,6 +250,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -254,6 +268,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -271,6 +286,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -288,6 +304,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -305,6 +322,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -322,6 +340,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -339,6 +358,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -356,6 +376,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -373,6 +394,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -390,6 +412,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -407,6 +430,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -424,6 +448,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -441,6 +466,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -458,6 +484,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -475,6 +502,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -492,6 +520,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -509,6 +538,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -526,6 +556,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -544,6 +575,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -561,6 +593,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
@@ -578,6 +611,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("result: " + result);
             }
             catch (Exception ex)
             {
