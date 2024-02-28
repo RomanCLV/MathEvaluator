@@ -709,6 +709,46 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
+        public void Test_Division_19()
+        {
+            string expression = "1/(1/0)";
+            double expected = 0.0;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine(result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Division_20()
+        {
+            string expression = "-1/(1/0)";
+            double expected = 0.0;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine(result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void Test_Complexe_1()
         {
             string expression = "-8*2+10-5";

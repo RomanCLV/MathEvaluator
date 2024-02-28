@@ -429,5 +429,85 @@ namespace MathEvaluatorNetFrameworkUnitTests
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
         }
+
+        [TestMethod]
+        public void Test_Power_24()
+        {
+            string expression = "0^(1/0)";
+            double expected = 0.0;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Power_25()
+        {
+            string expression = "-0^(1/0)";
+            double expected = 0.0;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Power_26()
+        {
+            string expression = "(1/0)^(1/0)";
+            double expected = double.PositiveInfinity;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Power_27()
+        {
+            string expression = "(-1/0)^(1/0)";
+            double expected = double.NegativeInfinity;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
     }
 }

@@ -35,6 +35,21 @@ namespace MathEvaluatorNetFramework.Operators
                     result = double.NaN;
                 }
             }
+            else if (double.IsInfinity(powerResult))
+            {
+                if (baseResult < 0.0)
+                {
+                    result = double.NegativeInfinity;
+                }
+                else if (baseResult > 0.0)
+                {
+                    result = double.PositiveInfinity;
+                }
+                else
+                {
+                    result = 0.0;
+                }
+            }
             else
             {
                 result = Math.Pow(baseResult, powerResult);
