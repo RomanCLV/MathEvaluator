@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,29 +10,29 @@ namespace MathEvaluatorNetFramework.Expressions
 {
     internal class VariableExpression : IEvaluable
     {
-        private readonly Variable _variable;
+        private readonly string _variableName;
 
-        public VariableExpression(Variable variable)
+        public VariableExpression(string variableName)
         {
-            _variable = variable;
+            _variableName = variableName;
         }
 
         public double Evaluate(params Variable[] variables)
         {
-            if (_variable.Value == null)
+            Variable variable = null;
+            foreach (var v in variables)
             {
-                throw new NotDefinedVariableException(_variable);
+                if (v.Name == _variableName)
+                {
+                    variable = v;
+                }
             }
-            return (double)_variable.Value;
-        }
 
-        public double Evaluate()
-        {
-            if (_variable.Value == null)
+            if (variable == null || variable.Value == null)
             {
-                throw new NotDefinedVariableException(_variable);
+                throw new NotDefinedVariableException(_variableName);
             }
-            return (double)_variable.Value;
+            return (double)variable.Value;
         }
     }
 }

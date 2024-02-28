@@ -19,10 +19,12 @@ namespace MathEvaluatorNetFramework.Operators
         }
 
         /// <summary>
-        /// Evaluate two evaluable entity.
+        /// Evaluate two evaluable entities. Can raise exceptions depending on <see cref="MathEvaluator.RaiseDivideByZeroException"/> and <see cref="MathEvaluator.RaiseDomainException"/>.
         /// </summary>
         /// <param name="variables"></param>
-        /// <returns>The result</returns>
+        /// <returns>The result provided by the operations between the two evalubale entities. Can also return <see cref="double.NaN"/>, <see cref="double.PositiveInfinity"/> and <see cref="double.NegativeInfinity"/> depending on <see cref="MathEvaluator.RaiseDivideByZeroException"/> and <see cref="MathEvaluator.RaiseDomainException"/>.</returns>
+        /// <exception cref="DomainException"></exception>
+        /// <exception cref="DivideByZeroException"></exception>
         public abstract double Evaluate(params Variable[] variables);
     }
 }

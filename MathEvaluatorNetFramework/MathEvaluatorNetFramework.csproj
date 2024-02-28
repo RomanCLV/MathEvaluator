@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\NotDefinedVariableException.cs" />
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\NegativeExpression.cs" />

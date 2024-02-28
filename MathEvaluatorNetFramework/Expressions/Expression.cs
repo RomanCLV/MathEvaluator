@@ -69,18 +69,27 @@ namespace MathEvaluatorNetFramework.Expressions
         {
             _evaluable = null;
             _variables.Clear();
+
+            // first general preparation - optionnal
             if (!isExpressionCleaned)
             {
                 Console.WriteLine("Given: " + expression);
                 expression = PrepareExpression(expression);
             }
 
+            // add surround negatives with ^
+            expression = ManagePowerExpression(expression);
+
+            // add surround negatives with ()
             expression = ManageNegativeExpression(expression);
             bool haveChanged;
             do
             {
+                // remove surrounding ()
                 expression = RemoveGlobalParenthesis(expression, out haveChanged);
             } while (haveChanged);
+
+            // last general preparation to be sure...
             expression = PrepareExpression(expression);
 
             Console.WriteLine("Expression: " + expression);
@@ -263,10 +272,96 @@ namespace MathEvaluatorNetFramework.Expressions
             return expression;
         }
 
+        private string ManagePowerExpression(string expression)
+        {
+            for (int i = 0; i < expression.Length; i++)
+            {
+                if (expression[i] == '^')
+                {
+                    int parenthesisCount = 0;
+                    int j = i - 1;
+
+                    while (j >= 0)
+                    {
+                        if (expression[j] == '(')
+                        {
+                            parenthesisCount++;
+                        }
+                        else if (expression[j] == ')')
+                        {
+                            parenthesisCount--;
+                        }
+                        else if (parenthesisCount == 0 && IsCharOperandSymbol(expression[j]))
+                        {
+                            j++;
+                            break;
+                        }
+                        j--;
+                    }
+
+                    if (j == -1)
+                    {
+                        j = 0;
+                    }
+
+                    if (parenthesisCount == 0)
+                    {
+                        while (IsCharOperandSymbol(expression[j]))
+                        {
+                            j++;
+                        }
+                        expression = expression.Insert(j, "(");
+                        i++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    j = i + 1;
+
+                    while (j < expression.Length)
+                    {
+                        if (expression[j] == '(')
+                        {
+                            parenthesisCount++;
+                        }
+                        else if (expression[j] == ')')
+                        {
+                            parenthesisCount--;
+                        }
+                        else if (parenthesisCount == 0 && IsCharOperandSymbol(expression[j]))
+                        {
+                            break;
+                        }
+                        j++;
+                    }
+                    if (parenthesisCount == 0)
+                    {
+                        if (j == expression.Length)
+                        {
+                            expression += ')';
+                        }
+                        else
+                        {
+                            expression = expression.Insert(j + 1, ")");
+                        }
+                    }
+                }
+            }
+            return expression;
+        }
+
+        private bool IsCharOperandSymbol(char c)
+        {
+            return c == '+' || c == '-' || c == '*' || c == '/';
+        }
+
         private string ManageNegativeExpression(string expression)
         {
             bool hasFoundMinus = false;
             int parenthesisCount = 0;
+            int parenthesisCountMinusFound = 0;
             char c;
             for (int i = 0; i < expression.Length; i++)
             {
@@ -282,6 +377,14 @@ namespace MathEvaluatorNetFramework.Expressions
                         else if (c == ')')
                         {
                             parenthesisCount--;
+
+                            if (parenthesisCount == parenthesisCountMinusFound)
+                            {
+                                expression = expression.Insert(i, ")");
+                                parenthesisCount--;
+                                i++;
+                                hasFoundMinus = false;
+                            }
                         }
                         else if (c == '.')
                         {
@@ -289,7 +392,7 @@ namespace MathEvaluatorNetFramework.Expressions
                         }
                         else
                         {
-                            if (parenthesisCount == 1)
+                            if (parenthesisCount == parenthesisCountMinusFound + 1)
                             {
                                 expression = expression.Insert(i, ")");
                                 parenthesisCount--;
@@ -301,9 +404,17 @@ namespace MathEvaluatorNetFramework.Expressions
                 }
                 else
                 {
-                    if (c == '-')
+                    if (c == '(')
                     {
-
+                        parenthesisCount++;
+                    }
+                    else if (c == ')')
+                    {
+                        parenthesisCount--;
+                    }
+                    else if (c == '-')
+                    {
+                        parenthesisCountMinusFound = parenthesisCount;
                         if (i == 0)
                         {
                             expression = expression.Insert(0, "(");
@@ -428,7 +539,7 @@ namespace MathEvaluatorNetFramework.Expressions
 
         private IEvaluable CheckPower(string expression)
         {
-            return CheckOperand(expression, '^', "power", (l, r) => new PowerExpression(l, r));
+            return CheckOperand(expression, '^', "power", (b, p) => new PowerExpression(b, p));
         }
 
         private List<int> FindSplitIndex(string expression, char c)
@@ -464,7 +575,7 @@ namespace MathEvaluatorNetFramework.Expressions
                         parenthesisCount--;
                     }
                 }
-                
+
                 if (parenthesisCount == 0)
                 {
                     validIndexs.Add(index);

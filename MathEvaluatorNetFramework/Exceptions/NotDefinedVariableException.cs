@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MathEvaluatorNetFramework.Exceptions
 {
-    internal class NotDefinedVariableException : Exception
+    public class NotDefinedVariableException : InvalidOperationException
     {
-        public NotDefinedVariableException(Variable variable) : base("The variable " + variable.Name + " is not defined.")
+        public NotDefinedVariableException(string variableName) : base("The variable " + variableName + " is not defined.")
         {
         }
     }

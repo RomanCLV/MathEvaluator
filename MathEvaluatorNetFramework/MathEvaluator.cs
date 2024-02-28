@@ -11,6 +11,21 @@ namespace MathEvaluatorNetFramework
     public static class MathEvaluator
     {
         /// <summary>
+        /// Whether or not to raise an <see cref="DivideByZeroException"/> if we try to divide by zero.
+        /// </summary>
+        public static bool RaiseDivideByZeroException { get; set; } = true;
+
+        /// <summary>
+        /// Whether or not to raise an <see cref="DomainException"/> if we try to apply an operation with a invalid domain value.<br />
+        /// Examples:<br />
+        /// 0^0<br />
+        /// 0/0<br />
+        /// sqrt(x) with x lower than 0<br />
+        /// ln(x) with x lower or equal than 0<br />
+        /// </summary>
+        public static bool RaiseDomainException { get; set; } = true;
+
+        /// <summary>
         /// Create a new Expression with the given expression.
         /// </summary>
         /// <param name="expression">
@@ -25,6 +40,7 @@ namespace MathEvaluatorNetFramework
         /// </param>
         /// <returns>The new expression</returns>
         /// <exception cref="FormatException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         public static Expression Expression(string expression)
         {
             return new Expression(expression);
@@ -46,7 +62,11 @@ namespace MathEvaluatorNetFramework
         /// <returns>The result of the given expression.</returns>
         /// <param name="variables">The values of the used variables in the expression.</param>
         /// <exception cref="FormatException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="NotDefinedVariableException"></exception>
+        /// <exception cref="DomainException"></exception>
+        /// <exception cref="DivideByZeroException"></exception>
         public static double Evaluate(string expression, params Variable[] variables)
         {
             return new Expression(expression).Evaluate(variables);
