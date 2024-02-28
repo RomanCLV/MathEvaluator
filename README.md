@@ -19,13 +19,13 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 
 ## Basic operators expressions (+, -, *, /)
 
-| Expression  | Result | Condition before applying the evaluation | Remarks |
-| ----------- | ------ | ---------------------------------------- | ------- |
+| Expression | Result | Condition before applying the evaluation / Remarks |
+| ---------- | ------ | -------------------------------------------------- |
 | 2 + 10 | 12  |
 | 2 + 010 | 12  |
 | 2 + 0 + 4+1 | 7 |
 | -8+12.5 | 4.5 |
-| -8,3+12.5 | 4.2 |   | Exact value was 4.1999999999999993 |
+| -8,3+12.5 | 4.2 | Remarks: Exact value was 4.1999999999999993 |
 | -8,4+12.5 | 4.1 |
 | -(5) | -5 |
 | -(5+3) | -8 |
@@ -61,3 +61,24 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | -(5 + 1)(-2(-3 / 4) + 3 *.5) | -18 |
 | -(5 + 1)(-2.-(3 / 4) + 3 *.5) | 7.5 |
 | -(5 + 1)(-2-(-3 / 4) + 3 *.5) | -1.5 |
+
+## Power (^)
+
+| Expression | Result | Condition before applying the evaluation / Remarks |
+| ---------- | ------ | -------------------------------------------------- |
+| 2^3 | 8 |
+| 2^0 | 1 |
+| (1+3)^(1+1) | 16 |
+| 2(1+3)^(1+1) | 32 |
+| (2(1+3))^(1+1) | 64 |
+| (-2)^3 | -8 |
+| (-2)^4 | 16 |
+| -2^4 | -16 |
+| (1-1)^3 | 0 |
+| (2^2)^3 | 64 |
+| 2^2^3 | 64 |
+| 2^(2^3) | 256 |
+| 0^0 | DomainException |
+| (2+1-3)^(2-2) | DomainException |
+| 0^0 | NaN | `MathEvaluator.RaiseDomainException` = `false`
+| 2^(4.3/0) | +∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
