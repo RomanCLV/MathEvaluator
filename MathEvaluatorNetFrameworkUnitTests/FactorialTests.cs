@@ -83,7 +83,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_6()
         {
-            string expression = "5!6";
+            string expression = "5!(6)";
             double expected = 720.0;
             double result = 0.0;
             try
@@ -101,7 +101,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_7()
         {
-            string expression = "(5+1)!";
+            string expression = "5!6";
             double expected = 720.0;
             double result = 0.0;
             try
@@ -119,6 +119,24 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_8()
         {
+            string expression = "(5+1)!";
+            double expected = 720.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Factorial_9()
+        {
             string expression = "-1!";
             double expected = -1.0;
             double result = 0.0;
@@ -135,7 +153,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Factorial_9()
+        public void Test_Factorial_10()
         {
             string expression = "(-1)!";
             try
@@ -156,7 +174,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Factorial_10()
+        public void Test_Factorial_11()
         {
             string expression = "(-1)!";
             double expected = double.NaN;

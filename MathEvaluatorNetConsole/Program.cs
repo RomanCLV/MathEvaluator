@@ -76,7 +76,24 @@ namespace MathEvaluatorNetFrameworkConsole
             try
             {
                 result = MathEvaluator.Evaluate(expression);
-                Console.WriteLine($"Result: {result}");
+                Console.Write($"Result: ");
+
+                if (double.IsPositiveInfinity(result))
+                {
+                    Console.WriteLine("+infinity");
+                }
+                else if (double.IsNegativeInfinity(result))
+                {
+                    Console.WriteLine("-infinity");
+                }
+                else if (double.IsNaN(result))
+                {
+                    Console.WriteLine("NaN");
+                }
+                else
+                {
+                    Console.WriteLine(result);
+                }
             }
             catch (Exception ex)
             {

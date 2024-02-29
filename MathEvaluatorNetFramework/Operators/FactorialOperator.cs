@@ -9,10 +9,10 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class FactorialOperator : Operator
     {
-        private List<int> _factorials = new List<int>(1000)
+        private static readonly List<long> s_factorials = new List<long>(1000)
         {
             1,
-            1,
+            1
         };
 
         public FactorialOperator(IEvaluable evaluable) : base(evaluable)
@@ -30,7 +30,7 @@ namespace MathEvaluatorNetFramework.Operators
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
-            double result = 0.0;
+            double result;
             double evaluableResult = _left.Evaluate(variables);
             int evaluableResultInt = (int)evaluableResult;
             bool isAnInteger = (evaluableResult - evaluableResultInt) == 0.0;
@@ -43,20 +43,28 @@ namespace MathEvaluatorNetFramework.Operators
             {
                 if (isAnInteger)
                 {
-                    if (evaluableResultInt >= _factorials.Count)
+                    if (evaluableResultInt > 20)
                     {
-                        for (int i = _factorials.Count - 1; i <= evaluableResultInt; i++)
-                        {
-                            _factorials[i] = i * _factorials[i - 1];
-                        }
+                        result = double.PositiveInfinity;
                     }
-                    result = _factorials[evaluableResultInt];
+                    else
+                    {
+                        if (evaluableResultInt >= s_factorials.Count)
+                        {
+                            for (int i = s_factorials.Count; i <= evaluableResultInt; i++)
+                            {
+                                s_factorials.Add(i * s_factorials[i - 1]);
+                            }
+                        }
+                        result = s_factorials[evaluableResultInt];
+                    }
                 }
                 else
                 {
                     if (MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial)
                     {
                         //result = GammaFunction(evaluableResult + 1.0);
+                        result = double.NaN;
                     }
                     else if (MathEvaluator.RaiseDomainException)
                     {
@@ -73,6 +81,7 @@ namespace MathEvaluatorNetFramework.Operators
                 if (MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial && !isAnInteger)
                 {
                     //result = GammaFunction(evaluableResult + 1.0);
+                    result = double.NaN;
                 }
                 else if (MathEvaluator.RaiseDomainException)
                 {

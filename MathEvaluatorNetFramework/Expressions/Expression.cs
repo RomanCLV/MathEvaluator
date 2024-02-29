@@ -192,8 +192,10 @@ namespace MathEvaluatorNetFramework.Expressions
                 "/^",
 
                 "^^",
+                "^.",
+                "^!",
                 "..",
-                "!!"
+                //"!!"
             };
 
             foreach (string invalidSequence in invalidSequences)
@@ -215,6 +217,7 @@ namespace MathEvaluatorNetFramework.Expressions
                 '-',
                 '*',
                 '/',
+                '_',
             };
 
 
@@ -509,6 +512,10 @@ namespace MathEvaluatorNetFramework.Expressions
             {
                 _evaluable = CheckPower(expression);
             }
+            if (_evaluable == null && expression.Contains('!'))
+            {
+                _evaluable = CheckFactorial(expression);
+            }
             if (_evaluable == null)
             {
                 throw new NotSupportedException(expression);
@@ -540,6 +547,11 @@ namespace MathEvaluatorNetFramework.Expressions
         private IEvaluable CheckPower(string expression)
         {
             return CheckOperand(expression, '^', "power", (b, p) => new PowerOperator(b, p));
+        }
+
+        private IEvaluable CheckFactorial(string expression)
+        {
+            return CheckOperand(expression, '!', "factorial", (e) => new FactorialOperator(e));
         }
 
         private List<int> FindSplitIndex(string expression, char c)
@@ -592,7 +604,25 @@ namespace MathEvaluatorNetFramework.Expressions
             }
         }
 
-        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<Expression, Expression, IEvaluable> func)
+        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable> func)
+        {
+            //int index = FindSplitIndex(expression, c);
+            List<int> validIndexs = FindSplitIndex(expression, c);
+            int index = validIndexs.Count > 0 ? validIndexs.Last() : -1;
+            if (index > 0)
+            {
+                string left = expression.Substring(0, index);
+
+                CheckEmptyExpression(left, operandName, "left");
+
+                Expression expLeft = new Expression(left, true);
+
+                return func(expLeft);
+            }
+            return null;
+        }
+
+        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable, IEvaluable> func)
         {
             //int index = FindSplitIndex(expression, c);
             List<int> validIndexs = FindSplitIndex(expression, c);
