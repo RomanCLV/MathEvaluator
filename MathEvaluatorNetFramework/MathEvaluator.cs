@@ -26,6 +26,16 @@ namespace MathEvaluatorNetFramework
         public static bool RaiseDomainException { get; set; } = true;
 
         /// <summary>
+        /// Whether or not to use the gamma function if the factorial of a floating number or a negative number is applying. If not, a <see cref="DomainException"/> can be raised depending on <see cref="RaiseDomainException"/>.<br />
+        /// Examples:<br />
+        /// 5!      -> classic factorial<br />
+        /// 5.25!   -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+        /// (-0.5)! -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+        /// (-n)! where n is a positive integer -> Raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+        /// </summary>
+        public static bool UseGammaFunctionForNonNaturalIntegerFactorial { get; set; } = true;
+
+        /// <summary>
         /// Create a new Expression with the given expression.
         /// </summary>
         /// <param name="expression">
