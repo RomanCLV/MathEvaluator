@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,6 +16,69 @@ namespace MathEvaluatorNetFramework.Expressions
     {
         private IEvaluable _evaluable;
         private readonly List<Variable> _variables;
+
+        private readonly static char[] s_specialCharacters = new char[]
+        {
+            '(',
+            ')',
+            '.',
+            '!',
+            '^',
+            '+',
+            '-',
+            '*',
+            '/',
+            '_',
+        };
+
+        private readonly static string[] s_invalidSequences = new string[]
+        {
+            //"(+",
+            //"(-",
+            "(*",
+            "(/",
+
+            "+)",
+            "-)",
+            "*)",
+            "/)",
+
+            "++",
+            //"+-",
+            "+*",
+            "+/",
+
+            //"-+",
+            //"--",
+            "-*",
+            "-/",
+
+            //"*+",
+            //"*-",
+            "**",
+            "*/",
+
+            //"/+",
+            //"/-",
+            "/*",
+            "//",
+
+            "^+",
+            //"^-",
+            "^*",
+            "^/",
+
+            "+^",
+            "-^",
+            "*^",
+            "/^",
+
+            "^^",
+            "^.",
+            "^!",
+            "..",
+            //"!!"
+        };
 
         public Expression()
         {
@@ -80,6 +144,9 @@ namespace MathEvaluatorNetFramework.Expressions
             // add surround negatives with ^
             expression = ManagePowerExpression(expression);
 
+            // add surround negatives with !
+            expression = ManageFactorialExpression(expression);
+
             // add surround negatives with ()
             expression = ManageNegativeExpression(expression);
             bool haveChanged;
@@ -99,6 +166,16 @@ namespace MathEvaluatorNetFramework.Expressions
         private string PrepareExpression(string expression)
         {
             expression = string.Join("", expression.Trim().ToLower().Replace(",", ".").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+
+            if (string.IsNullOrEmpty(expression) || string.IsNullOrWhiteSpace(expression))
+            {
+                throw new FormatException("Empty expression");
+            }
+
+            if (expression.Length == 1 && s_specialCharacters.Contains(expression[0]))
+            {
+                throw new FormatException("Invalid expression: " + expression[0]);
+            }
 
             int parenthesisCount = 0;
             for (int i = 0; i < expression.Length; i++)
@@ -120,7 +197,6 @@ namespace MathEvaluatorNetFramework.Expressions
             {
                 throw new FormatException("Invalid format exception: Too many '(' or too few ')'");
             }
-
 
             while (expression.Contains("+-"))
             {
@@ -149,56 +225,7 @@ namespace MathEvaluatorNetFramework.Expressions
                 .Replace("+.", "+0.")
                 .Replace("-.", "-0.");
 
-            string[] invalidSequences = new string[]
-            {
-                //"(+",
-                //"(-",
-                "(*",
-                "(/",
-
-                "+)",
-                "-)",
-                "*)",
-                "/)",
-
-                "++",
-                //"+-",
-                "+*",
-                "+/",
-
-                //"-+",
-                //"--",
-                "-*",
-                "-/",
-
-                //"*+",
-                //"*-",
-                "**",
-                "*/",
-
-                //"/+",
-                //"/-",
-                "/*",
-                "//",
-
-                "^+",
-                //"^-",
-                "^*",
-                "^/",
-
-                "+^",
-                "-^",
-                "*^",
-                "/^",
-
-                "^^",
-                "^.",
-                "^!",
-                "..",
-                //"!!"
-            };
-
-            foreach (string invalidSequence in invalidSequences)
+            foreach (string invalidSequence in s_invalidSequences)
             {
                 if (expression.Contains(invalidSequence))
                 {
@@ -206,24 +233,9 @@ namespace MathEvaluatorNetFramework.Expressions
                 }
             }
 
-            char[] specialCharacters = new char[]
-            {
-                '(',
-                ')',
-                '.',
-                '!',
-                '^',
-                '+',
-                '-',
-                '*',
-                '/',
-                '_',
-            };
-
-
             foreach (char c in expression)
             {
-                if (!char.IsDigit(c) && !char.IsLetter(c) && !specialCharacters.Contains(c))
+                if (!char.IsDigit(c) && !char.IsLetter(c) && !s_specialCharacters.Contains(c))
                 {
                     throw new FormatException("Invalid character: " + c);
                 }
@@ -242,7 +254,7 @@ namespace MathEvaluatorNetFramework.Expressions
             // remove useless point: .(   .)   .+
             for (int i = 0; i < expression.Length - 1; i++)
             {
-                if (expression[i] == '.' && specialCharacters.Contains(expression[i + 1]))
+                if (expression[i] == '.' && s_specialCharacters.Contains(expression[i + 1]))
                 {
                     string left = expression.Substring(0, i);
                     string right = expression.Substring(i + 1, expression.Length - 1 - i);
@@ -271,6 +283,44 @@ namespace MathEvaluatorNetFramework.Expressions
             expression = expression
                 .Replace(")(", ")*(")
                 .Replace("!(", "!*(");
+
+            bool isReadingANumber = false;
+            bool foundDot = false;
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in expression)
+            {
+                if (isReadingANumber)
+                {
+                    if (char.IsDigit(c))
+                    {
+                        sb.Append(c);
+                        continue;
+                    }
+                    else
+                    {
+                        if (c == '.')
+                        {
+                            sb.Append(c);
+                            if (foundDot)
+                            {
+                                throw new FormatException("Invalid format: " + sb.ToString());
+                            }
+                            foundDot = true;
+                        }
+                        else
+                        {
+                            isReadingANumber = false;
+                            sb.Clear();
+                        }
+                    }
+                }
+                else
+                {
+                    foundDot = c == '.';  
+                    isReadingANumber = foundDot || char.IsDigit(c);
+                    sb.Append(c);
+                }
+            }
 
             return expression;
         }
@@ -337,6 +387,11 @@ namespace MathEvaluatorNetFramework.Expressions
                         {
                             break;
                         }
+                        else if (parenthesisCount == 0 && expression[j] == '!')
+                        {
+                            j--;
+                            break;
+                        }
                         j++;
                     }
                     if (parenthesisCount == 0)
@@ -349,6 +404,59 @@ namespace MathEvaluatorNetFramework.Expressions
                         {
                             expression = expression.Insert(j + 1, ")");
                         }
+                    }
+                }
+            }
+            return expression;
+        }
+
+        private string ManageFactorialExpression(string expression)
+        {
+            for (int i = 0; i < expression.Length; i++)
+            {
+                if (expression[i] == '!')
+                {
+                    int parenthesisCount = 0;
+                    if (i == expression.Length - 1)
+                    {
+                        expression += ')';
+                        parenthesisCount--;
+                    }
+                    else if (expression[i + 1] != ')')
+                    {
+                        expression = expression.Insert(i + 1, ")");
+                        parenthesisCount--;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    int j = i - 1;
+                    while (j >= 0)
+                    {
+                        if (expression[j] == '(')
+                        {
+                            parenthesisCount++;
+                        }
+                        else if (expression[j] == ')')
+                        {
+                            parenthesisCount--;
+                        }
+                        else if (parenthesisCount == -1 && !char.IsDigit(expression[j]) && expression[j] != '.')
+                        {
+                            break;
+                        }
+                        j--;
+                    }
+                    if (parenthesisCount == 0)
+                    {
+                        expression = '(' + expression;
+                        i++;
+                    }
+                    else if (parenthesisCount == -1)
+                    {
+                        expression = expression.Insert(j + 1, "(");
+                        i++;
                     }
                 }
             }
@@ -491,7 +599,6 @@ namespace MathEvaluatorNetFramework.Expressions
             {
                 _evaluable = new ValueExpression(d);
             }
-
             if (_evaluable == null && expression.Contains('+'))
             {
                 _evaluable = CheckAddition(expression);
