@@ -15,7 +15,7 @@ In the case of this property is equal to `true` and that a division by 0 is appl
 ### Invalid domain
 
 We allow the user to decide what to do in the case of an `invalid domain` operation (eg: 0/0, sqrt(x) where x is negative, ln(x) where x <= 0) thanks to the static property `MathEvaluator.RaiseDomainException`, by default set to `true`.
-In the case of this property is equal to `true` and that an `invalid domain` operation is appliyng, it will raise a `DomainException`. Else it will return `NaN`.
+In the case of this property is equal to `true` and that an `invalid domain` operation is applying, it will raise a `DomainException`. Else it will return `NaN`.
 
 ## Basic operators (+, -, *, /)
 
@@ -90,6 +90,13 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | (-1/0)^(1/0) | -∞ | `RaiseDivideByZeroException` = `false` |
 
 ## Factorial (!)
+
+We allow the user to decide what to do in the case of an `invalid domain` factorial operation (eg: 5.25!, (-0.5)!, (-1)!)) thanks to the static property `MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial`, by default set to `true`.
+In the case of this property is equal to `true` and that a such operation is applying, it will use the Gamma (Γ) function (since x! = Γ(x+1)).
+
+
+However, if the Gamma function is asked for a negative number, it will raise a `DomainException` or return `NaN`.
+
 
 | Expression | Result | Condition before applying the evaluation / Remarks |
 | ---------- | ------ | -------------------------------------------------- |
