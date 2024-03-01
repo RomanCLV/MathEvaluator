@@ -43,6 +43,11 @@ namespace MathEvaluatorNetFramework
         public static bool UseGammaFunctionForNonNaturalIntegerFactorial { get; set; } = true;
 
         /// <summary>
+        /// Indicates to the trigonometrics functions if the angle has to be interpreted in degrees or in radians.
+        /// </summary>
+        public static bool AngleAreInDegrees { get; set; } = true;
+
+        /// <summary>
         /// Create a new Expression with the given expression.
         /// </summary>
         /// <param name="expression">

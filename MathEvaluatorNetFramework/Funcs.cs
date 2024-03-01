@@ -76,5 +76,15 @@ namespace MathEvaluatorNetFramework
 
             return (LogSqrtTwoPi + Math.Log(sum) - b) + (Math.Log(b) * (xx + 0.5));
         }
+
+        public static double DegreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
+        }
+
+        public static double RadiansToDegrees(double radians)
+        {
+            return radians * 180.0 / Math.PI;
+        }
     }
 }
