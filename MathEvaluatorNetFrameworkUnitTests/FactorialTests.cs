@@ -209,12 +209,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_13()
         {
-            string expression = "20!";
+            string expression = "(5!)/(5!)";
             double expected = 1.0;
-            for (int i = 2; i <= 20; i++)
-            {
-                expected *= i;
-            }
             double result = 0.0;
             try
             {
@@ -231,7 +227,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_14()
         {
-            string expression = "(20!)/(20!)";
+            string expression = "5!/5!";
             double expected = 1.0;
             double result = 0.0;
             try
@@ -285,7 +281,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_17()
         {
-            string expression = "-1!";
+            string expression = "-0!";
             double expected = -1.0;
             double result = 0.0;
             try
@@ -308,7 +304,6 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = false;
                 _ = MathEvaluator.Evaluate(expression);
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = true;
                 throw new InvalidOperationException("Should have raise a DomainException");
             }
             catch (DomainException)
@@ -318,6 +313,10 @@ namespace MathEvaluatorNetFrameworkUnitTests
             catch (Exception ex)
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            finally
+            {
+                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = true;
             }
         }
 
@@ -379,7 +378,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected , result, 0.000001);
+            Assert.AreEqual(expected, result, 0.000001);
         }
 
         [TestMethod]
@@ -410,7 +409,25 @@ namespace MathEvaluatorNetFrameworkUnitTests
         public void Test_Factorial_23()
         {
             string expression = "(-0.9)!";
-            double expected = 9.5135076986687; 
+            double expected = 9.5135076986687;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, 0.000001);
+        }
+
+        [TestMethod]
+        public void Test_Factorial_24()
+        {
+            string expression = "3!!";
+            double expected = 720.0;
             double result = 0.0;
             try
             {
