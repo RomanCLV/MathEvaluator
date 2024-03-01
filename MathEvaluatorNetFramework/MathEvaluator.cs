@@ -10,6 +10,13 @@ namespace MathEvaluatorNetFramework
 {
     public static class MathEvaluator
     {
+        public static void Reset()
+        {
+            RaiseDivideByZeroException = true;
+            RaiseDomainException = true;
+            UseGammaFunctionForNonNaturalIntegerFactorial = true;
+        }
+
         /// <summary>
         /// Whether or not to raise an <see cref="DivideByZeroException"/> if we try to divide by zero.
         /// </summary>

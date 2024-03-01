@@ -11,6 +11,7 @@ namespace MathEvaluatorNetFrameworkConsole
     {
         private const uint EXIT_CODE = 0;
         private const uint EVAL_CODE = 1;
+        private const uint SETTINGS_CODE = 2;
 
         public static void Main(string[] args)
         {
@@ -19,13 +20,8 @@ namespace MathEvaluatorNetFrameworkConsole
             {
                 Console.Clear();
                 DisplayMenu();
-                option = SelectOption(EXIT_CODE, 1);
+                option = SelectOption(0, 2);
                 Execute(option);
-
-                if (option != EXIT_CODE)
-                {
-                    Console.ReadKey(true);
-                }
             } while (option != EXIT_CODE);
         }
 
@@ -33,6 +29,7 @@ namespace MathEvaluatorNetFrameworkConsole
         {
             Console.WriteLine("--- Math interpreter console menu ---\n");
             Console.WriteLine($"{EVAL_CODE}. Eval expression");
+            Console.WriteLine($"{SETTINGS_CODE}. Settings");
             Console.WriteLine($"{EXIT_CODE}. Exit");
             Console.WriteLine();
         }
@@ -62,6 +59,10 @@ namespace MathEvaluatorNetFrameworkConsole
             {
                 case EVAL_CODE:
                     TestMathInterpreter();
+                    break;
+
+                case SETTINGS_CODE:
+                    Settings();
                     break;
             }
         }
@@ -99,7 +100,50 @@ namespace MathEvaluatorNetFrameworkConsole
             {
                 Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
             }
+            Console.ReadKey(true);
+        }
+
+        private static void DisplaySettingsMenu()
+        {
+            Console.WriteLine("--- Settings menu ---\n");
+            Console.WriteLine($"0. Set default settings\n");
+            Console.WriteLine($"1. Raise divide by zero exception                          " + MathEvaluator.RaiseDivideByZeroException);
+            Console.WriteLine($"2. Raise domain exception                                  " + MathEvaluator.RaiseDomainException);
+            Console.WriteLine($"3. Use Gamma function for non natural integer factorial    " + MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial);
+            Console.WriteLine($"\nPress a key to change the setting value");
+            Console.WriteLine($"\nPress ENTER/ESCAPE to exit");
+            Console.WriteLine();
+        }
+
+        private static void Settings()
+        {
+            ConsoleKey consoleKey;
+            do
+            {
+                Console.Clear();
+                DisplaySettingsMenu();
+                consoleKey = Console.ReadKey(true).Key;
+                switch (consoleKey)
+                {
+                    case ConsoleKey.NumPad0:
+                        MathEvaluator.Reset();
+                        break;
+
+                    case ConsoleKey.NumPad1:
+                        MathEvaluator.RaiseDivideByZeroException = !MathEvaluator.RaiseDivideByZeroException;
+                        break;
+
+                    case ConsoleKey.NumPad2:
+                        MathEvaluator.RaiseDomainException = !MathEvaluator.RaiseDomainException;
+                        break;
+
+                    case ConsoleKey.NumPad3:
+                        MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = !MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial;
+                        break;
+                }
+
+            } while (consoleKey != ConsoleKey.Escape && consoleKey != ConsoleKey.Enter);
+            
         }
     }
 }
-

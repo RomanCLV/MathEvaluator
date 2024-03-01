@@ -369,7 +369,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         public void Test_Factorial_21()
         {
             string expression = "0.5!";
-            double expected = double.NaN;
+            double expected = 0.8862269254528;
             double result = 0.0;
             try
             {
@@ -380,7 +380,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected , result);
+            Assert.AreEqual(expected , result, 0.000001);
         }
 
         [TestMethod]
@@ -411,7 +411,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         public void Test_Factorial_23()
         {
             string expression = "(-0.9)!";
-            double expected = double.NaN;
+            double expected = 9.5135076986687; 
             double result = 0.0;
             try
             {
@@ -422,7 +422,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, 0.000001);
         }
     }
 }

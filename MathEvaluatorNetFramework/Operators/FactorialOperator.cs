@@ -9,12 +9,6 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class FactorialOperator : Operator
     {
-        private static readonly List<long> s_factorials = new List<long>(1000)
-        {
-            1,
-            1
-        };
-
         public FactorialOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
@@ -43,28 +37,13 @@ namespace MathEvaluatorNetFramework.Operators
             {
                 if (isAnInteger)
                 {
-                    if (evaluableResultInt > 20)
-                    {
-                        result = double.PositiveInfinity;
-                    }
-                    else
-                    {
-                        if (evaluableResultInt >= s_factorials.Count)
-                        {
-                            for (int i = s_factorials.Count; i <= evaluableResultInt; i++)
-                            {
-                                s_factorials.Add(i * s_factorials[i - 1]);
-                            }
-                        }
-                        result = s_factorials[evaluableResultInt];
-                    }
+                    result = Funcs.Factorial((uint)evaluableResult);
                 }
                 else
                 {
                     if (MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial)
                     {
-                        //result = GammaFunction(evaluableResult + 1.0);
-                        result = double.NaN;
+                        result = Funcs.Gamma(evaluableResult + 1.0);
                     }
                     else if (MathEvaluator.RaiseDomainException)
                     {
@@ -80,8 +59,7 @@ namespace MathEvaluatorNetFramework.Operators
             {
                 if (MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial && !isAnInteger)
                 {
-                    //result = GammaFunction(evaluableResult + 1.0);
-                    result = double.NaN;
+                    result = Funcs.Gamma(evaluableResult + 1.0);
                 }
                 else if (MathEvaluator.RaiseDomainException)
                 {
