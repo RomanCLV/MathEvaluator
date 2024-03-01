@@ -249,8 +249,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_15()
         {
-            string expression = "21!";
-            double expected = double.PositiveInfinity;
+            string expression = "170!";
+            double expected = Funcs.Factorial(170);
             double result = 0.0;
             try
             {
@@ -267,8 +267,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_16()
         {
-            string expression = "(21!)/(21!)";
-            double expected = double.NaN;
+            string expression = "171!";
+            double expected = double.PositiveInfinity;
             double result = 0.0;
             try
             {
@@ -281,7 +281,6 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result);
         }
-
 
         [TestMethod]
         public void Test_Factorial_17()
