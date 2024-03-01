@@ -100,31 +100,28 @@ However, if the Gamma function is asked for a negative integer, it will raise a 
 
 See: [https://en.wikipedia.org/wiki/Gamma_function](https://en.wikipedia.org/wiki/Gamma_function) to know more anout this function.
 
+The higher rank of factorial you can ask is `170`. If you ask higer, it will return `+∞`.
 
 | Expression | Result | Condition before applying the evaluation / Remarks |
 | ---------- | ------ | -------------------------------------------------- |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
+| 0! | 1 |
+| 1! | 1 |
+| 5!*6 | 720 |
+| 5!(6) | 720 |
+| 5!6 | 720 |
+| 2!^3! | 40320.0 | 2!^3! -> (2!^3)! |
+| 2!^(3!) | 64 |
+| (5!)/(5!) | 1 |
+| 5!/5! | 1 |
+| 170! | 7.25741561530799E+306 |
+| 171! | +∞ |
+| -0! | -1 |
+| -1! | -1 |
+| (-0.5)! | DomainException | `UseGamma...` = `false` |
+| 0.25! | DomainException | `UseGamma...` = `false` |
+| (-0.5)! | 1.77245385090205 |
+| 0.25! | 0.906402477055538 |
+| 0.25! | NaN | `UseGamma...` = `false` and `RaiseDomainException` = `false` |
+| (-1)! | DomainException |
+| (-1)! | NaN | `RaiseDomainException` = `false` |
+| 3!! | 720 | 3!! -> (3!)! |
