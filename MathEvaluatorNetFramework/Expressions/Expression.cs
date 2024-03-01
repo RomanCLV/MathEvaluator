@@ -141,11 +141,11 @@ namespace MathEvaluatorNetFramework.Expressions
                 expression = PrepareExpression(expression);
             }
 
-            // add surround negatives with ^
-            expression = ManagePowerExpression(expression);
-
             // add surround negatives with !
             expression = ManageFactorialExpression(expression);
+
+            // add surround negatives with ^
+            expression = ManagePowerExpression(expression);
 
             // add surround negatives with ()
             expression = ManageNegativeExpression(expression);

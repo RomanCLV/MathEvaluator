@@ -173,8 +173,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_11()
         {
-            string expression = "2!^3!";
-            double expected = 40320.0;
+            string expression = "(2!)^(3!)";
+            double expected = 64.0;
             double result = 0.0;
             try
             {
@@ -191,7 +191,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Factorial_12()
         {
-            string expression = "2!^(3!)";
+            string expression = "2!^3!";
             double expected = 64.0;
             double result = 0.0;
             try
