@@ -49,14 +49,14 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | -5/(2/-.25) | 0.625 |
 | -5/-(-2/-.25) | 0.625  |
 | 8/2/0.25 | 16 |
-| 3/0 | +∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| 3/-0 | +∞ | `MathEvaluator.RaiseDivideByZeroException` = `false`  Remarks: It's well +∞ and no -∞.|
-| -3/0 | -∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
+| 3/0 | +∞ | `RaiseDivideByZeroException` = `false` |
+| 3/-0 | +∞ | `RaiseDivideByZeroException` = `false`  Remarks: It's well +∞ and no -∞.|
+| -3/0 | -∞ | `RaiseDivideByZeroException` = `false` |
 | 2/0 | DivideByZeroException |
-| 0/0 | DomainException | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| 0/0 | NaN | `MathEvaluator.RaiseDivideByZeroException` = `false` and `MathEvaluator.RaiseDomainException` = `false` |
-| 1/(1/0) | 0 | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| -1/(1/0) | 0 | `MathEvaluator.RaiseDivideByZeroException` = `false` |
+| 0/0 | DomainException | `RaiseDivideByZeroException` = `false` |
+| 0/0 | NaN | `RaiseDivideByZeroException` = `false` and `RaiseDomainException` = `false` |
+| 1/(1/0) | 0 | `RaiseDivideByZeroException` = `false` |
+| -1/(1/0) | 0 | `RaiseDivideByZeroException` = `false` |
 | -8*2+10-5 | -11 |
 | (5 + 2)(2(3 / 4) + 3 *.5) | 21 |
 | -(5 + 2)(2(3 / 4) + 3 *.5) | -21 |
@@ -82,9 +82,9 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | 2^(2^3) | 256 |
 | 0^0 | DomainException |
 | (2+1-3)^(2-2) | DomainException |
-| 0^0 | NaN | `MathEvaluator.RaiseDomainException` = `false`
-| 2^(4.3/0) | +∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| 0^(1/0) | 0 | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| -0^(1/0) | 0 | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| (1/0)^(1/0) | +∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
-| (-1/0)^(1/0) | -∞ | `MathEvaluator.RaiseDivideByZeroException` = `false` |
+| 0^0 | NaN | `RaiseDomainException` = `false`
+| 2^(4.3/0) | +∞ | `RaiseDivideByZeroException` = `false` |
+| 0^(1/0) | 0 | `RaiseDivideByZeroException` = `false` |
+| -0^(1/0) | 0 | `RaiseDivideByZeroException` = `false` |
+| (1/0)^(1/0) | +∞ | `RaiseDivideByZeroException` = `false` |
+| (-1/0)^(1/0) | -∞ | `RaiseDivideByZeroException` = `false` |
