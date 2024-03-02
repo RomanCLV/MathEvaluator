@@ -7,21 +7,21 @@ using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class TangentOperator : FunctionOperator
+    internal class CotangentOperator : FunctionOperator
     {
-        private readonly static string _acronym = "tan";
+        private readonly static string _acronym = "cot";
         public new static string Acronym => _acronym;
 
-        public TangentOperator(IEvaluable evaluable) : base(evaluable)
+        public CotangentOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
 
         /// <summary>
-        /// Evaluate the tangent of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
+        /// Evaluate the cotangent (defined as cot(x)=1/tan(x)) of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
-        /// The tangent of the given evaluable.<br />
+        /// The cotangent of the given evaluable.<br />
         /// If the evaluable is a multiple of PI/2 (or 90°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
@@ -43,7 +43,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
             else
             {
-                result = Math.Tan(rad);
+                result = 1.0 / Math.Tan(rad);
             }
             return result;
         }

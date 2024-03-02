@@ -26,7 +26,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public override double Evaluate(params Variable[] variables)
         {
             double angle = Math.Atan(_left.Evaluate(variables));
-            return MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle;
+            return MathEvaluator.AngleAreInDegrees ? Funcs.RadiansToDegrees(angle) : angle;
         }
     }
 }

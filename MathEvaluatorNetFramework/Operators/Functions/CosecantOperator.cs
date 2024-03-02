@@ -7,22 +7,22 @@ using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class TangentOperator : FunctionOperator
+    internal class CosecantOperator : FunctionOperator
     {
-        private readonly static string _acronym = "tan";
+        private readonly static string _acronym = "csc";
         public new static string Acronym => _acronym;
 
-        public TangentOperator(IEvaluable evaluable) : base(evaluable)
+        public CosecantOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
 
         /// <summary>
-        /// Evaluate the tangent of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
+        /// Evaluate the cosecant (defined as csc(x)=1/sin(x)) of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
-        /// The tangent of the given evaluable.<br />
-        /// If the evaluable is a multiple of PI/2 (or 90°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// The cosecant of the given evaluable.<br />
+        /// If the evaluable is a multiple of PI (or 180°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
@@ -30,7 +30,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double angle = _left.Evaluate(variables);
             double rad = MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle;
 
-            if (Funcs.IsMultiple(rad, Math.PI / 2.0))
+            if (Funcs.IsMultiple(rad, Math.PI))
             {
                 if (MathEvaluator.RaiseDomainException)
                 {
@@ -43,7 +43,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
             else
             {
-                result = Math.Tan(rad);
+                result = 1.0 / Math.Sin(rad);
             }
             return result;
         }

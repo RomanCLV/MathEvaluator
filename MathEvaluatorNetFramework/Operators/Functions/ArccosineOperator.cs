@@ -1,9 +1,9 @@
-﻿using MathEvaluatorNetFramework.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -23,25 +23,29 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <returns>
         /// Returns the angle whose cosine is the specified evaluable.<br />
         /// Set <see cref="MathEvaluator.AngleAreInDegrees"/> to return the angle in degrees or in radians.<br />
-        /// If the evaluable is lower than -1 or greater than 1, it will raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/> or it will return <see cref="double.NaN"/>.
+        /// If the evaluable is lower than -1 or greater than 1, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
-            double angle = _left.Evaluate(variables);
-            double result;
-            if (angle < -1 || angle > 1)
+            double cos = _left.Evaluate(variables);
+            double angle;
+            if (cos < -1 || cos > 1)
             {
                 if (MathEvaluator.RaiseDomainException)
                 {
-                    throw new DomainException(_acronym + '(' + angle + ')');
+                    throw new DomainException(_acronym + '(' + cos + ')');
                 }
-                result = double.NaN;
+                angle = double.NaN;
             }
             else
             {
-                result = Math.Acos(MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+                angle = Math.Acos(cos);
+                if (MathEvaluator.AngleAreInDegrees)
+                {
+                    angle = Funcs.RadiansToDegrees(angle);
+                }
             }
-            return result;
+            return angle;
         }
     }
 }
