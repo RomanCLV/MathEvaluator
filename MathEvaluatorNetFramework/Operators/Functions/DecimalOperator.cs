@@ -22,9 +22,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <returns>The decimal part value of the given evaluable.</returns>
         public override double Evaluate(params Variable[] variables)
         {
-            double value = _left.Evaluate(variables);
-            int vi = (int)value;
-            return value - vi;
+            return Funcs.DecimalPart(_left.Evaluate(variables));
         }
     }
 }

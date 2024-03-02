@@ -143,7 +143,7 @@ namespace MathEvaluatorNetFrameworkConsole
                 }
 
             } while (consoleKey != ConsoleKey.Escape && consoleKey != ConsoleKey.Enter);
-            
+
         }
     }
 }

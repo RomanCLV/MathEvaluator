@@ -424,5 +424,20 @@ namespace MathEvaluatorNetFramework
             }
             return result;
         }
+
+        /// <summary>
+        /// Returns the decimal part of the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The decimal part of the specified value</returns>
+        public static double DecimalPart(double value, bool absoluteValue = true)
+        {
+            double result = value - (int)value;
+            if (absoluteValue && result < 0)
+            {
+                result = -result;
+            }
+            return result;
+        }
     }
 }
