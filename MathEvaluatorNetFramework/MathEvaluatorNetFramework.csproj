@@ -73,6 +73,8 @@
     <Compile Include="Operators\Functions\CosineOperator.cs" />
     <Compile Include="Operators\FactorialOperator.cs" />
     <Compile Include="Operators\Functions\CotangentOperator.cs" />
+    <Compile Include="Operators\Functions\DecimalOperator.cs" />
+    <Compile Include="Operators\Functions\DegreeOperator.cs" />
     <Compile Include="Operators\Functions\ExponentialOperator.cs" />
     <Compile Include="Operators\Functions\FloorOperation.cs" />
     <Compile Include="Operators\Functions\FunctionOperator.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Operators\Functions\HyperbolicTangentOperator.cs" />
     <Compile Include="Operators\Functions\LogarithmOperator.cs" />
     <Compile Include="Operators\Functions\NaperianLogarithmOperator.cs" />
+    <Compile Include="Operators\Functions\RadianOperator.cs" />
     <Compile Include="Operators\Functions\RoundOperator.cs" />
     <Compile Include="Operators\Functions\SecantOperator.cs" />
     <Compile Include="Operators\Functions\SineOperator.cs" />
