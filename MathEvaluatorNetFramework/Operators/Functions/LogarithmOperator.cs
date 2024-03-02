@@ -9,10 +9,10 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 {
     internal class LogarithmOperator : FunctionOperator
     {
-        private readonly static string _acronym = "ln";
+        private readonly static string _acronym = "log";
         public new static string Acronym => _acronym;
 
-        private double _logBase;
+        private readonly double _logBase;
 
         public LogarithmOperator(IEvaluable evaluable, double logBase = 10.0) : base(evaluable)
         {
@@ -29,6 +29,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// If the logarithm base is equal to 0, if the evaluable is equal to 0, raises a <see cref="DomainException"/> or returns <see cref="double.NaN"/>, else return 1.<br />
         /// If the logarithm base is greater than 0, if the evaluable is equal to 0, returns <see cref="double.NegativeInfinity"/>.
         /// </returns>
+        /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double result;

@@ -24,6 +24,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// The hyperbolic cosecant of the given evaluable using <see cref="Funcs.Csch(double)"/>.<br />
         /// If the evaluable is equal to 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
+        /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double result;

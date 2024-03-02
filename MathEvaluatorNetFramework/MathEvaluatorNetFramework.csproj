@@ -63,14 +63,18 @@
     <Compile Include="Exceptions\NotDefinedVariableException.cs" />
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Funcs.cs" />
+    <Compile Include="Operators\Functions\AbsoluteOperator.cs" />
     <Compile Include="Operators\Functions\ArccosineOperator.cs" />
     <Compile Include="Operators\Functions\ArcsineOperator.cs" />
     <Compile Include="Operators\Functions\ArctangentOperator.cs" />
+    <Compile Include="Operators\Functions\BinomialCoefficientOperator.cs" />
+    <Compile Include="Operators\Functions\CeilOperator.cs" />
     <Compile Include="Operators\Functions\CosecantOperator.cs" />
     <Compile Include="Operators\Functions\CosineOperator.cs" />
     <Compile Include="Operators\FactorialOperator.cs" />
     <Compile Include="Operators\Functions\CotangentOperator.cs" />
     <Compile Include="Operators\Functions\ExponentialOperator.cs" />
+    <Compile Include="Operators\Functions\FloorOperation.cs" />
     <Compile Include="Operators\Functions\FunctionOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicCosecantOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicCosineOperator.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Operators\Functions\HyperbolicTangentOperator.cs" />
     <Compile Include="Operators\Functions\LogarithmOperator.cs" />
     <Compile Include="Operators\Functions\NaperianLogarithmOperator.cs" />
+    <Compile Include="Operators\Functions\RoundOperator.cs" />
     <Compile Include="Operators\Functions\SecantOperator.cs" />
     <Compile Include="Operators\Functions\SineOperator.cs" />
     <Compile Include="Operators\Functions\SqrtOperator.cs" />

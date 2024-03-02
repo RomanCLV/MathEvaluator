@@ -24,6 +24,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// The cosecant of the given evaluable.<br />
         /// If the evaluable is a multiple of PI (or 180°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
+        /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double result;

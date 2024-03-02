@@ -25,6 +25,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// Set <see cref="MathEvaluator.AngleAreInDegrees"/> to return the angle in degrees or in radians.<br />
         /// If the evaluable is lower than -1 or greater than 1, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
+        /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double cos = _left.Evaluate(variables);

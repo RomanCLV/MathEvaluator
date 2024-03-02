@@ -384,5 +384,45 @@ namespace MathEvaluatorNetFramework
             }
             return result;
         }
+
+        /// <summary>
+        /// Compute the binomial coefficient, written (n k) and pronounced "n choose k".
+        /// </summary>
+        /// <param name="k">The number of ways you can pick k items.</param>
+        /// <param name="n">The number of a set of n items.</param>
+        /// <returns>
+        /// The binomial coefficient "n choose k".<br />
+        /// If <paramref name="k"/> or <paramref name="n"/> is lower than 0, returns <see cref="double.NaN"/>.
+        /// </returns>
+        public static double BinomialCoefficient(int k, int n)
+        {
+            double result;
+            if (k < 0 || n < 0)
+            {
+                result = double.NaN;
+            }
+            else if (k > n)
+            {
+                result = 0.0;
+            }
+            else if (k == 0 || k == n)
+            {
+                result = 1.0;
+            }
+            else if (k == 1 || k == n - 1)
+            {
+                result = n;
+            }
+            else
+            {
+                result = 1.0;
+                for (int i = 1; i <= k; i++)
+                {
+                    result *= n - (k - i);
+                    result /= i;
+                }
+            }
+            return result;
+        }
     }
 }

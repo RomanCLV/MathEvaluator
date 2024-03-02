@@ -24,6 +24,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// The hyperbolic cotangent of the given evaluable using <see cref="Funcs.Coth(double)"/>.<br />
         /// If the evaluable is equal to 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
+        /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double result;
