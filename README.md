@@ -3,9 +3,13 @@ A C# library to evaluate mathematical expressions.
 
 The expressions can contain spaces or not and the user is helped to write the fastest expression. eg: 2*-2 instead of 2 * (-2) or .25 instead of 0.25 or 2(5+3) instead of 2 * (5+2)
 
-Both **,** and **.** can be used as the decimal caracter.
+The **.** is used as the decimal caracter.
+
+The **,** is used as the function parameter separator.
 
 For successive same operations without parenthesis, the result is evaluated from the left to the rigth. eg: 10/4/2 = (10/4)/2 = 1.25 or 2^2^3 = (2^2)^3 = 64
+
+However, the operation 2!^3! is interpreted as (2!)^(3!) and not (2!^3)!.
 
 ### Division by 0
 
@@ -25,8 +29,8 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | 2 + 010 | 12  |
 | 2 + 0 + 4+1 | 7 |
 | -8+12.5 | 4.5 |
-| -8,3+12.5 | 4.2 | Remarks: Exact value was 4.1999999999999993 |
-| -8,4+12.5 | 4.1 |
+| -8.3+12.5 | 4.2 | Remarks: Exact value was 4.1999999999999993 |
+| -8.4+12.5 | 4.1 |
 | -(5) | -5 |
 | -(5+3) | -8 |
 | -(-5+3) | 2 |

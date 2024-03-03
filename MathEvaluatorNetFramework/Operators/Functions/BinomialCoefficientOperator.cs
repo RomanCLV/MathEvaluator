@@ -9,19 +9,34 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 {
     internal class BinomialCoefficientOperator : FunctionOperator
     {
+        private readonly static string _fullname = "binomial coefficient";
         private readonly static string _acronym = "binc";
-        public new static string Acronym => _acronym;
-
-        private IEvaluable _k => _left;
-        private IEvaluable _n;
-
-        public BinomialCoefficientOperator(IEvaluable evaluableK, IEvaluable evaluableN) : base(evaluableK)
+        private readonly static string _description = "Returns the binomial coefficient, written (n k) and pronounced \"n choose k\" of the two given evaluable where they must be equal to 0-positive integer.";
+        private readonly static string[] _usages = new string[1]
         {
-            _n = evaluableN;
+            "binc(k, n)"
+        };
+        private readonly static uint _minArg = 1;
+        private readonly static uint _maxArg = 1;
+        private readonly static FunctionOperatorDetails _details = new FunctionOperatorDetails(_fullname, _acronym, _description, _minArg, _maxArg, _usages);
+
+        public new static string FullName => _fullname;
+        public new static string Acronym => _acronym;
+        public new static string Description => _description;
+        public new static IReadOnlyList<string> Usages => _usages;
+        public new static uint MinArg => _minArg;
+        public new static uint MaxArg => _maxArg;
+        public new static FunctionOperatorDetails Details => _details;
+
+        private readonly IEvaluable _n;
+
+        public BinomialCoefficientOperator(IEvaluable k, IEvaluable n) : base(k)
+        {
+            _n = n;
         }
 
         /// <summary>
-        /// Returns the binomial coefficient, written (n k) and pronounced "n choose k" of the two given evaluable.
+        /// Evaluate the binomial coefficient, written (n k) and pronounced "n choose k" of the two given evaluable.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
@@ -31,7 +46,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public override double Evaluate(params Variable[] variables)
         {
             double result;
-            double k = _k.Evaluate(variables);
+            double k = _left.Evaluate(variables);
             double n = _n.Evaluate(variables);
 
             int ki = (int)k;

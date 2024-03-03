@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class ExponentialOperator : FunctionOperator
+    internal class SignedDecimalOperator : FunctionOperator
     {
-        private readonly static string _fullname = "exponential";
-        private readonly static string _acronym = "exp";
-        private readonly static string _description = "Returns the exponential of the given evaluable.";
+        private readonly static string _fullname = "signed decimal";
+        private readonly static string _acronym = "sdec";
+        private readonly static string _description = "Returns the signed decimal part value of the given evaluable.";
         private readonly static string[] _usages = new string[1]
         {
-            "exp(x)"
+            "sdec(x)"
         };
         private readonly static uint _minArg = 1;
         private readonly static uint _maxArg = 1;
@@ -27,22 +27,18 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static uint MaxArg => _maxArg;
         public new static FunctionOperatorDetails Details => _details;
 
-        public ExponentialOperator(IEvaluable evaluable) : base(evaluable)
+        public SignedDecimalOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
 
         /// <summary>
-        /// Evaluate the exponential of the given evaluable.
+        /// Returns the signed decimal part value of the given evaluable.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
-        /// <returns>
-        /// The exponential of the given evaluable.<br />
-        /// If the evaluable is greater than <see cref="Funcs.MAX_EXP_X"/>, returns <see cref="double.PositiveInfinity"/>.
-        /// </returns>
+        /// <returns>The signed decimal part value of the given evaluable.</returns>
         public override double Evaluate(params Variable[] variables)
         {
-            double value = _left.Evaluate(variables);
-            return value > Funcs.MAX_EXP_X ? double.PositiveInfinity : Math.Exp(value);
+            return Funcs.DecimalPart(_left.Evaluate(variables), false);
         }
     }
 }

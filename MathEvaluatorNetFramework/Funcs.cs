@@ -9,12 +9,37 @@ namespace MathEvaluatorNetFramework
 {
     public static class Funcs
     {
+        /// <summary>
+        /// Represents the ratio of the circumference of a circle to its diameter, specified by the constant, π.
+        /// </summary>
+        public const double PI = Math.PI;
+
+        /// <summary>
+        /// <c>TAU = 2*PI</c>
+        /// </summary>
+        public const double TAU = 2.0 * PI;
+
+        /// <summary>
+        /// <c>PAU = 1.5*PI</c>
+        /// </summary>
+        public const double PAU = (3.0 * PI) / 2.0;
+
+        /// <summary>
+        /// Represents the natural logarithmic base, specified by the constant, e.
+        /// </summary>
+        public const double E = Math.E;
+
+        /// <summary>
+        /// The Golden Ratio φ defined as φ = (1 + sqrt(5))/2
+        /// </summary>
+        public const double PHI = 1.6180339887498949;
+
         public const uint MAX_FACTORIAL_N = 170;
         public const double MAX_GAMMA_X = 170.624376950001;
         public const double MAX_EXP_X = 709.782712893384;
 
-        private const double PI_DIV_180 = Math.PI / 180.0;
-        private const double _180_DIV_PI = 180.0 / Math.PI;
+        private const double PI_DIV_180 = PI / 180.0;
+        private const double _180_DIV_PI = 180.0 / PI;
 
         private const int s_logGamma_coefs = 7;
         // Lanczos approximation g=5, n=7
@@ -202,7 +227,7 @@ namespace MathEvaluatorNetFramework
         }
 
         /// <summary>
-        /// Returns the hyperbolic cosine (defined as <c>cosh(x) = (exp(x) + exp(-x))/2</c>) of the specified numbers.
+        /// Returns the hyperbolic cosine (defined as <c>cosh(x) = (exp(x) + exp(-x)) / 2</c>) of the specified numbers.
         /// </summary>
         /// <param name="x">The number.</param>
         /// <returns>
@@ -230,7 +255,7 @@ namespace MathEvaluatorNetFramework
         }
 
         /// <summary>
-        /// Returns the hyperbolic sine (defined as <c>sinh(x) = (exp(x) - exp(-x))/2</c>) of the specified numbers.
+        /// Returns the hyperbolic sine (defined as <c>sinh(x) = (exp(x) - exp(-x)) / 2</c>) of the specified numbers.
         /// </summary>
         /// <param name="x">The number.</param>
         /// <returns>
@@ -324,7 +349,7 @@ namespace MathEvaluatorNetFramework
         }
 
         /// <summary>
-        /// Returns the hyperbolic secant (defined as <c>sech(x) = 1 / cosh(x)</c>) of the specified numbers.
+        /// Returns the hyperbolic cosecant (defined as <c>csch(x) = 1 / sinh(x)</c>) of the specified numbers.
         /// </summary>
         /// <param name="x">The number.</param>
         /// <returns>

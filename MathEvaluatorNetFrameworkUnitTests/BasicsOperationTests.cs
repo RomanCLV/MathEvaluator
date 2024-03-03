@@ -83,7 +83,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Addition_5()
         {
-            string expression = "-8,3+12.5";
+            string expression = "-8.3+12.5";
             double expected = 4.2;
             double result = 0.0;
             try
@@ -101,7 +101,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Addition_6()
         {
-            string expression = "-8,4+12.5";
+            string expression = "-8.4+12.5";
             double expected = 4.1;
             double result = 0.0;
             try

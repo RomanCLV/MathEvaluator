@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class ExponentialOperator : FunctionOperator
+    internal class FloorOperator : FunctionOperator
     {
-        private readonly static string _fullname = "exponential";
-        private readonly static string _acronym = "exp";
-        private readonly static string _description = "Returns the exponential of the given evaluable.";
+        private readonly static string _fullname = "floor";
+        private readonly static string _acronym = "floor";
+        private readonly static string _description = "Returns the value of the largest integer less than or equal to the given evaluable.";
         private readonly static string[] _usages = new string[1]
         {
-            "exp(x)"
+            "floor(x)"
         };
         private readonly static uint _minArg = 1;
         private readonly static uint _maxArg = 1;
@@ -27,22 +27,18 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static uint MaxArg => _maxArg;
         public new static FunctionOperatorDetails Details => _details;
 
-        public ExponentialOperator(IEvaluable evaluable) : base(evaluable)
+        public FloorOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
 
         /// <summary>
-        /// Evaluate the exponential of the given evaluable.
+        /// Evalute the value of the largest integer less than or equal to the given evaluable.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
-        /// <returns>
-        /// The exponential of the given evaluable.<br />
-        /// If the evaluable is greater than <see cref="Funcs.MAX_EXP_X"/>, returns <see cref="double.PositiveInfinity"/>.
-        /// </returns>
+        /// <returns>The value of the largest integer less than or equal to the given evaluable.</returns>
         public override double Evaluate(params Variable[] variables)
         {
-            double value = _left.Evaluate(variables);
-            return value > Funcs.MAX_EXP_X ? double.PositiveInfinity : Math.Exp(value);
+            return Math.Floor(_left.Evaluate(variables));
         }
     }
 }

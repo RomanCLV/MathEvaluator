@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEvaluatorNetFramework.Expressions
+namespace MathEvaluatorNetFramework.Operators
 {
-    internal class ValueExpression : IEvaluable
+    internal class ValueOperator : IEvaluable
     {
         private readonly double _value;
 
-        public ValueExpression(double value)
+        public ValueOperator(double value)
         {
             _value = value;
         }

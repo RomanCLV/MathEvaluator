@@ -9,15 +9,31 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 {
     internal class SecantOperator : FunctionOperator
     {
+        private readonly static string _fullname = "secant";
         private readonly static string _acronym = "sec";
+        private readonly static string _description = "Returns the secant (defined as sec(x) = 1 / cos(x)) of the given evaluable.";
+        private readonly static string[] _usages = new string[1]
+        {
+            "sec(x)"
+        };
+        private readonly static uint _minArg = 1;
+        private readonly static uint _maxArg = 1;
+        private readonly static FunctionOperatorDetails _details = new FunctionOperatorDetails(_fullname, _acronym, _description, _minArg, _maxArg, _usages);
+
+        public new static string FullName => _fullname;
         public new static string Acronym => _acronym;
+        public new static string Description => _description;
+        public new static IReadOnlyList<string> Usages => _usages;
+        public new static uint MinArg => _minArg;
+        public new static uint MaxArg => _maxArg;
+        public new static FunctionOperatorDetails Details => _details;
 
         public SecantOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
 
         /// <summary>
-        /// Evaluate the secant (defined as sec(x)=1/cos(x)) of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
+        /// Evaluate the secant (defined as <c>sec(x) = 1 / cos(x)</c>) of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>

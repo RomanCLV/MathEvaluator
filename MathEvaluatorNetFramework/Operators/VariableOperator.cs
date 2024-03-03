@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
 
-namespace MathEvaluatorNetFramework.Expressions
+namespace MathEvaluatorNetFramework.Operators
 {
-    internal class VariableExpression : IEvaluable
+    internal class VariableOperator : IEvaluable
     {
         private readonly string _variableName;
 
-        public VariableExpression(string variableName)
+        public VariableOperator(string variableName)
         {
             _variableName = variableName;
         }

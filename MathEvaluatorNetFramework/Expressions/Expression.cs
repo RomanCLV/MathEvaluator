@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Operators;
+using MathEvaluatorNetFramework.Operators.Functions;
 
 namespace MathEvaluatorNetFramework.Expressions
 {
@@ -17,11 +18,61 @@ namespace MathEvaluatorNetFramework.Expressions
         private IEvaluable _evaluable;
         private readonly List<Variable> _variables;
 
+        private static readonly List<string> s_constants = new List<string>
+        {
+            "pi",
+            "tau",
+            "pau",
+            "e",
+            "phi"
+        };
+
+        private static readonly Dictionary<string, FunctionOperatorDetails> s_functions = new Dictionary<string, FunctionOperatorDetails>
+        {
+            // name - max parameters count
+            { AbsoluteOperator.Acronym, AbsoluteOperator.Details },
+            { ExponentialOperator.Acronym, ExponentialOperator.Details },
+            { LogarithmOperator.Acronym, LogarithmOperator.Details },
+            { NaperianLogarithmOperator.Acronym, NaperianLogarithmOperator.Details },
+            { SqrtOperator.Acronym, SqrtOperator.Details },
+
+            { CosineOperator.Acronym, CosineOperator.Details },
+            { SineOperator.Acronym, SineOperator.Details },
+            { TangentOperator.Acronym, TangentOperator.Details },
+
+            { ArccosineOperator.Acronym, ArccosineOperator.Details },
+            { ArcsineOperator.Acronym, ArcsineOperator.Details },
+            { ArctangentOperator.Acronym, ArctangentOperator.Details },
+
+            { SecantOperator.Acronym, SecantOperator.Details },
+            { CosecantOperator.Acronym, CosecantOperator.Details },
+            { CotangentOperator.Acronym, CotangentOperator.Details },
+
+            { HyperbolicCosineOperator.Acronym, HyperbolicCosineOperator.Details },
+            { HyperbolicSineOperator.Acronym, HyperbolicSineOperator.Details },
+            { HyperbolicTangentOperator.Acronym, HyperbolicTangentOperator.Details },
+
+            { HyperbolicSecantOperator.Acronym, HyperbolicSecantOperator.Details },
+            { HyperbolicCosecantOperator.Acronym, HyperbolicCosecantOperator.Details },
+            { HyperbolicCotangentOperator.Acronym, HyperbolicCotangentOperator.Details },
+
+            { DegreeOperator.Acronym, DegreeOperator.Details },
+            { RadianOperator.Acronym, RadianOperator.Details },
+
+            { DecimalOperator.Acronym, DecimalOperator.Details },
+            { CeilOperator.Acronym, CeilOperator.Details },
+            { FloorOperator.Acronym, FloorOperator.Details },
+            { RoundOperator.Acronym, RoundOperator.Details },
+
+            { BinomialCoefficientOperator.Acronym, BinomialCoefficientOperator.Details }
+        };
+
         private readonly static char[] s_specialCharacters = new char[]
         {
             '(',
             ')',
             '.',
+            ',',
             '!',
             '^',
             '+',
@@ -67,15 +118,36 @@ namespace MathEvaluatorNetFramework.Expressions
             //"^-",
             "^*",
             "^/",
+            "^^",
+            //"^.",
+            "^,",
+            "^!",
 
             "+^",
             "-^",
             "*^",
             "/^",
 
-            "^^",
-            "^.",
-            "^!",
+            "+!",
+            "-!",
+            "*!",
+            "/!",
+
+            "+,",
+            "-,",
+            "*,",
+            "/,",
+
+            //",+",
+            //",-",
+            ",*",
+            ",/",
+            ",^",
+            ",!",
+            ",,",
+            ",)",
+
+            "(,",
             "..",
             //"!!"
         };
@@ -165,7 +237,7 @@ namespace MathEvaluatorNetFramework.Expressions
 
         private string PrepareExpression(string expression)
         {
-            expression = string.Join("", expression.Trim().ToLower().Replace(",", ".").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+            expression = string.Join("", expression.Trim().ToLower()/*.Replace(",", ".")*/.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 
             if (string.IsNullOrEmpty(expression) || string.IsNullOrWhiteSpace(expression))
             {
@@ -225,6 +297,12 @@ namespace MathEvaluatorNetFramework.Expressions
                 .Replace("+.", "+0.")
                 .Replace("-.", "-0.");
 
+            // remove useless point
+            if (expression.EndsWith("."))
+            {
+                expression = expression.Substring(0, expression.Length - 1);
+            }
+
             foreach (string invalidSequence in s_invalidSequences)
             {
                 if (expression.Contains(invalidSequence))
@@ -241,12 +319,6 @@ namespace MathEvaluatorNetFramework.Expressions
                 }
             }
 
-            // remove useless point
-            if (expression.EndsWith("."))
-            {
-                expression = expression.Substring(0, expression.Length - 1);
-            }
-
             expression = expression
                 .Replace("(+", "(")
                 .Replace("()", "");
@@ -261,6 +333,8 @@ namespace MathEvaluatorNetFramework.Expressions
                     expression = left + right;
                 }
             }
+
+            CheckComaCount(expression);
 
             // add * if required: 2( -> 2*(   |   )2 -> )*2
             // add 0 if required: .2 -> 0.2
@@ -284,6 +358,13 @@ namespace MathEvaluatorNetFramework.Expressions
                 .Replace(")(", ")*(")
                 .Replace("!(", "!*(");
 
+            CheckDotCount(expression);
+
+            return expression;
+        }
+
+        private void CheckDotCount(string expression)
+        {
             bool isReadingANumber = false;
             bool foundDot = false;
             StringBuilder sb = new StringBuilder();
@@ -316,13 +397,139 @@ namespace MathEvaluatorNetFramework.Expressions
                 }
                 else
                 {
-                    foundDot = c == '.';  
+                    foundDot = c == '.';
                     isReadingANumber = foundDot || char.IsDigit(c);
                     sb.Append(c);
                 }
             }
+        }
 
-            return expression;
+        private void CheckComaCount(string expression)
+        {
+            if (!expression.Contains(','))
+            {
+                return;
+            }
+
+            bool isReadingAWord = false;
+            StringBuilder sb = new StringBuilder();
+            char c;
+
+            for (int i = 0; i < expression.Length; i++)
+            {
+                c = expression[i];
+
+                if (char.IsLetter(c))
+                {
+                    if (!isReadingAWord)
+                    {
+                        sb = new StringBuilder();
+                    }
+                    sb.Append(c);
+                    isReadingAWord = true;
+                }
+                else
+                {
+                    if (char.IsDigit(c))
+                    {
+                        if (isReadingAWord)
+                        {
+                            sb.Append(c);
+                            continue;
+                        }
+                    }
+                    else if (c == '_')
+                    {
+                        if (isReadingAWord)
+                        {
+                            sb.Append(c);
+                            continue;
+                        }
+                        else
+                        {
+                            isReadingAWord = true;
+                            sb.Clear();
+                            sb.Append(c);
+                            continue;
+                        }
+                    }
+                    else if (c == '(')
+                    {
+                        if (isReadingAWord)
+                        {
+                            string word = sb.ToString();
+                            sb = new StringBuilder();
+
+                            if (s_functions.Keys.Contains(word))
+                            {
+                                int j = i + 1;
+
+                                int parenthesisCount = 1;
+                                while (j < expression.Length)
+                                {
+                                    if (expression[j] == '(')
+                                    {
+                                        parenthesisCount++;
+                                    }
+                                    else if (expression[j] == ')')
+                                    {
+                                        parenthesisCount--;
+                                        if (parenthesisCount == 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    sb.Append(expression[j]);
+                                    j++;
+                                }
+
+                                string content = sb.ToString();
+                                string contentCopy = content;
+                                sb = new StringBuilder();
+
+                                List<int> indexs = FindSplitIndex(content, ',');
+                                int argCount = indexs.Count + 1;
+
+                                if (argCount < s_functions[word].MinArg)
+                                {
+                                    throw new FormatException("Too low arguments in " + word);
+                                }
+                                else if (argCount > s_functions[word].MaxArg)
+                                {
+                                    throw new FormatException("Too many arguments in " + word);
+                                }
+
+                                string[] contentSplitted = new string[argCount];
+                                while (indexs.Count > 0)
+                                {
+                                    int index = indexs.Last();
+                                    string s = contentCopy.Substring(index + 1, contentCopy.Length - index - 1);
+                                    contentCopy = contentCopy.Substring(0, index);
+                                    contentSplitted[indexs.Count] = s;
+                                    indexs.RemoveAt(indexs.Count - 1);
+
+                                    if (indexs.Count == 0)
+                                    {
+                                        contentSplitted[indexs.Count] = contentCopy;
+                                    }
+                                }
+
+                                foreach (string subContent in contentSplitted)
+                                {
+                                    CheckComaCount(subContent);
+                                }
+
+                                i += content.Length + 2;
+                            }
+                        }
+                    }
+                    else if (c == ',')
+                    {
+                        throw new FormatException("Invalid character: ,");
+                    }
+                    isReadingAWord = false;
+                }
+            }
         }
 
         private string ManagePowerExpression(string expression)
@@ -597,7 +804,7 @@ namespace MathEvaluatorNetFramework.Expressions
         {
             if (double.TryParse(expression.Replace('.', ','), out double d) || double.TryParse(expression, out d))
             {
-                _evaluable = new ValueExpression(d);
+                _evaluable = new ValueOperator(d);
             }
             if (_evaluable == null && expression.Contains('+'))
             {
@@ -661,6 +868,45 @@ namespace MathEvaluatorNetFramework.Expressions
             return CheckOperand(expression, '!', "factorial", (e) => new FactorialOperator(e));
         }
 
+        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable> func)
+        {
+            //int index = FindSplitIndex(expression, c);
+            List<int> validIndexs = FindSplitIndex(expression, c);
+            int index = validIndexs.Count > 0 ? validIndexs.Last() : -1;
+            if (index > 0)
+            {
+                string left = expression.Substring(0, index);
+
+                CheckEmptyExpression(left, operandName, "left");
+
+                Expression expLeft = new Expression(left, true);
+
+                return func(expLeft);
+            }
+            return null;
+        }
+
+        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable, IEvaluable> func)
+        {
+            //int index = FindSplitIndex(expression, c);
+            List<int> validIndexs = FindSplitIndex(expression, c);
+            int index = validIndexs.Count > 0 ? validIndexs.Last() : -1;
+            if (index > 0)
+            {
+                string left = expression.Substring(0, index);
+                string right = expression.Substring(index + 1);
+
+                CheckEmptyExpression(left, operandName, "left");
+                CheckEmptyExpression(right, operandName, "right");
+
+                Expression expLeft = new Expression(left, true);
+                Expression expRight = new Expression(right, true);
+
+                return func(expLeft, expRight);
+            }
+            return null;
+        }
+
         private List<int> FindSplitIndex(string expression, char c)
         {
             int parenthesisCount;
@@ -711,45 +957,6 @@ namespace MathEvaluatorNetFramework.Expressions
             }
         }
 
-        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable> func)
-        {
-            //int index = FindSplitIndex(expression, c);
-            List<int> validIndexs = FindSplitIndex(expression, c);
-            int index = validIndexs.Count > 0 ? validIndexs.Last() : -1;
-            if (index > 0)
-            {
-                string left = expression.Substring(0, index);
-
-                CheckEmptyExpression(left, operandName, "left");
-
-                Expression expLeft = new Expression(left, true);
-
-                return func(expLeft);
-            }
-            return null;
-        }
-
-        private IEvaluable CheckOperand(string expression, char c, string operandName, Func<IEvaluable, IEvaluable, IEvaluable> func)
-        {
-            //int index = FindSplitIndex(expression, c);
-            List<int> validIndexs = FindSplitIndex(expression, c);
-            int index = validIndexs.Count > 0 ? validIndexs.Last() : -1;
-            if (index > 0)
-            {
-                string left = expression.Substring(0, index);
-                string right = expression.Substring(index + 1);
-
-                CheckEmptyExpression(left, operandName, "left");
-                CheckEmptyExpression(right, operandName, "right");
-
-                Expression expLeft = new Expression(left, true);
-                Expression expRight = new Expression(right, true);
-
-                return func(expLeft, expRight);
-            }
-            return null;
-        }
-
         // TODO: liste des mots clés réservés (math func, constantes pi, e, phi, tau)
         public double Evaluate(params Variable[] variables)
         {
@@ -759,6 +966,12 @@ namespace MathEvaluatorNetFramework.Expressions
             }
             // verifier que les variables donnees n'ont pas des noms réservés
             return _evaluable.Evaluate(variables);
+        }
+
+        public bool DependsOfVariables(out string[] variables)
+        {
+            // TODO: DependsOfVariables -> Tous les evaluable doivent avoir cette méthode
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,20 +1,48 @@
-﻿using MathEvaluatorNetFramework.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
     internal class LogarithmOperator : FunctionOperator
     {
+        private readonly static string _fullname = "logarithm";
         private readonly static string _acronym = "log";
+        private readonly static string _description = "Returns the logarithm of the given evaluable with the given base. If no base specified, base 10 is used.";
+        private readonly static string[] _usages = new string[2]
+        {
+            "log(x)",
+            "log(x, b)"
+        };
+        private readonly static uint _minArg = 1;
+        private readonly static uint _maxArg = 2;
+        private readonly static FunctionOperatorDetails _details = new FunctionOperatorDetails(_fullname, _acronym, _description, _minArg, _maxArg, _usages);
+
+        public new static string FullName => _fullname;
         public new static string Acronym => _acronym;
+        public new static string Description => _description;
+        public new static IReadOnlyList<string> Usages => _usages;
+        public new static uint MinArg => _minArg;
+        public new static uint MaxArg => _maxArg;
+        public new static FunctionOperatorDetails Details => _details;
 
-        private readonly double _logBase;
+        private readonly IEvaluable _logBase;
 
-        public LogarithmOperator(IEvaluable evaluable, double logBase = 10.0) : base(evaluable)
+        /// <summary>
+        /// LogarithmOperator constructor that use a logBase of 10.
+        /// </summary>
+        public LogarithmOperator(IEvaluable evaluable) : base(evaluable)
+        {
+            _logBase = new ValueOperator(10.0);
+        }
+
+        /// <summary>
+        /// LogarithmOperator constructor that use a specified logBase (must be 0-positive).
+        /// </summary>
+        public LogarithmOperator(IEvaluable evaluable, IEvaluable logBase) : base(evaluable)
         {
             _logBase = logBase;
         }
@@ -34,18 +62,20 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         {
             double result;
             double value = _left.Evaluate(variables);
-            if (_logBase < 0 || value < 0 || (_logBase == 0.0 && value == 0.0))
+            double logBase = _logBase.Evaluate(variables);
+
+            if (logBase < 0 || value < 0 || (logBase == 0.0 && value == 0.0))
             {
                 if (MathEvaluator.RaiseDomainException)
                 {
-                    throw new DomainException(_acronym + '(' + _logBase + ", " + value + ')');
+                    throw new DomainException(_acronym + '(' + logBase + ", " + value + ')');
                 }
                 else
                 {
                     result = double.NaN;
                 }
             }
-            else if (_logBase == 0.0)
+            else if (logBase == 0.0)
             {
                 result = 1.0;
             }
@@ -53,13 +83,13 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 result = double.NegativeInfinity;
             }
-            else if (_logBase == 10.0)
+            else if (logBase == 10.0)
             {
                 result = Math.Log10(value);
             }
             else
             {
-                result = Math.Log(value, _logBase);
+                result = Math.Log(value, logBase);
             }
             return result;
         }

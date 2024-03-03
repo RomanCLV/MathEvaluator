@@ -9,18 +9,41 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 {
     internal class SqrtOperator : FunctionOperator
     {
+
+        private readonly static string _fullname = "square root";
         private readonly static string _acronym = "sqrt";
+        private readonly static string _description = "Returns the Nth root of the given evaluable. If no root specified, root 2 is used.";
+        private readonly static string[] _usages = new string[2]
+        {
+            "sqrt(x)",
+            "sqrt(x, r)"
+        };
+        private readonly static uint _minArg = 1;
+        private readonly static uint _maxArg = 2;
+        private readonly static FunctionOperatorDetails _details = new FunctionOperatorDetails(_fullname, _acronym, _description, _minArg, _maxArg, _usages);
+
+        public new static string FullName => _fullname;
         public new static string Acronym => _acronym;
+        public new static string Description => _description;
+        public new static IReadOnlyList<string> Usages => _usages;
+        public new static uint MinArg => _minArg;
+        public new static uint MaxArg => _maxArg;
+        public new static FunctionOperatorDetails Details => _details;
 
-        private readonly double _root;
+        private readonly IEvaluable _root;
 
-        public SqrtOperator(IEvaluable evaluable, double root = 2.0) : base(evaluable)
+        public SqrtOperator(IEvaluable evaluable) : base(evaluable)
+        {
+            _root = new ValueOperator(2.0);
+        }
+
+        public SqrtOperator(IEvaluable evaluable, IEvaluable root) : base(evaluable)
         {
             _root = root;
         }
 
         /// <summary>
-        /// Returns the Nth root of the given evaluable.
+        /// Returns the Nth root of the given evaluable. If no root specified, root 2 is used.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
@@ -32,25 +55,26 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         {
             double result;
             double value = _left.Evaluate(variables);
+            double root = _root.Evaluate(variables);
 
-            if (_root == 0.0 || value < 0.0)
+            if (root == 0.0 || value < 0.0)
             {
                 if (MathEvaluator.RaiseDomainException)
                 {
-                    throw new DomainException(_acronym + '(' + _root + ", " + value + ')');
+                    throw new DomainException(_acronym + '(' + root + ", " + value + ')');
                 }
                 else
                 {
                     result = double.NaN;
                 }
             }
-            else if (_root == 2.0)
+            else if (root == 2.0)
             {
                 result = Math.Sqrt(value);
             }
             else
             {
-                result = Math.Pow(value, 1.0 / _root);
+                result = Math.Pow(value, 1.0 / root);
             }
             return result;
         }
