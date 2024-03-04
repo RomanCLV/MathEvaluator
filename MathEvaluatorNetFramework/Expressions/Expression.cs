@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Operators;
@@ -16,7 +17,6 @@ namespace MathEvaluatorNetFramework.Expressions
     public class Expression : IEvaluable
     {
         private IEvaluable _evaluable;
-        private readonly List<Variable> _variables;
 
         private static readonly List<string> s_constants = new List<string>
         {
@@ -155,7 +155,6 @@ namespace MathEvaluatorNetFramework.Expressions
         public Expression()
         {
             _evaluable = null;
-            _variables = new List<Variable>();
         }
 
         /// <summary>
@@ -204,7 +203,6 @@ namespace MathEvaluatorNetFramework.Expressions
         private void InternalSet(string expression, bool isExpressionCleaned)
         {
             _evaluable = null;
-            _variables.Clear();
 
             // first general preparation - optionnal
             if (!isExpressionCleaned)
@@ -360,6 +358,8 @@ namespace MathEvaluatorNetFramework.Expressions
 
             CheckDotCount(expression);
 
+            expression = AddMultiplieBetweenVariables(expression);
+
             return expression;
         }
 
@@ -460,66 +460,28 @@ namespace MathEvaluatorNetFramework.Expressions
                             string word = sb.ToString();
                             sb = new StringBuilder();
 
-                            if (s_functions.Keys.Contains(word))
+                            if (s_functions.ContainsKey(word))
                             {
-                                int j = i + 1;
-
-                                int parenthesisCount = 1;
-                                while (j < expression.Length)
-                                {
-                                    if (expression[j] == '(')
-                                    {
-                                        parenthesisCount++;
-                                    }
-                                    else if (expression[j] == ')')
-                                    {
-                                        parenthesisCount--;
-                                        if (parenthesisCount == 0)
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    sb.Append(expression[j]);
-                                    j++;
-                                }
-
-                                string content = sb.ToString();
-                                string contentCopy = content;
+                                string content = GetParenthesisContent(expression, i + 1);
                                 sb = new StringBuilder();
 
                                 List<int> indexs = FindSplitIndex(content, ',');
-                                int argCount = indexs.Count + 1;
-
-                                if (argCount < s_functions[word].MinArg)
+                                if (indexs.Count > 0)
                                 {
-                                    throw new FormatException("Too low arguments in " + word);
-                                }
-                                else if (argCount > s_functions[word].MaxArg)
-                                {
-                                    throw new FormatException("Too many arguments in " + word);
-                                }
+                                    CheckFunctionArgsCount(word, indexs.Count + 1);
 
-                                string[] contentSplitted = new string[argCount];
-                                while (indexs.Count > 0)
-                                {
-                                    int index = indexs.Last();
-                                    string s = contentCopy.Substring(index + 1, contentCopy.Length - index - 1);
-                                    contentCopy = contentCopy.Substring(0, index);
-                                    contentSplitted[indexs.Count] = s;
-                                    indexs.RemoveAt(indexs.Count - 1);
+                                    string[] contentSplitted = GetParenthesisContentSplitted(content, indexs);
 
-                                    if (indexs.Count == 0)
+                                    foreach (string subContent in contentSplitted)
                                     {
-                                        contentSplitted[indexs.Count] = contentCopy;
+                                        CheckComaCount(subContent);
                                     }
+                                    i += content.Length + 2;
                                 }
-
-                                foreach (string subContent in contentSplitted)
+                                else
                                 {
-                                    CheckComaCount(subContent);
+                                    i += content.Length + 1;
                                 }
-
-                                i += content.Length + 2;
                             }
                         }
                     }
@@ -530,6 +492,167 @@ namespace MathEvaluatorNetFramework.Expressions
                     isReadingAWord = false;
                 }
             }
+        }
+
+        private string GetParenthesisContent(string expression, int startIndex)
+        {
+            StringBuilder sb = new StringBuilder();
+            int j = startIndex;
+            int parenthesisCount = 1;
+            while (j < expression.Length)
+            {
+                if (expression[j] == '(')
+                {
+                    parenthesisCount++;
+                }
+                else if (expression[j] == ')')
+                {
+                    parenthesisCount--;
+                    if (parenthesisCount == 0)
+                    {
+                        break;
+                    }
+                }
+                sb.Append(expression[j]);
+                j++;
+            }
+
+            return sb.ToString();
+        }
+
+        private string[] GetParenthesisContentSplitted(string expression, List<int> indexs = null)
+        {
+            if (indexs == null)
+            {
+                indexs = FindSplitIndex(expression, ',');
+            }
+            int argCount = indexs.Count + 1;
+
+            string[] expressionSplitted = new string[argCount];
+
+            if (indexs.Count == 0)
+            {
+                expressionSplitted[indexs.Count] = expression;
+            }
+            else
+            {
+                while (indexs.Count > 0)
+                {
+                    int index = indexs.Last();
+                    string s = expression.Substring(index + 1, expression.Length - index - 1);
+                    expression = expression.Substring(0, index);
+                    expressionSplitted[indexs.Count] = s;
+                    indexs.RemoveAt(indexs.Count - 1);
+
+                    if (indexs.Count == 0)
+                    {
+                        expressionSplitted[indexs.Count] = expression;
+                    }
+                }
+            }
+
+            return expressionSplitted;
+        }
+
+        private string AddMultiplieBetweenVariables(string expression)
+        {
+            bool isReadingANumber = false;
+            bool isReadingAWord = false;
+            char c;
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < expression.Length; i++)
+            {
+                c = expression[i];
+                if (char.IsDigit(c))
+                {
+                    if (isReadingAWord)
+                    {
+                        sb.Append(c);
+                    }
+                    else
+                    {
+                        if (!isReadingANumber)
+                        {
+                            isReadingANumber = true;
+                        }
+                    }
+                }
+                else if (char.IsLetter(c))
+                {
+                    if (isReadingAWord)
+                    {
+                        sb.Append(c);
+                    }
+                    else
+                    {
+                        if (isReadingANumber)
+                        {
+                            expression = expression.Insert(i, "*");
+                            i++;
+                            isReadingANumber = false;
+                        }
+                        isReadingAWord = true;
+                        sb = new StringBuilder();
+                        sb.Append(c);
+                    }
+                }
+                else
+                {
+                    if (c == '_')
+                    {
+                        if (isReadingANumber)
+                        {
+                            expression = expression.Insert(i, "*");
+                            i++;
+                            isReadingANumber = false;
+                        }
+                        if (!isReadingAWord)
+                        {
+                            isReadingAWord = true;
+                            sb = new StringBuilder();
+                        }
+                        sb.Append(c);
+                    }
+                    else if (c == '(')
+                    {
+                        if (isReadingAWord)
+                        {
+                            string word = sb.ToString();
+                            sb = new StringBuilder();
+
+                            if (s_constants.Contains(word) || !s_functions.ContainsKey(word))
+                            {
+                                expression = expression.Insert(i, "*");
+                                i++;
+                            }
+                        }
+                        isReadingANumber = false;
+                        isReadingAWord = false;
+                    }
+                    else
+                    {
+                        string word = sb.ToString();
+                        sb = new StringBuilder();
+                        if (s_functions.ContainsKey(word))
+                        {
+                            throw new FormatException("Use " + word + " without ()");
+                        }
+                        isReadingAWord = false;
+                        isReadingANumber = false;
+                    }
+                }
+            }
+
+            if (isReadingAWord)
+            {
+                string word = sb.ToString();
+                if (s_functions.ContainsKey(word))
+                {
+                    throw new FormatException("Use " + word + " without ()");
+                }
+            }
+            return expression;
         }
 
         private string ManagePowerExpression(string expression)
@@ -832,6 +955,10 @@ namespace MathEvaluatorNetFramework.Expressions
             }
             if (_evaluable == null)
             {
+                _evaluable = TryFindFunctionOrVariable(expression);
+            }
+            if (_evaluable == null)
+            {
                 throw new NotSupportedException(expression);
             }
         }
@@ -957,7 +1084,177 @@ namespace MathEvaluatorNetFramework.Expressions
             }
         }
 
-        // TODO: liste des mots clés réservés (math func, constantes pi, e, phi, tau)
+        private void CheckFunctionArgsCount(string func, int argsCount)
+        {
+            if (argsCount < s_functions[func].MinArg)
+            {
+                throw new ArgumentException("Too few arguments in " + func + "()");
+            }
+            else if (argsCount > s_functions[func].MaxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + func + "()");
+            }
+        }
+
+        private IEvaluable TryFindFunctionOrVariable(string expression)
+        {
+            IEvaluable evaluable = null;
+            if (s_constants.Contains(expression))
+            {
+                switch (expression)
+                {
+                    case "pi":
+                        evaluable = new ValueOperator(Funcs.PI);
+                        break;
+                    case "tau":
+                        evaluable = new ValueOperator(Funcs.TAU);
+                        break;
+                    case "pau":
+                        evaluable = new ValueOperator(Funcs.PAU);
+                        break;
+                    case "e":
+                        evaluable = new ValueOperator(Funcs.E);
+                        break;
+                    case "phi":
+                        evaluable = new ValueOperator(Funcs.PHI);
+                        break;
+                    default:
+                        throw new NotImplementedException("Constant " + expression + " not implemented");
+                }
+            }
+            else
+            {
+                int indexParenthesis = expression.IndexOf('(');
+                if (indexParenthesis == -1)
+                {
+                    evaluable = new VariableOperator(expression);
+                }
+                else
+                {
+                    string func = expression.Substring(0, indexParenthesis);
+                    if (s_functions.ContainsKey(func))
+                    {
+                        string funcContent = GetParenthesisContent(expression, indexParenthesis + 1);
+                        string[] argsSplitter = GetParenthesisContentSplitted(funcContent);
+
+                        if (func == AbsoluteOperator.Acronym)
+                        {
+                            evaluable = AbsoluteOperator.Create(argsSplitter);
+                        }
+                        else if (func == ExponentialOperator.Acronym)
+                        {
+                            evaluable = ExponentialOperator.Create(argsSplitter);
+                        }
+                        else if (func == LogarithmOperator.Acronym)
+                        {
+                            evaluable = LogarithmOperator.Create(argsSplitter);
+                        }
+                        else if (func == NaperianLogarithmOperator.Acronym)
+                        {
+                            evaluable = NaperianLogarithmOperator.Create(argsSplitter);
+                        }
+                        else if (func == SqrtOperator.Acronym)
+                        {
+                            evaluable = SqrtOperator.Create(argsSplitter);
+                        }
+                        else if (func == CosineOperator.Acronym)
+                        {
+                            evaluable = CosineOperator.Create(argsSplitter);
+                        }
+                        else if (func == SineOperator.Acronym)
+                        {
+                            evaluable = SineOperator.Create(argsSplitter);
+                        }
+                        else if (func == TangentOperator.Acronym)
+                        {
+                            evaluable = TangentOperator.Create(argsSplitter);
+                        }
+                        else if (func == ArccosineOperator.Acronym)
+                        {
+                            evaluable = ArccosineOperator.Create(argsSplitter);
+                        }
+                        else if (func == ArcsineOperator.Acronym)
+                        {
+                            evaluable = ArcsineOperator.Create(argsSplitter);
+                        }
+                        else if (func == ArctangentOperator.Acronym)
+                        {
+                            evaluable = ArctangentOperator.Create(argsSplitter);
+                        }
+                        else if (func == SecantOperator.Acronym)
+                        {
+                            evaluable = SecantOperator.Create(argsSplitter);
+                        }
+                        else if (func == CosecantOperator.Acronym)
+                        {
+                            evaluable = CosecantOperator.Create(argsSplitter);
+                        }
+                        else if (func == CotangentOperator.Acronym)
+                        {
+                            evaluable = CotangentOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicCosineOperator.Acronym)
+                        {
+                            evaluable = HyperbolicCosineOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicSineOperator.Acronym)
+                        {
+                            evaluable = HyperbolicSineOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicTangentOperator.Acronym)
+                        {
+                            evaluable = HyperbolicTangentOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicSecantOperator.Acronym)
+                        {
+                            evaluable = HyperbolicSecantOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicCosecantOperator.Acronym)
+                        {
+                            evaluable = HyperbolicCosecantOperator.Create(argsSplitter);
+                        }
+                        else if (func == HyperbolicCotangentOperator.Acronym)
+                        {
+                            evaluable = HyperbolicCotangentOperator.Create(argsSplitter);
+                        }
+                        else if (func == DegreeOperator.Acronym)
+                        {
+                            evaluable = DegreeOperator.Create(argsSplitter);
+                        }
+                        else if (func == RadianOperator.Acronym)
+                        {
+                            evaluable = RadianOperator.Create(argsSplitter);
+                        }
+                        else if (func == DecimalOperator.Acronym)
+                        {
+                            evaluable = DecimalOperator.Create(argsSplitter);
+                        }
+                        else if (func == CeilOperator.Acronym)
+                        {
+                            evaluable = CeilOperator.Create(argsSplitter);
+                        }
+                        else if (func == FloorOperator.Acronym)
+                        {
+                            evaluable = FloorOperator.Create(argsSplitter);
+                        }
+                        else if (func == RoundOperator.Acronym)
+                        {
+                            evaluable = RoundOperator.Create(argsSplitter);
+                        }
+                        else if (func == BinomialCoefficientOperator.Acronym)
+                        {
+                            evaluable = BinomialCoefficientOperator.Create(argsSplitter);
+                        }
+                        else
+                        {
+                            throw new NotImplementedException("Function " + expression + " not implemented");
+                        }
+                    }
+                }
+            }
+            return evaluable;
+        }
+
         public double Evaluate(params Variable[] variables)
         {
             if (_evaluable == null)

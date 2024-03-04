@@ -16,6 +16,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public static uint MaxArg { get; } = 0;
         public static FunctionOperatorDetails Details { get; } = null;
 
+        public static FunctionOperator Create(string[] args)
+        {
+            throw new InvalidOperationException("Cannot call this method.");
+        }
+
         public FunctionOperator(IEvaluable evaluable) : base(evaluable)
         {
         }

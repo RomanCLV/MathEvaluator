@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -29,6 +30,19 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
         public SineOperator(IEvaluable evaluable) : base(evaluable)
         {
+        }
+
+        public new static SineOperator Create(string[] args)
+        {
+            if (args.Length < _minArg)
+            {
+                throw new ArgumentException("Too few arguments in " + _acronym + "()");
+            }
+            else if (args.Length > _maxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + _acronym + "()");
+            }
+            return new SineOperator(new Expression(args[0]));
         }
 
         /// <summary>

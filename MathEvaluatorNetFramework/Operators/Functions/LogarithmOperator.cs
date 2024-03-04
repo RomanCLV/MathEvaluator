@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -45,6 +46,22 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public LogarithmOperator(IEvaluable evaluable, IEvaluable logBase) : base(evaluable)
         {
             _logBase = logBase;
+        }
+
+        public new static LogarithmOperator Create(string[] args)
+        {
+            if (args.Length < _minArg)
+            {
+                throw new ArgumentException("Too few arguments in " + _acronym + "()");
+            }
+            else if (args.Length > _maxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + _acronym + "()");
+            }
+
+            return args.Length == 1 ?
+                new LogarithmOperator(new Expression(args[0])) :
+                new LogarithmOperator(new Expression(args[0]), new Expression(args[1]));
         }
 
         /// <summary>

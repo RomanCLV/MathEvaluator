@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -29,6 +30,19 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
         public FloorOperator(IEvaluable evaluable) : base(evaluable)
         {
+        }
+
+        public new static FloorOperator Create(string[] args)
+        {
+            if (args.Length < _minArg)
+            {
+                throw new ArgumentException("Too few arguments in " + _acronym + "()");
+            }
+            else if (args.Length > _maxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + _acronym + "()");
+            }
+            return new FloorOperator(new Expression(args[0]));
         }
 
         /// <summary>

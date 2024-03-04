@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -30,6 +31,19 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
         public ArccosineOperator(IEvaluable evaluable) : base(evaluable)
         {
+        }
+
+        public new static ArccosineOperator Create(string[] args)
+        {
+            if (args.Length < _minArg)
+            {
+                throw new ArgumentException("Too few arguments in " + _acronym + "()");
+            }
+            else if (args.Length > _maxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + _acronym + "()");
+            }
+            return new ArccosineOperator(new Expression(args[0]));
         }
 
         /// <summary>

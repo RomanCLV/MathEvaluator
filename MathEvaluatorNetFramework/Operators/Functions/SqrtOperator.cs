@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -40,6 +41,22 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public SqrtOperator(IEvaluable evaluable, IEvaluable root) : base(evaluable)
         {
             _root = root;
+        }
+
+        public new static SqrtOperator Create(string[] args)
+        {
+            if (args.Length < _minArg)
+            {
+                throw new ArgumentException("Too few arguments in " + _acronym + "()");
+            }
+            else if (args.Length > _maxArg)
+            {
+                throw new ArgumentException("Too many arguments in " + _acronym + "()");
+            }
+
+            return args.Length == 1 ?
+                new SqrtOperator(new Expression(args[0])) :
+                new SqrtOperator(new Expression(args[0]), new Expression(args[1]));
         }
 
         /// <summary>
