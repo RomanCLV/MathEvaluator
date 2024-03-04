@@ -34,5 +34,11 @@ namespace MathEvaluatorNetFramework.Operators
             }
             return (double)variable.Value;
         }
+
+        public bool DependsOnVariables(out List<string> variables)
+        {
+            variables = new List<string>(1) { _variableName };
+            return true;
+        }
     }
 }

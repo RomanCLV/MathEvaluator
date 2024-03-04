@@ -8,7 +8,7 @@ using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class BinomialCoefficientOperator : FunctionOperator
+    internal class BinomialCoefficientOperator : FunctionNOperator
     {
         private readonly static string _fullname = "binomial coefficient";
         private readonly static string _acronym = "binc";
@@ -30,10 +30,16 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static FunctionOperatorDetails Details => _details;
 
         private readonly IEvaluable _n;
+        private readonly IEvaluable[] _dependingEvaluable;
 
         public BinomialCoefficientOperator(IEvaluable k, IEvaluable n) : base(k)
         {
             _n = n;
+            _dependingEvaluable = new IEvaluable[2]
+            {
+                _left,
+                _n
+            };
         }
 
         public new static BinomialCoefficientOperator Create(string[] args)
@@ -82,6 +88,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 result = Funcs.BinomialCoefficient(ki, ni);
             }
             return result;
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
     }
 }

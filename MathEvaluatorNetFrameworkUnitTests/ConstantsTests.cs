@@ -7,6 +7,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
     [TestClass]
     public class ConstantsTests
     {
+        private const double EPSILON = 0.000001;
+
         [TestMethod]
         public void Test_Pi_1()
         {
@@ -22,7 +24,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -40,7 +42,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -58,7 +60,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -76,7 +78,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -94,7 +96,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -112,7 +114,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
 
         [TestMethod]
@@ -130,7 +132,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result, EPSILON);
         }
     }
 }

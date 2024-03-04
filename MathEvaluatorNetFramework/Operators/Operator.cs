@@ -24,5 +24,10 @@ namespace MathEvaluatorNetFramework.Operators
         /// <exception cref="DomainException"></exception>
         /// <exception cref="DivideByZeroException"></exception>
         public abstract double Evaluate(params Variable[] variables);
+
+        public virtual bool DependsOnVariables(out List<string> variables)
+        {
+            return _left.DependsOnVariables(out variables);
+        }
     }
 }

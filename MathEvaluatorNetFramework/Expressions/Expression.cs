@@ -207,7 +207,7 @@ namespace MathEvaluatorNetFramework.Expressions
             // first general preparation - optionnal
             if (!isExpressionCleaned)
             {
-                Console.WriteLine("Given: " + expression);
+                //Console.WriteLine("Given: " + expression);
                 expression = PrepareExpression(expression);
             }
 
@@ -229,7 +229,7 @@ namespace MathEvaluatorNetFramework.Expressions
             // last general preparation to be sure...
             expression = PrepareExpression(expression);
 
-            Console.WriteLine("Expression: " + expression);
+            //Console.WriteLine("Expression: " + expression);
             SetCleanedExpression(expression);
         }
 
@@ -772,7 +772,7 @@ namespace MathEvaluatorNetFramework.Expressions
                         {
                             parenthesisCount--;
                         }
-                        else if (parenthesisCount == -1 && !char.IsDigit(expression[j]) && expression[j] != '.')
+                        else if (parenthesisCount == -1 && !char.IsDigit(expression[j]) && !char.IsLetter(expression[j]) && expression[j] != '.' && expression[j] != '_')
                         {
                             break;
                         }
@@ -1259,16 +1259,19 @@ namespace MathEvaluatorNetFramework.Expressions
         {
             if (_evaluable == null)
             {
-                throw new InvalidOperationException("Current evaluation not set.");
+                throw new InvalidOperationException("Expression not set.");
             }
             // verifier que les variables donnees n'ont pas des noms réservés
             return _evaluable.Evaluate(variables);
         }
 
-        public bool DependsOfVariables(out string[] variables)
+        public bool DependsOnVariables(out List<string> variables)
         {
-            // TODO: DependsOfVariables -> Tous les evaluable doivent avoir cette méthode
-            throw new NotImplementedException();
+            if (_evaluable == null)
+            {
+                throw new InvalidOperationException("Expression not set.");
+            }
+            return _evaluable.DependsOnVariables(out variables);
         }
     }
 }

@@ -9,5 +9,7 @@ namespace MathEvaluatorNetFramework
     internal interface IEvaluable
     {
         double Evaluate(params Variable[] variables);
+
+        bool DependsOnVariables(out List<string> variables);
     }
 }

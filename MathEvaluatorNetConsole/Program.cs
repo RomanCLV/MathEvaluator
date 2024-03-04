@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework;
+using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFrameworkConsole
 {
@@ -69,38 +70,98 @@ namespace MathEvaluatorNetFrameworkConsole
 
         private static void TestMathInterpreter()
         {
+            Expression expression = null;
+
             Console.WriteLine("--- Math evalution ---\n");
             Console.Write("Expression: ");
-            string expression = Console.ReadLine();
+            string input = Console.ReadLine();
             Console.WriteLine();
-            double result;
+
             try
             {
-                result = MathEvaluator.Evaluate(expression);
-                Console.Write($"Result: ");
-
-                if (double.IsPositiveInfinity(result))
-                {
-                    Console.WriteLine("+infinity");
-                }
-                else if (double.IsNegativeInfinity(result))
-                {
-                    Console.WriteLine("-infinity");
-                }
-                else if (double.IsNaN(result))
-                {
-                    Console.WriteLine("NaN");
-                }
-                else
-                {
-                    Console.WriteLine(result);
-                }
+                expression = MathEvaluator.Expression(input);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
             }
+
+            if (expression != null)
+            {
+                Variable[] vars = new Variable[0];
+
+                if (expression.DependsOnVariables(out List<string> variables))
+                {
+                    vars = SetVariables(variables);
+                }
+
+                try
+                {
+                    double result = expression.Evaluate(vars);
+                    DisplayTestResult(result);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
+                }
+            }
+
             Console.ReadKey(true);
+        }
+
+        private static Variable[] SetVariables(List<string> variables)
+        {
+            Console.WriteLine("The expression depends on: " + string.Join(", ", variables) + "\nPlease set " + (variables.Count == 1 ? "its" : "their") + " value:");
+
+            Variable[] vars = new Variable[variables.Count];
+            for (int i = 0; i < variables.Count; i++)
+            {
+                Console.WriteLine();
+                double value = InputNumber(variables[i] + ": ");
+                vars[i] = new Variable(variables[i], value);
+            }
+
+            return vars;
+        }
+
+        private static double InputNumber(string message)
+        {
+            double d;
+            do
+            {
+                Console.Write(message);
+                string input = Console.ReadLine();
+
+                if (double.TryParse(input, out d))
+                {
+                    break;
+                }
+                Console.WriteLine("Wrong entry\n");
+            } while (true);
+
+            return d;
+        }
+
+        private static void DisplayTestResult(double result)
+        {
+            Console.Write($"\nResult: ");
+
+            if (double.IsPositiveInfinity(result))
+            {
+                Console.WriteLine("+infinity");
+            }
+            else if (double.IsNegativeInfinity(result))
+            {
+                Console.WriteLine("-infinity");
+            }
+            else if (double.IsNaN(result))
+            {
+                Console.WriteLine("NaN");
+            }
+            else
+            {
+                Console.WriteLine(result);
+            }
         }
 
         private static void DisplaySettingsMenu()

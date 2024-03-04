@@ -14,5 +14,26 @@ namespace MathEvaluatorNetFramework.Operators
         {
             _right = right;
         }
+
+        public override bool DependsOnVariables(out List<string> variables)
+        {
+            bool leftResult = _left.DependsOnVariables(out List<string> leftVars);
+            bool rightResult = _right.DependsOnVariables(out List<string> rightVars);
+            bool result = leftResult || rightResult;
+
+            variables = new List<string>(leftVars);
+            if (result)
+            {
+                foreach (string rightVar in rightVars)
+                {
+                    if (!variables.Contains(rightVar))
+                    {
+                        variables.Add(rightVar);
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

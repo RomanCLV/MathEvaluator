@@ -8,7 +8,7 @@ using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class LogarithmOperator : FunctionOperator
+    internal class LogarithmOperator : FunctionNOperator
     {
         private readonly static string _fullname = "logarithm";
         private readonly static string _acronym = "log";
@@ -31,13 +31,13 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static FunctionOperatorDetails Details => _details;
 
         private readonly IEvaluable _logBase;
+        private readonly IEvaluable[] _dependingEvaluable;
 
         /// <summary>
         /// LogarithmOperator constructor that use a logBase of 10.
         /// </summary>
-        public LogarithmOperator(IEvaluable evaluable) : base(evaluable)
+        public LogarithmOperator(IEvaluable evaluable) : this(evaluable, new ValueOperator(10.0))
         {
-            _logBase = new ValueOperator(10.0);
         }
 
         /// <summary>
@@ -46,6 +46,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public LogarithmOperator(IEvaluable evaluable, IEvaluable logBase) : base(evaluable)
         {
             _logBase = logBase;
+            _dependingEvaluable = new IEvaluable[2]
+            {
+                _left,
+                _logBase
+            };
         }
 
         public new static LogarithmOperator Create(string[] args)
@@ -109,6 +114,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 result = Math.Log(value, logBase);
             }
             return result;
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
     }
 }

@@ -20,9 +20,10 @@ namespace MathEvaluatorNetFramework.Operators
             return _value;
         }
 
-        public double Evaluate()
+        public bool DependsOnVariables(out List<string> variables)
         {
-            return _value;
+            variables = new List<string>(0);
+            return false;
         }
     }
 }

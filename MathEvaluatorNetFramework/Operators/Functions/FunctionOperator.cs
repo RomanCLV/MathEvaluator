@@ -25,4 +25,39 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         {
         }
     }
+
+    internal abstract class FunctionNOperator : FunctionOperator
+    {
+        public FunctionNOperator(IEvaluable evaluable) : base(evaluable)
+        {
+        }
+
+        public override bool DependsOnVariables(out List<string> variables)
+        {
+            IEvaluable[] evaluables = GetDependingEvaluables();
+            bool result = false;
+            bool subResult;
+            variables = new List<string>();
+
+            foreach (IEvaluable evaluable in evaluables)
+            {
+                subResult = evaluable.DependsOnVariables(out List<string> subVariables);
+                if (subResult)
+                {
+                    foreach (string subVar in subVariables)
+                    {
+                        if (!variables.Contains(subVar))
+                        {
+                            variables.Add(subVar);
+                        }
+                    }
+                }
+                result |= subResult;
+            }
+
+            return result;
+        }
+
+        protected abstract IEvaluable[] GetDependingEvaluables();
+    }
 }

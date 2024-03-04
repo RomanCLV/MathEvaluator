@@ -32,15 +32,20 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static FunctionOperatorDetails Details => _details;
 
         private readonly IEvaluable _root;
+        private readonly IEvaluable[] _dependingEvaluable;
 
-        public SqrtOperator(IEvaluable evaluable) : base(evaluable)
+        public SqrtOperator(IEvaluable evaluable) : this(evaluable, new ValueOperator(2.0))
         {
-            _root = new ValueOperator(2.0);
         }
 
         public SqrtOperator(IEvaluable evaluable, IEvaluable root) : base(evaluable)
         {
             _root = root;
+            _dependingEvaluable = new IEvaluable[2]
+            {
+                _left,
+                _root
+            };
         }
 
         public new static SqrtOperator Create(string[] args)
