@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class RoundOperator : FunctionOperator
+    internal class RoundOperator : FunctionNOperator
     {
         private readonly static string _fullname = "round";
         private readonly static string _acronym = "round";
@@ -31,13 +30,13 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public new static FunctionOperatorDetails Details => _details;
 
         private readonly IEvaluable _precision;
+        private readonly IEvaluable[] _dependingEvaluable;
 
         /// <summary>
         /// <see cref="RoundOperator"/> constructor that use a 0-digit precision.
         /// </summary>
-        public RoundOperator(IEvaluable evaluable) : base(evaluable)
+        public RoundOperator(IEvaluable evaluable) : this(evaluable, new ValueOperator(0.0))
         {
-            _precision = new ValueOperator(0.0);
         }
 
         /// <summary>
@@ -46,6 +45,16 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public RoundOperator(IEvaluable evaluable, IEvaluable precision) : base(evaluable)
         {
             _precision = precision;
+            _dependingEvaluable = new IEvaluable[2]
+            {
+                _left,
+                _precision
+            };
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
 
         public new static RoundOperator Create(string[] args)
@@ -96,6 +105,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 result = iPrecition == 0 ? Math.Round(value) : Math.Round(value, iPrecition);
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return _acronym + '(' + string.Join<IEvaluable>(", ", _dependingEvaluable) + ')'; ;
         }
     }
 }

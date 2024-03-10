@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class SqrtOperator : FunctionOperator
+    internal class SqrtOperator : FunctionNOperator
     {
 
         private readonly static string _fullname = "square root";
@@ -46,6 +45,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 _left,
                 _root
             };
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
 
         public new static SqrtOperator Create(string[] args)
@@ -99,6 +103,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 result = Math.Pow(value, 1.0 / root);
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return _acronym + '(' + string.Join<IEvaluable>(", ", _dependingEvaluable) + ')'; ;
         }
     }
 }

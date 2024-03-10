@@ -9,6 +9,10 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class PowerOperator : Operator2
     {
+        private readonly static string _symbol = "^";
+
+        protected override string Symbol => _symbol;
+
         public PowerOperator(IEvaluable baseEvaluable, IEvaluable powerEvaluable) : base(baseEvaluable, powerEvaluable)
         {
         }

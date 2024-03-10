@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\DomainException.cs" />
     <Compile Include="Exceptions\NotDefinedVariableException.cs" />
-    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Expression.cs" />
     <Compile Include="Funcs.cs" />
     <Compile Include="Operators\Functions\AbsoluteOperator.cs" />
     <Compile Include="Operators\Functions\ArccosineOperator.cs" />

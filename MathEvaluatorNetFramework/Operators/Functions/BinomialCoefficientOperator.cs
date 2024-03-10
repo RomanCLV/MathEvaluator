@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -17,8 +16,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         {
             "binc(k, n)"
         };
-        private readonly static uint _minArg = 1;
-        private readonly static uint _maxArg = 1;
+        private readonly static uint _minArg = 2;
+        private readonly static uint _maxArg = 2;
         private readonly static FunctionOperatorDetails _details = new FunctionOperatorDetails(_fullname, _acronym, _description, _minArg, _maxArg, _usages);
 
         public new static string FullName => _fullname;
@@ -40,6 +39,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 _left,
                 _n
             };
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
 
         public new static BinomialCoefficientOperator Create(string[] args)
@@ -90,9 +94,9 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             return result;
         }
 
-        protected override IEvaluable[] GetDependingEvaluables()
+        public override string ToString()
         {
-            return _dependingEvaluable;
+            return _acronym + '(' + string.Join<IEvaluable>(", ", _dependingEvaluable) + ')'; ;
         }
     }
 }

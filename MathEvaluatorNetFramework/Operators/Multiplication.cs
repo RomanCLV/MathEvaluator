@@ -8,6 +8,10 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class Multiplication : Operator2
     {
+        private readonly static string _symbol = "*";
+
+        protected override string Symbol => _symbol;
+
         public Multiplication(IEvaluable left, IEvaluable right) : base(left, right)
         {
         }

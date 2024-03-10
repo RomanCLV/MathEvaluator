@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -51,6 +50,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 _left,
                 _logBase
             };
+        }
+
+        protected override IEvaluable[] GetDependingEvaluables()
+        {
+            return _dependingEvaluable;
         }
 
         public new static LogarithmOperator Create(string[] args)
@@ -116,9 +120,9 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             return result;
         }
 
-        protected override IEvaluable[] GetDependingEvaluables()
+        public override string ToString()
         {
-            return _dependingEvaluable;
+            return _acronym + '(' + string.Join<IEvaluable>(", ", _dependingEvaluable) + ')'; ;
         }
     }
 }

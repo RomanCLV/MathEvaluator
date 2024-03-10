@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Exceptions;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -75,6 +74,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 result = Funcs.Coth(value);
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return _acronym + '(' + _left.ToString() + ')';
         }
     }
 }

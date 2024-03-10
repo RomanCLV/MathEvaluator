@@ -25,5 +25,10 @@ namespace MathEvaluatorNetFramework.Operators
             variables = new List<string>(0);
             return false;
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 }

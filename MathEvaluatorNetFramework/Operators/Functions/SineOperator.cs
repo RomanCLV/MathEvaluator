@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -54,6 +53,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         {
             double angle = _left.Evaluate(variables);
             return Math.Sin(MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+        }
+
+        public override string ToString()
+        {
+            return _acronym + '(' + _left.ToString() + ')';
         }
     }
 }

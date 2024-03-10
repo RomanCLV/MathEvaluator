@@ -40,5 +40,10 @@ namespace MathEvaluatorNetFramework.Operators
             variables = new List<string>(1) { _variableName };
             return true;
         }
+
+        public override string ToString()
+        {
+            return _variableName;
+        }
     }
 }

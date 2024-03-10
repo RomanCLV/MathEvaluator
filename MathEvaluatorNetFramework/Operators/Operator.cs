@@ -29,5 +29,17 @@ namespace MathEvaluatorNetFramework.Operators
         {
             return _left.DependsOnVariables(out variables);
         }
+
+        protected string EvaluableToString(IEvaluable evaluable)
+        {
+            return (evaluable is Expression || evaluable is ValueOperator || evaluable is Variable) ?
+                evaluable.ToString() :
+                '(' + evaluable.ToString() + ')';
+        }
+
+        public override string ToString()
+        {
+            return _left.ToString();
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators
 {
@@ -21,6 +20,11 @@ namespace MathEvaluatorNetFramework.Operators
         public override double Evaluate(params Variable[] variables)
         {
             return -_left.Evaluate();
+        }
+
+        public override string ToString()
+        {
+            return '-' + EvaluableToString(_left);
         }
     }
 }

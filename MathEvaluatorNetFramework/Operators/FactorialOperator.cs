@@ -1,9 +1,9 @@
-﻿using MathEvaluatorNetFramework.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators
 {
@@ -72,6 +72,11 @@ namespace MathEvaluatorNetFramework.Operators
             }
 
             return result;
+        }
+
+        public override string ToString()
+        {
+            return EvaluableToString(_left) + '!';
         }
     }
 }

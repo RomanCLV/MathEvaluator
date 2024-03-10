@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -53,6 +52,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public override double Evaluate(params Variable[] variables)
         {
             return Funcs.Sinh(_left.Evaluate(variables));
+        }
+
+        public override string ToString()
+        {
+            return _acronym + '(' + _left.ToString() + ')';
         }
     }
 }

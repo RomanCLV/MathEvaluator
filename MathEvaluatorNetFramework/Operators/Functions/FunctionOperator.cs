@@ -24,6 +24,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public FunctionOperator(IEvaluable evaluable) : base(evaluable)
         {
         }
+
+        public override abstract string ToString();
     }
 
     internal abstract class FunctionNOperator : FunctionOperator

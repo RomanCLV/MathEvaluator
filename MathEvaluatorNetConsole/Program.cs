@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathEvaluatorNetFramework;
-using MathEvaluatorNetFramework.Expressions;
 
 namespace MathEvaluatorNetFrameworkConsole
 {
@@ -98,7 +97,7 @@ namespace MathEvaluatorNetFrameworkConsole
                 try
                 {
                     double result = expression.Evaluate(vars);
-                    DisplayTestResult(result);
+                    DisplayTestResult(expression, result);
                 }
                 catch (Exception ex)
                 {
@@ -142,9 +141,10 @@ namespace MathEvaluatorNetFrameworkConsole
             return d;
         }
 
-        private static void DisplayTestResult(double result)
+        private static void DisplayTestResult(Expression expression, double result)
         {
-            Console.Write($"\nResult: ");
+            string exp = expression.ToString();
+            Console.Write($"\n{exp} = ");
 
             if (double.IsPositiveInfinity(result))
             {

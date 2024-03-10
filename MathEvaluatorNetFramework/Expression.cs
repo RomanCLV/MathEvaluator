@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using MathEvaluatorNetFramework.Operators;
 using MathEvaluatorNetFramework.Operators.Functions;
 
-namespace MathEvaluatorNetFramework.Expressions
+namespace MathEvaluatorNetFramework
 {
     public class Expression : IEvaluable
     {
@@ -1261,7 +1261,6 @@ namespace MathEvaluatorNetFramework.Expressions
             {
                 throw new InvalidOperationException("Expression not set.");
             }
-            // verifier que les variables donnees n'ont pas des noms réservés
             return _evaluable.Evaluate(variables);
         }
 
@@ -1272,6 +1271,13 @@ namespace MathEvaluatorNetFramework.Expressions
                 throw new InvalidOperationException("Expression not set.");
             }
             return _evaluable.DependsOnVariables(out variables);
+        }
+
+        public override string ToString()
+        {
+            return (_evaluable is ValueOperator || _evaluable is Variable) ?
+                _evaluable.ToString() :
+                '(' + _evaluable.ToString() + ')';
         }
     }
 }
