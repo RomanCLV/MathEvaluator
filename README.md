@@ -129,3 +129,63 @@ The higher rank of factorial you can ask is `170`. If you ask higer, it will ret
 | (-1)! | DomainException |
 | (-1)! | NaN | `RaiseDomainException` = `false` |
 | 3!! | 720 | 3!! -> (3!)! |
+
+## Functions
+
+You can find bellow all the implemented functions:
+
+General functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| abs(x) | Absolute | abs(expression) |
+| exp(x) | Exponential | exp(expression) |
+| ln(x) | Natural logarithm: The logarithm whose base is the Euler number e. | ln(expression) |
+| log(x) | Logarithm of base 10 | log(expression) |
+| log(x, base) | Logarithm of a specified base | log(expression, expressionBase) |
+| sqrt(x) | Square Root | sqrt(expression) |
+| sqrt(x, root) | Nth Root | sqrt(expression, expressionRoot) |
+
+Trigonometric functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| cos(x) | Cosine | cos(expression) |
+| sin(x) | Sine | sin(expression) |
+| tan(x) | Tangent | tan(expression) |
+| acos(x) | Arccosine | acos(expression) |
+| asin(x) | Arcsine | asin(expression) |
+| atan(x) | Arctangent | atan(expression) |
+| csc(x) | Cosecant | csc(expression) |
+| sec(x) | Secant | sec(expression) |
+| cot(x) | Cotangent | cot(expression) |
+| cosh(x) | Hyperbolic cosine | cosh(expression) |
+| sinh(x) | Hyperbolic sine | sinh(expression) |
+| tanh(x) | Hyperbolic tangent | tanh(expression) |
+| csch(x) | Hyperbolic cosecant | csch(expression) |
+| sech(x) | Hyperbolic secant | sech(expression) |
+| coth(x) | Hyperbolic cotangent | coth(expression) |
+
+Angle conversion functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| rad(x) | Radian | rad(expression) |
+| deg(x) | Degree | deg(expression) |
+
+Decimal part functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| dec(x) | Decimal part of a number | dec(expression) |
+| sdec(x) | Signed decimal part of a number | sdec(expression) |
+| ceil(x) | Ceil: Get the lowest nearest integer. Example: Numbers from 6.0 to 6.999... give 6. | ceil(expression) |
+| floor(x) | Floor: Get the greatest nearest integer. Example: Numbers from 6.000...1 to 7 give 7. | floor(expression) |
+| round(x) | Round: Get the nearest integer. Example: Numbers from 4.5 to 5.4999... give 5 | round(expression) |
+| round(x, precision) | Round a number with a specified precision | round(expression, expressionPrecision) |
+
+Statitics functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| binc(k, n) | Binomial coefficient "n choose k" | binc(expK, expN) |
