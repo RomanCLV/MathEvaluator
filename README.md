@@ -190,3 +190,15 @@ Statitics functions:
 | Shortname | Name & Description | Usage |
 | --------- | ------------------ | ----- |
 | binc(k, n) | Binomial coefficient "n choose k" | binc(expK, expN) |
+
+## Constants
+
+You can find bellow all implemented constants:
+
+| Shortname | Name & Value |
+| --------- | ------------------ |
+| pi | PI constant : 3.1415926535897931 |
+| tau | Tau : 2 * PI |
+| pau | Pau : 1.5 * PI |
+| e | Euler constant : 2.7182818284590451 |
+| phi | The golden ration : 1.6180339887498949 |
