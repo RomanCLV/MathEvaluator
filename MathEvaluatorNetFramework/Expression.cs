@@ -35,6 +35,7 @@ namespace MathEvaluatorNetFramework
             { LogarithmOperator.Acronym, LogarithmOperator.Details },
             { NaperianLogarithmOperator.Acronym, NaperianLogarithmOperator.Details },
             { SqrtOperator.Acronym, SqrtOperator.Details },
+            { GammaOperator.Acronym, GammaOperator.Details },
 
             { CosineOperator.Acronym, CosineOperator.Details },
             { SineOperator.Acronym, SineOperator.Details },
@@ -60,6 +61,7 @@ namespace MathEvaluatorNetFramework
             { RadianOperator.Acronym, RadianOperator.Details },
 
             { DecimalOperator.Acronym, DecimalOperator.Details },
+            { SignedDecimalOperator.Acronym, SignedDecimalOperator.Details },
             { CeilOperator.Acronym, CeilOperator.Details },
             { FloorOperator.Acronym, FloorOperator.Details },
             { RoundOperator.Acronym, RoundOperator.Details },

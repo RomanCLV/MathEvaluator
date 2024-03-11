@@ -145,6 +145,7 @@ General functions:
 | log(x, base) | Logarithm of a specified base | log(expression, expressionBase) |
 | sqrt(x) | Square Root | sqrt(expression) |
 | sqrt(x, root) | Nth Root | sqrt(expression, expressionRoot) |
+| gamma(x) | Gamma: Extension of the factorial function to complex numbers. | gamma(expression) |
 
 Trigonometric functions:
 
