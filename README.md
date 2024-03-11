@@ -191,6 +191,7 @@ Statitics functions:
 | --------- | ------------------ | ----- |
 | binc(k, n) | Binomial coefficient "n choose k" | binc(expK, expN) |
 
+
 ## Constants
 
 You can find bellow all implemented constants:
@@ -202,3 +203,14 @@ You can find bellow all implemented constants:
 | pau | Pau : 1.5 * PI |
 | e | Euler constant : 2.7182818284590451 |
 | phi | The golden ration : 1.6180339887498949 |
+
+
+## Variables
+
+Variables can be used in expression.
+
+A variable name can not start with a number. Examples of valid name: x, _x, x2, alpha_2
+
+If you use a number before, it will be used a factor: `cos(2x)` -> `cos(2*x)`.
+
+To evaluate an expression that depends on variables, we must give the used variables else a `NotDefinedVariableException` will be throw.
