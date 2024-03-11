@@ -79,6 +79,7 @@
     <Compile Include="Operators\Functions\FloorOperator.cs" />
     <Compile Include="Operators\Functions\FunctionOperator.cs" />
     <Compile Include="Operators\Functions\FunctionOperatorDetails.cs" />
+    <Compile Include="Operators\Functions\GammaOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicCosecantOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicCosineOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicCotangentOperator.cs" />
