@@ -438,7 +438,65 @@ namespace MathEvaluatorNetFrameworkUnitTests
             {
                 Assert.Fail(ex.GetType().Name + ": " + ex.Message);
             }
-            Assert.AreEqual(expected, result, 0.000001);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Factorial_25()
+        {
+            string expression = "((3!+2)/2)!";
+            double expected = 24;
+            double result = 0.0;
+
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Factorial_26()
+        {
+            string expression = "(1+((3!+2)/2))!";
+            double expected = 120;
+            double result = 0.0;
+
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+
+        [TestMethod]
+        public void Test_Factorial_27()
+        {
+            string expression = "(1+((3!+2)/2))!^(2cos(3(5!)))";
+            double expected = 14400;
+            double result = 0.0;
+
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
         }
     }
 }

@@ -778,7 +778,7 @@ namespace MathEvaluatorNetFramework
                         }
                         j--;
                     }
-                    if (parenthesisCount == 0)
+                    if (parenthesisCount >= 0)
                     {
                         expression = '(' + expression;
                         i++;
@@ -1273,11 +1273,19 @@ namespace MathEvaluatorNetFramework
             return _evaluable.DependsOnVariables(out variables);
         }
 
+        internal bool Is(Type t)
+        {
+            return _evaluable.GetType() == t;
+        }
+
+        internal bool Is(params Type[] types)
+        {
+            return types.Any(t => Is(t));
+        }
+
         public override string ToString()
         {
-            return (_evaluable is ValueOperator || _evaluable is Variable) ?
-                _evaluable.ToString() :
-                '(' + _evaluable.ToString() + ')';
+            return _evaluable.ToString();
         }
     }
 }

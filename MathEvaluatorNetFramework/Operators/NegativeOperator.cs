@@ -24,7 +24,17 @@ namespace MathEvaluatorNetFramework.Operators
 
         public override string ToString()
         {
-            return '-' + EvaluableToString(_left);
+            string result = "-";
+            if (_left is Multiplication || _left is Division || _left is Addition || _left is Substraction || _left is NegativeOperator ||
+                (_left is Expression e && e.Is(typeof(Multiplication), typeof(Division), typeof(Addition), typeof(Substraction), typeof(NegativeOperator))))
+            {
+                result += '(' + _left.ToString() + ')';
+            }
+            else
+            {
+                result += _left.ToString();
+            }
+            return result;
         }
     }
 }

@@ -9,10 +9,6 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class Division : Operator2
     {
-        private readonly static string _symbol = "/";
-
-        protected override string Symbol => _symbol;
-
         public Division(IEvaluable left, IEvaluable right) : base(left, right)
         {
         }
@@ -51,6 +47,31 @@ namespace MathEvaluatorNetFramework.Operators
                 result = left / right;
             }
 
+            return result;
+        }
+
+        public override string ToString()
+        {
+            string result;
+            if (_left is Addition || _left is Substraction || _left is NegativeOperator || 
+                (_left is Expression el && el.Is(typeof(Addition), typeof(Substraction), typeof(NegativeOperator))))
+            {
+                result = '(' + _left.ToString() + ')';
+            }
+            else
+            {
+                result = _left.ToString();
+            }
+            result += '/';
+            if (_right is Addition || _right is Substraction || _right is NegativeOperator ||
+                (_right is Expression er && er.Is(typeof(Addition), typeof(Substraction), typeof(NegativeOperator))))
+            {
+                result += '(' + _right.ToString() + ')';
+            }
+            else
+            {
+                result += _right.ToString();
+            }
             return result;
         }
     }

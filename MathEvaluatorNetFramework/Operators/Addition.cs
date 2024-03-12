@@ -8,10 +8,6 @@ namespace MathEvaluatorNetFramework.Operators
 {
     internal class Addition : Operator2
     {
-        private readonly static string _symbol = "+";
-
-        protected override string Symbol => _symbol;
-
         public Addition(IEvaluable left, IEvaluable right) : base(left, right)
         {
         }
@@ -24,6 +20,11 @@ namespace MathEvaluatorNetFramework.Operators
         public override double Evaluate(params Variable[] variables)
         {
             return _left.Evaluate(variables) + _right.Evaluate(variables);
+        }
+
+        public override string ToString()
+        {
+            return _left.ToString() + '+' + _right.ToString();
         }
     }
 }
