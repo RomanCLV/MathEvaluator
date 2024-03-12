@@ -66,5 +66,44 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result, EPSILON);
         }
+
+        [TestMethod]
+        public void Test_Complexe_3()
+        {
+            string expression = "(1+((3!+2)/2))!^(2cos(3(5!)))";
+            double expected = 14400;
+            double result = 0.0;
+
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Complexe_4()
+        {
+            string expression = "exp(-((x/2)^2+(y/2)^2))";
+            Variable x = new Variable("x", 0.5);
+            Variable y = new Variable("y", 2.25);
+            double expected = Math.Exp(-(Math.Pow((double)x.Value / 2.0, 2) + Math.Pow((double)y.Value / 2.0, 2)));
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression, new Variable[] { x, y });
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
     }
 }

@@ -478,25 +478,5 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result);
         }
-
-
-        [TestMethod]
-        public void Test_Factorial_27()
-        {
-            string expression = "(1+((3!+2)/2))!^(2cos(3(5!)))";
-            double expected = 14400;
-            double result = 0.0;
-
-            try
-            {
-                result = MathEvaluator.Evaluate(expression);
-                Console.WriteLine("Result: " + result);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
-            }
-            Assert.AreEqual(expected, result);
-        }
     }
 }

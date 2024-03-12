@@ -129,3 +129,96 @@ The higher rank of factorial you can ask is `170`. If you ask higer, it will ret
 | (-1)! | DomainException |
 | (-1)! | NaN | `RaiseDomainException` = `false` |
 | 3!! | 720 | 3!! -> (3!)! |
+
+## Functions
+
+You can find bellow all the implemented functions:
+
+General functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| abs(x) | Absolute | abs(expression) |
+| exp(x) | Exponential | exp(expression) |
+| ln(x) | Natural logarithm: The logarithm whose base is the Euler number e. | ln(expression) |
+| log(x) | Logarithm of base 10 | log(expression) |
+| log(x, base) | Logarithm of a specified base | log(expression, expressionBase) |
+| sqrt(x) | Square Root | sqrt(expression) |
+| sqrt(x, root) | Nth Root | sqrt(expression, expressionRoot) |
+| gamma(x) | Gamma: Extension of the factorial function to complex numbers. | gamma(expression) |
+
+Trigonometric functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| cos(x) | Cosine | cos(expression) |
+| sin(x) | Sine | sin(expression) |
+| tan(x) | Tangent | tan(expression) |
+| acos(x) | Arccosine | acos(expression) |
+| asin(x) | Arcsine | asin(expression) |
+| atan(x) | Arctangent | atan(expression) |
+| csc(x) | Cosecant | csc(expression) |
+| sec(x) | Secant | sec(expression) |
+| cot(x) | Cotangent | cot(expression) |
+| cosh(x) | Hyperbolic cosine | cosh(expression) |
+| sinh(x) | Hyperbolic sine | sinh(expression) |
+| tanh(x) | Hyperbolic tangent | tanh(expression) |
+| csch(x) | Hyperbolic cosecant | csch(expression) |
+| sech(x) | Hyperbolic secant | sech(expression) |
+| coth(x) | Hyperbolic cotangent | coth(expression) |
+
+Angle conversion functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| rad(x) | Radian | rad(expression) |
+| deg(x) | Degree | deg(expression) |
+
+Decimal part functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| dec(x) | Decimal part of a number | dec(expression) |
+| sdec(x) | Signed decimal part of a number | sdec(expression) |
+| ceil(x) | Ceil: Get the lowest nearest integer. Example: Numbers from 6.0 to 6.999... give 6. | ceil(expression) |
+| floor(x) | Floor: Get the greatest nearest integer. Example: Numbers from 6.000...1 to 7 give 7. | floor(expression) |
+| round(x) | Round: Get the nearest integer. Example: Numbers from 4.5 to 5.4999... give 5 | round(expression) |
+| round(x, precision) | Round a number with a specified precision | round(expression, expressionPrecision) |
+
+Statitics functions:
+
+| Shortname | Name & Description | Usage |
+| --------- | ------------------ | ----- |
+| binc(k, n) | Binomial coefficient "n choose k" | binc(expK, expN) |
+
+
+## Constants
+
+You can find bellow all implemented constants:
+
+| Shortname | Name & Value |
+| --------- | ------------------ |
+| pi | PI constant : 3.1415926535897931 |
+| tau | Tau : 2 * PI |
+| pau | Pau : 1.5 * PI |
+| e | Euler constant : 2.7182818284590451 |
+| phi | The golden ration : 1.6180339887498949 |
+
+
+## Variables
+
+Variables can be used in expression.
+
+A variable name can not start with a number. Examples of valid name: x, _x, x2, alpha_2
+
+If you use a number before, it will be used a factor: `cos(2x)` -> `cos(2*x)`.
+
+To evaluate an expression that depends on variables, we must give the used variables else a `NotDefinedVariableException` will be throw.
+
+
+## More examples
+
+| Expression | Result | Condition before applying the evaluation / Remarks |
+| ---------- | ------ | -------------------------------------------------- |
+| (1+((3!+2)/2))!^(2cos(3(5!))) | 14400 |
+| exp(-((x/2)^2+(y/2)^2)) | Expression | Depends on x and y |

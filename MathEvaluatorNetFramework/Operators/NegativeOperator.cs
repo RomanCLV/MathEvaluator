@@ -19,7 +19,7 @@ namespace MathEvaluatorNetFramework.Operators
         /// <returns>The negation of the given evaluable.</returns>
         public override double Evaluate(params Variable[] variables)
         {
-            return -_left.Evaluate();
+            return -_left.Evaluate(variables);
         }
 
         public override string ToString()

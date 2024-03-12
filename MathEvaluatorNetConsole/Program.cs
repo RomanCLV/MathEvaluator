@@ -131,7 +131,7 @@ namespace MathEvaluatorNetFrameworkConsole
                 Console.Write(message);
                 string input = Console.ReadLine();
 
-                if (double.TryParse(input, out d))
+                if (double.TryParse(input, out d) || double.TryParse(input.Replace('.', ','), out d))
                 {
                     break;
                 }
