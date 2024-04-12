@@ -45,14 +45,14 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         }
 
         /// <summary>
-        /// Evaluate the sine of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
+        /// Evaluate the sine of the given evaluable. Set <see cref="MathEvaluator.Parameters.AngleAreInDegrees"/> to know how to process the operation.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>The sine of the given evaluable.</returns>
         public override double Evaluate(params Variable[] variables)
         {
             double angle = _left.Evaluate(variables);
-            return Math.Sin(MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+            return Math.Sin(MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
         }
 
         public override string ToString()

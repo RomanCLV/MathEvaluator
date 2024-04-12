@@ -65,7 +65,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The binomial coefficient "n choose k" of the two given evaluable.<br />
-        /// If one of the evaluables is not an integer or is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// If one of the evaluables is not an integer or is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
@@ -78,7 +78,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
             if (k <= 0 || n <= 0 || k - ki != 0.0 || n - ni != 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + k + ", " + n + ')');
                 }

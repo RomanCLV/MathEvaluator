@@ -17,7 +17,7 @@ namespace MathEvaluatorNetFramework.Operators
         /// Evaluate two evaluable entities as base^power.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
-        /// <returns>If base and power are equal to 0, throw a <see cref="DomainException"/> if <see cref="MathEvaluator.RaiseDomainException"/> is <c>true</c>, else return <see cref="double.NaN"/>. Else return base^power using <see cref="Math.Pow(double, double)"/>.</returns>
+        /// <returns>If base and power are equal to 0, throw a <see cref="DomainException"/> if <see cref="MathEvaluator.Parameters.RaiseDomainException"/> is <c>true</c>, else return <see cref="double.NaN"/>. Else return base^power using <see cref="Math.Pow(double, double)"/>.</returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
@@ -26,7 +26,7 @@ namespace MathEvaluatorNetFramework.Operators
             double result;
             if (baseResult == 0.0 && powerResult == 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException("0^0");
                 }

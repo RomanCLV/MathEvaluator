@@ -52,7 +52,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <returns>
         /// The Naperian logarithm of the given evaluable.<br />
         /// If the evaluable is equal to 0, returns <see cref="double.NegativeInfinity"/>.<br />
-        /// If the evaluable is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/> returns <see cref="double.Nan"/>.
+        /// If the evaluable is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/> returns <see cref="double.Nan"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
@@ -61,7 +61,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double value = _left.Evaluate(variables);
             if (value < 0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + value + ')');
                 }

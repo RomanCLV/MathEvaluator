@@ -74,7 +74,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The Nth root of the given evaluable.<br />
-        /// If the root is equal to 0 or the evaluable is lower than 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// If the root is equal to 0 or the evaluable is lower than 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
@@ -85,7 +85,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
             if (root == 0.0 || value < 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + root + ", " + value + ')');
                 }

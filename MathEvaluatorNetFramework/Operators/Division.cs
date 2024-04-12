@@ -18,14 +18,14 @@ namespace MathEvaluatorNetFramework.Operators
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>The division between the two given evaluable entities.<br />
-        /// If the denominator equals to 0, then if <see cref="MathEvaluator.RaiseDivideByZeroException"/> is true, raise a <see cref="DivideByZeroException"/>.
+        /// If the denominator equals to 0, then if <see cref="MathEvaluator.Parameters.RaiseDivideByZeroException"/> is true, raise a <see cref="DivideByZeroException"/>.
         /// If the numerator is not equals to 0, then returns <see cref="double.NegativeInfinity"/> or <see cref="double.PositiveInfinity"/>.<br />
-        /// If the numerator and the denominator are equal to 0, then if <see cref="MathEvaluator.RaiseDomainException"/> is true, raise a <see cref="DomainException"/> else return <see cref="double.NaN"/>.
+        /// If the numerator and the denominator are equal to 0, then if <see cref="MathEvaluator.Parameters.RaiseDomainException"/> is true, raise a <see cref="DomainException"/> else return <see cref="double.NaN"/>.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
             double right = _right.Evaluate(variables);
-            if (right == 0.0 && MathEvaluator.RaiseDivideByZeroException)
+            if (right == 0.0 && MathEvaluator.Parameters.RaiseDivideByZeroException)
             {
                 throw new DivideByZeroException();
             }
@@ -33,7 +33,7 @@ namespace MathEvaluatorNetFramework.Operators
             double result;
             if (right == 0.0 && left == 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException("0/0");
                 }

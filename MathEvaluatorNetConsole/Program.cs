@@ -168,9 +168,9 @@ namespace MathEvaluatorNetFrameworkConsole
         {
             Console.WriteLine("--- Settings menu ---\n");
             Console.WriteLine($"0. Set default settings\n");
-            Console.WriteLine($"1. Raise divide by zero exception                          " + MathEvaluator.RaiseDivideByZeroException);
-            Console.WriteLine($"2. Raise domain exception                                  " + MathEvaluator.RaiseDomainException);
-            Console.WriteLine($"3. Use Gamma function for non natural integer factorial    " + MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial);
+            Console.WriteLine($"1. Raise divide by zero exception                          " + MathEvaluator.Parameters.RaiseDivideByZeroException);
+            Console.WriteLine($"2. Raise domain exception                                  " + MathEvaluator.Parameters.RaiseDomainException);
+            Console.WriteLine($"3. Use Gamma function for non natural integer factorial    " + MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial);
             Console.WriteLine($"\nPress a key to change the setting value");
             Console.WriteLine($"\nPress ENTER/ESCAPE to exit");
             Console.WriteLine();
@@ -187,19 +187,19 @@ namespace MathEvaluatorNetFrameworkConsole
                 switch (consoleKey)
                 {
                     case ConsoleKey.NumPad0:
-                        MathEvaluator.Reset();
+                        MathEvaluator.Parameters.Reset();
                         break;
 
                     case ConsoleKey.NumPad1:
-                        MathEvaluator.RaiseDivideByZeroException = !MathEvaluator.RaiseDivideByZeroException;
+                        MathEvaluator.Parameters.RaiseDivideByZeroException = !MathEvaluator.Parameters.RaiseDivideByZeroException;
                         break;
 
                     case ConsoleKey.NumPad2:
-                        MathEvaluator.RaiseDomainException = !MathEvaluator.RaiseDomainException;
+                        MathEvaluator.Parameters.RaiseDomainException = !MathEvaluator.Parameters.RaiseDomainException;
                         break;
 
                     case ConsoleKey.NumPad3:
-                        MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = !MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial;
+                        MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = !MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial;
                         break;
                 }
 

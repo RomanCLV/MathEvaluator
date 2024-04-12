@@ -51,7 +51,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The hyperbolic cotangent of the given evaluable using <see cref="Funcs.Coth(double)"/>.<br />
-        /// If the evaluable is equal to 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// If the evaluable is equal to 0, raise a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
@@ -60,7 +60,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double value = _left.Evaluate(variables);
             if (value == 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + "(0)");
                 }

@@ -97,7 +97,7 @@ namespace MathEvaluatorNetFramework
         /// <param name="x">A real number.</param>
         /// <returns>
         /// If <paramref name="x"/> is a real positive number or a negative non-integer, returns Gamma(<paramref name="x"/>). However, if <paramref name="x"/> is greater than <see cref="MAX_GAMMA_X"/> returns <see cref="double.PositiveInfinity"/>.<br />
-        /// If <paramref name="x"/> is a negative integer or 0, raises a a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, else returns <see cref="double.NaN"/>.
+        /// If <paramref name="x"/> is a negative integer or 0, raises a a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, else returns <see cref="double.NaN"/>.
         /// </returns>
         public static double Gamma(double x)
         {

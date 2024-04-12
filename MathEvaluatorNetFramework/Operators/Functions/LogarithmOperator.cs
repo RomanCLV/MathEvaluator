@@ -79,7 +79,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The logarithm of the given evaluable with the given base.<br />
-        /// If the logarithm base or the evaluable is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/> returns <see cref="double.Nan"/>.<br />
+        /// If the logarithm base or the evaluable is lower than 0, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/> returns <see cref="double.Nan"/>.<br />
         /// If the logarithm base is equal to 0, if the evaluable is equal to 0, raises a <see cref="DomainException"/> or returns <see cref="double.NaN"/>, else return 1.<br />
         /// If the logarithm base is greater than 0, if the evaluable is equal to 0, returns <see cref="double.NegativeInfinity"/>.
         /// </returns>
@@ -92,7 +92,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
             if (logBase < 0 || value < 0 || (logBase == 0.0 && value == 0.0))
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + logBase + ", " + value + ')');
                 }

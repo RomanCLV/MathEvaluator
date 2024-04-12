@@ -46,25 +46,25 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         }
 
         /// <summary>
-        /// Evaluate the secant (defined as <c>sec(x) = 1 / cos(x)</c>) of the given evaluable. Set <see cref="MathEvaluator.AngleAreInDegrees"/> to know how to process the operation.
+        /// Evaluate the secant (defined as <c>sec(x) = 1 / cos(x)</c>) of the given evaluable. Set <see cref="MathEvaluator.Parameters.AngleAreInDegrees"/> to know how to process the operation.
         /// </summary>
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The secant of the given evaluable.<br />
-        /// If the evaluable is a multiple of PI/2 (or 90°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// If the evaluable is a multiple of PI/2 (or 90°), raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
         {
             double result;
             double angle = _left.Evaluate(variables);
-            double rad = MathEvaluator.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle;
+            double rad = MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle;
 
             if (Funcs.IsMultiple(rad, Math.PI / 2.0))
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
-                    throw new DomainException(_acronym + '(' + (MathEvaluator.AngleAreInDegrees ? angle.ToString() + '°' : rad.ToString()) + ')');
+                    throw new DomainException(_acronym + '(' + (MathEvaluator.Parameters.AngleAreInDegrees ? angle.ToString() + '°' : rad.ToString()) + ')');
                 }
                 else
                 {

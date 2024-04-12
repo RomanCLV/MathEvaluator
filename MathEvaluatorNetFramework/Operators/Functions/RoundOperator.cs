@@ -79,7 +79,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// The absolute value of the given evaluable.<br />
-        /// If the precision is not an integer or is negative, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// If the precision is not an integer or is negative, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
@@ -91,7 +91,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
 
             if (precision < 0 || precision - iPrecition != 0.0)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + value + ", " + precision + ')');
                 }

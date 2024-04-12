@@ -50,12 +50,12 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// Returns the angle whose tangent is the specified evaluable.<br />
-        /// Set <see cref="MathEvaluator.AngleAreInDegrees"/> to return the angle in degrees or in radians.
+        /// Set <see cref="MathEvaluator.Parameters.AngleAreInDegrees"/> to return the angle in degrees or in radians.
         /// </returns>
         public override double Evaluate(params Variable[] variables)
         {
             double angle = Math.Atan(_left.Evaluate(variables));
-            return MathEvaluator.AngleAreInDegrees ? Funcs.RadiansToDegrees(angle) : angle;
+            return MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.RadiansToDegrees(angle) : angle;
         }
 
         public override string ToString()

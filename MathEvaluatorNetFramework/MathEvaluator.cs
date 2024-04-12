@@ -9,42 +9,45 @@ namespace MathEvaluatorNetFramework
 {
     public static class MathEvaluator
     {
-        public static void Reset()
+        public static class Parameters
         {
-            RaiseDivideByZeroException = true;
-            RaiseDomainException = true;
-            UseGammaFunctionForNonNaturalIntegerFactorial = true;
+            public static void Reset()
+            {
+                RaiseDivideByZeroException = true;
+                RaiseDomainException = true;
+                UseGammaFunctionForNonNaturalIntegerFactorial = true;
+            }
+
+            /// <summary>
+            /// Whether or not to raise an <see cref="DivideByZeroException"/> if we try to divide by zero.
+            /// </summary>
+            public static bool RaiseDivideByZeroException { get; set; } = true;
+
+            /// <summary>
+            /// Whether or not to raise an <see cref="DomainException"/> if we try to apply an operation with a invalid domain value.<br />
+            /// Examples:<br />
+            /// 0^0<br />
+            /// 0/0<br />
+            /// sqrt(x) with x lower than 0<br />
+            /// ln(x) with x lower or equal than 0<br />
+            /// </summary>
+            public static bool RaiseDomainException { get; set; } = true;
+
+            /// <summary>
+            /// Whether or not to use the gamma function if the factorial of a floating number or a negative number is applying. If not, a <see cref="DomainException"/> can be raised depending on <see cref="RaiseDomainException"/>.<br />
+            /// Examples:<br />
+            /// 5!      -> classic factorial<br />
+            /// 5.25!   -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+            /// (-0.5)! -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+            /// (-n)! where n is a positive integer -> Raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
+            /// </summary>
+            public static bool UseGammaFunctionForNonNaturalIntegerFactorial { get; set; } = true;
+
+            /// <summary>
+            /// Indicates to the trigonometrics functions if the angle has to be interpreted in degrees or in radians.
+            /// </summary>
+            public static bool AngleAreInDegrees { get; set; } = true;
         }
-
-        /// <summary>
-        /// Whether or not to raise an <see cref="DivideByZeroException"/> if we try to divide by zero.
-        /// </summary>
-        public static bool RaiseDivideByZeroException { get; set; } = true;
-
-        /// <summary>
-        /// Whether or not to raise an <see cref="DomainException"/> if we try to apply an operation with a invalid domain value.<br />
-        /// Examples:<br />
-        /// 0^0<br />
-        /// 0/0<br />
-        /// sqrt(x) with x lower than 0<br />
-        /// ln(x) with x lower or equal than 0<br />
-        /// </summary>
-        public static bool RaiseDomainException { get; set; } = true;
-
-        /// <summary>
-        /// Whether or not to use the gamma function if the factorial of a floating number or a negative number is applying. If not, a <see cref="DomainException"/> can be raised depending on <see cref="RaiseDomainException"/>.<br />
-        /// Examples:<br />
-        /// 5!      -> classic factorial<br />
-        /// 5.25!   -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
-        /// (-0.5)! -> Use the gamma function or can raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
-        /// (-n)! where n is a positive integer -> Raise a <see cref="DomainException"/> depending on <see cref="RaiseDomainException"/><br />
-        /// </summary>
-        public static bool UseGammaFunctionForNonNaturalIntegerFactorial { get; set; } = true;
-
-        /// <summary>
-        /// Indicates to the trigonometrics functions if the angle has to be interpreted in degrees or in radians.
-        /// </summary>
-        public static bool AngleAreInDegrees { get; set; } = true;
 
         /// <summary>
         /// Create a new Expression with the given expression.

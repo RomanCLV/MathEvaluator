@@ -51,8 +51,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         /// <param name="variables">The used variables in the evaluable entities.</param>
         /// <returns>
         /// Returns the angle whose sine is the specified evaluable.<br />
-        /// Set <see cref="MathEvaluator.AngleAreInDegrees"/> to return the angle in degrees or in radians.<br />
-        /// If the evaluable is lower than -1 or greater than 1, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
+        /// Set <see cref="MathEvaluator.Parameters.AngleAreInDegrees"/> to return the angle in degrees or in radians.<br />
+        /// If the evaluable is lower than -1 or greater than 1, raises a <see cref="DomainException"/> depending on <see cref="MathEvaluator.Parameters.RaiseDomainException"/>, or returns <see cref="double.NaN"/>.
         /// </returns>
         /// <exception cref="DomainException"></exception>
         public override double Evaluate(params Variable[] variables)
@@ -61,7 +61,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double angle;
             if (sin < -1 || sin > 1)
             {
-                if (MathEvaluator.RaiseDomainException)
+                if (MathEvaluator.Parameters.RaiseDomainException)
                 {
                     throw new DomainException(_acronym + '(' + sin + ')');
                 }
@@ -70,7 +70,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             else
             {
                 angle = Math.Asin(sin);
-                if (MathEvaluator.AngleAreInDegrees)
+                if (MathEvaluator.Parameters.AngleAreInDegrees)
                 {
                     angle = Funcs.RadiansToDegrees(angle);
                 }
