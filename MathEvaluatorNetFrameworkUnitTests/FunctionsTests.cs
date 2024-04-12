@@ -105,5 +105,23 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result, EPSILON);
         }
+
+        [TestMethod]
+        public void Test_Complexe_5()
+        {
+            string expression = "x^2+2x+1";
+            double expected = 9;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression, new Variable[] { new Variable("x", 2) });
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
     }
 }

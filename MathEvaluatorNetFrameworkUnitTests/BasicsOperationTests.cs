@@ -574,9 +574,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine("Result: " + result);
             }
             catch (Exception ex)
@@ -594,9 +594,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine("Result: " + result);
             }
             catch (Exception ex)
@@ -614,9 +614,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine("Result: " + result);
             }
             catch (Exception ex)
@@ -651,9 +651,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             string expression = "0/0";
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 _ = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 throw new InvalidOperationException("Should have raise a DomainException.");
             }
             catch (DomainException)
@@ -674,11 +674,11 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
-                MathEvaluator.RaiseDomainException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDomainException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
-                MathEvaluator.RaiseDomainException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDomainException = true;
                 Console.WriteLine(result);
             }
             catch (Exception ex)
@@ -696,9 +696,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine(result);
             }
             catch (Exception ex)
@@ -716,9 +716,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine(result);
             }
             catch (Exception ex)
@@ -736,9 +736,9 @@ namespace MathEvaluatorNetFrameworkUnitTests
             double result = 0.0;
             try
             {
-                MathEvaluator.RaiseDivideByZeroException = false;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
                 result = MathEvaluator.Evaluate(expression);
-                MathEvaluator.RaiseDivideByZeroException = true;
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
                 Console.WriteLine(result);
             }
             catch (Exception ex)

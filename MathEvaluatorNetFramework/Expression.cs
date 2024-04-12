@@ -700,6 +700,7 @@ namespace MathEvaluatorNetFramework
                             j++;
                         }
                         expression = expression.Insert(j, "(");
+                        parenthesisCount = 1;
                         i++;
                     }
                     else
@@ -719,18 +720,19 @@ namespace MathEvaluatorNetFramework
                         {
                             parenthesisCount--;
                         }
-                        else if (parenthesisCount == 0 && IsCharOperandSymbol(expression[j]))
+                        else if (parenthesisCount == 1 && IsCharOperandSymbol(expression[j]))
                         {
+                            j--;
                             break;
                         }
-                        else if (parenthesisCount == 0 && expression[j] == '!')
+                        else if (parenthesisCount == 1 && expression[j] == '!')
                         {
                             j--;
                             break;
                         }
                         j++;
                     }
-                    if (parenthesisCount == 0)
+                    if (parenthesisCount == 1)
                     {
                         if (j == expression.Length)
                         {

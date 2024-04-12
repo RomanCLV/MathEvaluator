@@ -13,12 +13,12 @@ However, the operation 2!^3! is interpreted as (2!)^(3!) and not (2!^3)!.
 
 ### Division by 0
 
-We allow the user to decide what to do in the case of division by `0` thanks to the static property `MathEvaluator.RaiseDivideByZeroException`, by default set to `true`.
+We allow the user to decide what to do in the case of division by `0` thanks to the static property `MathEvaluator.Parameters.RaiseDivideByZeroException`, by default set to `true`.
 In the case of this property is equal to `true` and that a division by 0 is applying, it will raise a `DivideByZeroException`. Else it will return either `+∞` or `-∞` depending on the numerator value. If the `numerator` is equal to 0, there is a `invalid domain` that is explained in the followed paragraph.
 
 ### Invalid domain
 
-We allow the user to decide what to do in the case of an `invalid domain` operation (eg: 0/0, 0.25!, sqrt(x) where x is negative, ln(x) where x <= 0) thanks to the static property `MathEvaluator.RaiseDomainException`, by default set to `true`.
+We allow the user to decide what to do in the case of an `invalid domain` operation (eg: 0/0, 0.25!, sqrt(x) where x is negative, ln(x) where x <= 0) thanks to the static property `MathEvaluator.Parameters.RaiseDomainException`, by default set to `true`.
 In the case of this property is equal to `true` and that an `invalid domain` operation is applying, it will raise a `DomainException`. Else it will return `NaN`.
 
 ## Basic operators (+, -, *, /)
@@ -95,7 +95,7 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 
 ## Factorial (!)
 
-We allow the user to decide what to do in the case of an `invalid domain` factorial operation (eg: 5.25!, (-0.5)!, (-1)!)) thanks to the static property `MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial`, by default set to `true`.
+We allow the user to decide what to do in the case of an `invalid domain` factorial operation (eg: 5.25!, (-0.5)!, (-1)!)) thanks to the static property `MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial`, by default set to `true`.
 In the case of this property is equal to `true` and that a such operation is applying, it will use the Gamma (Γ) function (since x! = Γ(x+1)).
 
 

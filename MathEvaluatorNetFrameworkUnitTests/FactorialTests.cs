@@ -302,7 +302,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             string expression = "(-1)!";
             try
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = false;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = false;
                 _ = MathEvaluator.Evaluate(expression);
                 throw new InvalidOperationException("Should have raise a DomainException");
             }
@@ -316,7 +316,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             finally
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = true;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = true;
             }
         }
 
@@ -345,7 +345,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             string expression = "0.5!";
             try
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = false;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = false;
                 _ = MathEvaluator.Evaluate(expression);
                 throw new InvalidOperationException("Should have raise a DomainException");
             }
@@ -359,7 +359,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             finally
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = true;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = true;
             }
         }
 
@@ -387,7 +387,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             string expression = "(-0.9)!";
             try
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = false;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = false;
                 _ = MathEvaluator.Evaluate(expression);
                 throw new InvalidOperationException("Should have raise a DomainException");
             }
@@ -401,7 +401,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             finally
             {
-                MathEvaluator.UseGammaFunctionForNonNaturalIntegerFactorial = true;
+                MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = true;
             }
         }
 
