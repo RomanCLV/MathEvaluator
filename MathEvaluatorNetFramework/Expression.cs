@@ -202,6 +202,11 @@ namespace MathEvaluatorNetFramework
             InternalSet(expression, false);
         }
 
+        /// <summary>
+        /// Internal method to prepare the expression before the process.
+        /// </summary>
+        /// <param name="expression">The expression to prepare.</param>
+        /// <param name="isExpressionCleaned">If the current is obtained by another expression that already have been prepared.</param>
         private void InternalSet(string expression, bool isExpressionCleaned)
         {
             _evaluable = null;

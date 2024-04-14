@@ -49,6 +49,114 @@ namespace MathEvaluatorNetFramework
             public static bool AngleAreInDegrees { get; set; } = true;
         }
 
+        public static class VariableManager
+        {
+            private readonly static List<Variable> s_variables = new List<Variable>();
+
+            /// <summary>
+            /// Try to create a new permanent variable.
+            /// </summary>
+            /// <param name="name">Name of the variable.</param>
+            /// <param name="value">Value of the variable.</param>
+            /// <param name="updateVariableIfAlreadyExists">If the variable already exists, update it by calling <see cref="Update(string, double, bool)"/>.</param>
+            /// <returns><c>True</c> if the variable had been created (or updated), else <c>False</c>.</returns>
+            public static bool Create(string name, double value = 0.0, bool updateVariableIfAlreadyExists = true)
+            {
+                bool added = false;
+                Variable variable = s_variables.Find(v => v.Name == name);
+                if (variable == null)
+                {
+                    variable = new Variable(name, value);
+                    s_variables.Add(variable);
+                    added = true;
+                }
+                else
+                {
+                    if (updateVariableIfAlreadyExists)
+                    {
+                        variable.Value = value;
+                        added = true;
+                    }
+                }
+                return added;
+            }
+
+            /// <summary>
+            /// Try to update a variable.
+            /// </summary>
+            /// <param name="name">Name of the variable.</param>
+            /// <param name="value">New value of the variable.</param>
+            /// <param name="createVariableIfNotExists">If the variable not exists, then create it by calling <see cref="Create(string, double, bool)"/>.</param>
+            /// <returns></returns>
+            public static bool Update(string name, double value, bool createVariableIfNotExists = true)
+            {
+                bool updated = false;
+                Variable variable = s_variables.Find(v => v.Name == name);
+                if (variable == null)
+                {
+                    if (createVariableIfNotExists)
+                    {
+                        variable = new Variable(name, value);
+                        s_variables.Add(variable);
+                        updated = true;
+                    }
+                }
+                else
+                {
+                    variable.Value = value;
+                    updated = true;
+                }
+                return updated;
+            }
+
+            /// <summary>
+            /// Delete a permanent variable.
+            /// </summary>
+            /// <param name="name">Name of the variable.</param>
+            /// <returns><c>True</c> if the variable exists and has been removed, else <c>false</c>.</returns>
+            public static bool Delete(string name)
+            {
+                bool deleted = false;
+                Variable variable = s_variables.Find(v => v.Name == name);
+                if (variable != null)
+                {
+                    deleted = s_variables.Remove(variable);
+                }
+                return deleted;
+            }
+
+            /// <summary>
+            /// Determine if a variable exists.
+            /// </summary>
+            /// <param name="name">Name of the variable.</param>
+            /// <returns><c>True</c> if the variable exists, else <c>false</c>.</returns>
+            public static bool Contains(string name)
+            {
+                return s_variables.Any(v => v.Name == name);
+            }
+
+            /// <summary>
+            /// Get the names list of all existing variables.
+            /// </summary>
+            /// <returns>The list with all variable's name.</returns>
+            public static IEnumerable<string> GetExistingVariables()
+            {
+                return s_variables.Select(v => v.Name);
+            }
+
+            /// <summary>
+            /// Get the value of a variable.
+            /// </summary>
+            /// <param name="name">The name of the variable.</param>
+            /// <returns>The value of the variable.</returns>
+            /// <exception cref="NotDefinedVariableException"></exception>
+            public static double Get(string name)
+            {
+                Variable variable = s_variables.Find(v => v.Name == name);
+                return variable == null ? throw new NotDefinedVariableException(name) : (double)variable.Value;
+            }
+        }
+
         /// <summary>
         /// Create a new Expression with the given expression.
         /// </summary>

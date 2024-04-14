@@ -112,6 +112,12 @@ namespace MathEvaluatorNetFrameworkConsole
         {
             Console.WriteLine("The expression depends on: " + string.Join(", ", variables) + "\nPlease set " + (variables.Count == 1 ? "its" : "their") + " value:");
 
+            //List<string> variablesToSet = new List<string>(variables.Count);
+            //foreach (string name in variables)
+            //{
+
+            //}
+
             Variable[] vars = new Variable[variables.Count];
             for (int i = 0; i < variables.Count; i++)
             {
