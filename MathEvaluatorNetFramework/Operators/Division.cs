@@ -45,6 +45,26 @@ namespace MathEvaluatorNetFramework.Operators
             else
             {
                 result = left / right;
+
+                if (double.IsInfinity(result))
+                {
+                    bool isLeftNegative = left < 0.0;
+                    bool isRightNegative = _right is NegativeOperator || (_right is Expression exp && exp.Is(typeof(NegativeOperator)));
+                    if (double.IsPositiveInfinity(result))
+                    {
+                        if ((isLeftNegative && !isRightNegative) || (!isLeftNegative && isRightNegative))
+                        {
+                            result = double.NegativeInfinity;
+                        }
+                    }
+                    else
+                    {
+                        if ((isLeftNegative && isRightNegative) || (!isLeftNegative && !isRightNegative))
+                        {
+                            result = double.PositiveInfinity;
+                        }
+                    }
+                }
             }
 
             return result;

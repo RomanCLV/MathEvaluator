@@ -590,7 +590,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         public void Test_Division_13()
         {
             string expression = "3/-0";
-            double expected = double.PositiveInfinity;
+            double expected = double.NegativeInfinity;
             double result = 0.0;
             try
             {
@@ -629,6 +629,26 @@ namespace MathEvaluatorNetFrameworkUnitTests
         [TestMethod]
         public void Test_Division_15()
         {
+            string expression = "-3/-0";
+            double expected = double.PositiveInfinity;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Division_16()
+        {
             string expression = "2/0";
             try
             {
@@ -646,7 +666,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Division_16()
+        public void Test_Division_17()
         {
             string expression = "0/0";
             try
@@ -667,7 +687,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Division_17()
+        public void Test_Division_18()
         {
             string expression = "0/0";
             double expected = double.NaN;
@@ -689,7 +709,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Division_18()
+        public void Test_Division_19()
         {
             string expression = "-(2/0)";
             double expected = double.NegativeInfinity;
@@ -709,7 +729,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Division_19()
+        public void Test_Division_20()
         {
             string expression = "1/(1/0)";
             double expected = 0.0;
@@ -729,7 +749,7 @@ namespace MathEvaluatorNetFrameworkUnitTests
         }
 
         [TestMethod]
-        public void Test_Division_20()
+        public void Test_Division_21()
         {
             string expression = "-1/(1/0)";
             double expected = 0.0;

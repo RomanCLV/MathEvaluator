@@ -940,7 +940,14 @@ namespace MathEvaluatorNetFramework
         {
             if (double.TryParse(expression.Replace('.', ','), out double d) || double.TryParse(expression, out d))
             {
-                _evaluable = new ValueOperator(d);
+                if (expression[0] == '-' && d == 0.0)
+                {
+                    _evaluable = new NegativeOperator(new ValueOperator(0.0));
+                }
+                else
+                {
+                    _evaluable = new ValueOperator(d);
+                }
             }
             if (_evaluable == null && expression.Contains('+'))
             {

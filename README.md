@@ -54,8 +54,9 @@ In the case of this property is equal to `true` and that an `invalid domain` ope
 | -5/-(-2/-.25) | 0.625  |
 | 8/2/0.25 | 16 |
 | 3/0 | +∞ | `RaiseDivideByZeroException` = `false` |
-| 3/-0 | +∞ | `RaiseDivideByZeroException` = `false`  Remarks: It's well +∞ and no -∞.|
+| 3/-0 | -∞ | `RaiseDivideByZeroException` = `false` |
 | -3/0 | -∞ | `RaiseDivideByZeroException` = `false` |
+| -3/-0 | +∞ | `RaiseDivideByZeroException` = `false` |
 | 2/0 | DivideByZeroException |
 | 0/0 | DomainException | `RaiseDivideByZeroException` = `false` |
 | 0/0 | NaN | `RaiseDivideByZeroException` = `false` and `RaiseDomainException` = `false` |
