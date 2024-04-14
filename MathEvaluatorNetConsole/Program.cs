@@ -256,7 +256,7 @@ namespace MathEvaluatorNetFrameworkConsole
         private static void DisplayPermanentVariablesMenu()
         {
             Console.WriteLine("--- Permanent variables menu ---\n");
-            Console.WriteLine($"1. Display permanent variable");
+            Console.WriteLine($"1. Display permanent variables");
             Console.WriteLine($"2. Create variable");
             Console.WriteLine($"3. Update variable");
             Console.WriteLine($"4. Delete variable");
@@ -303,21 +303,7 @@ namespace MathEvaluatorNetFrameworkConsole
                     }
                 }
             }
-        }
-
-        private static void CreateVariable()
-        {
-            string name = InputName("Input the variable name (only letters, digits or _)\n");
-            Console.WriteLine();
-
-            if (MathEvaluator.VariableManager.Contains(name))
-            {
-                Console.WriteLine($"The variable \"{name}\" already exists.");
-            }
-            Console.WriteLine("Input the value of " + name);
-
-            double value = InputNumber("Value: ");
-            MathEvaluator.VariableManager.Create(name, value);
+            Console.Write('\n');
         }
 
         private static string InputName(string message, bool checkName = true)
@@ -369,14 +355,77 @@ namespace MathEvaluatorNetFrameworkConsole
             return name;
         }
 
+        private static void CreateVariable()
+        {
+            string name = InputName("Input the name of the variable to create (only letters, digits or _)\n");
+            Console.WriteLine();
+
+            if (MathEvaluator.VariableManager.Contains(name))
+            {
+                Console.WriteLine($"The variable \"{name}\" already exists.");
+            }
+            else
+            {
+                Console.WriteLine("Input the value of " + name);
+                double value = InputNumber("Value: ");
+                if (MathEvaluator.VariableManager.Create(name, value))
+                {
+                    Console.WriteLine($"{name} created");
+                }
+                else
+                {
+                    Console.WriteLine($"{name} not created");
+                }
+            }
+            Console.ReadKey(true);
+        }
+
         private static void UpdateVariable()
         {
+            string name = InputName("Input the name of the variable tp update\n");
+            Console.WriteLine();
 
+            if (MathEvaluator.VariableManager.Contains(name))
+            {
+                Console.WriteLine("Input the new value of " + name);
+                double value = InputNumber("Value: ");
+                if (MathEvaluator.VariableManager.Update(name, value))
+                {
+                    Console.WriteLine($"{name} updated");
+                }
+                else
+                {
+                    Console.WriteLine($"{name} not updated");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"The variable \"{name}\" not exists.");
+            }
+            Console.ReadKey(true);
         }
 
         private static void DeleteVariable()
         {
+            string name = InputName("Input the name of the variable to delete\n");
+            Console.WriteLine();
 
+            if (MathEvaluator.VariableManager.Contains(name))
+            {
+                if (MathEvaluator.VariableManager.Delete(name))
+                {
+                    Console.WriteLine($"{name} deleted");
+                }
+                else
+                {
+                    Console.WriteLine($"{name} not deleted");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"The variable \"{name}\" not exists.");
+            }
+            Console.ReadKey(true);
         }
 
         #endregion
