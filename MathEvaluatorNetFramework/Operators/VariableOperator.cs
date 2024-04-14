@@ -20,6 +20,7 @@ namespace MathEvaluatorNetFramework.Operators
         public double Evaluate(params Variable[] variables)
         {
             Variable variable = null;
+            double value;
             foreach (var v in variables)
             {
                 if (v.Name == _variableName)
@@ -30,9 +31,20 @@ namespace MathEvaluatorNetFramework.Operators
 
             if (variable == null || variable.Value == null)
             {
-                throw new NotDefinedVariableException(_variableName);
+                if (MathEvaluator.VariableManager.Contains(_variableName))
+                {
+                    value = MathEvaluator.VariableManager.Get(_variableName);
+                }
+                else
+                {
+                    throw new NotDefinedVariableException(_variableName);
+                }
             }
-            return (double)variable.Value;
+            else
+            {
+                value = (double)variable.Value;
+            }
+            return value;
         }
 
         public bool DependsOnVariables(out List<string> variables)

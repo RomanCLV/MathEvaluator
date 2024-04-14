@@ -66,9 +66,19 @@ namespace MathEvaluatorNetFramework
                 Variable variable = s_variables.Find(v => v.Name == name);
                 if (variable == null)
                 {
-                    variable = new Variable(name, value);
-                    s_variables.Add(variable);
-                    added = true;
+                    try
+                    {
+                        variable = new Variable(name, value);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+                    }
+                    if (variable != null)
+                    {
+                        s_variables.Add(variable);
+                        added = true;
+                    }
                 }
                 else
                 {
@@ -154,6 +164,11 @@ namespace MathEvaluatorNetFramework
             {
                 Variable variable = s_variables.Find(v => v.Name == name);
                 return variable == null ? throw new NotDefinedVariableException(name) : (double)variable.Value;
+            }
+
+            public static void Clear()
+            {
+                s_variables.Clear();
             }
         }
 

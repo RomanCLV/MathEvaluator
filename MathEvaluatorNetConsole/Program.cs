@@ -3,69 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MathEvaluatorNetFramework;
 
 namespace MathEvaluatorNetFrameworkConsole
 {
     internal class Program
     {
-        private const uint EXIT_CODE = 0;
-        private const uint EVAL_CODE = 1;
-        private const uint SETTINGS_CODE = 2;
-
         public static void Main(string[] args)
         {
-            uint option;
+            ConsoleKey consoleKey;
             do
             {
                 Console.Clear();
                 DisplayMenu();
-                option = SelectOption(0, 2);
-                Execute(option);
-            } while (option != EXIT_CODE);
+
+                consoleKey = Console.ReadKey(true).Key;
+                switch (consoleKey)
+                {
+                    case ConsoleKey.NumPad1:
+                        TestMathInterpreter();
+                        break;
+
+                    case ConsoleKey.NumPad2:
+                        Settings();
+                        break;
+
+                    case ConsoleKey.NumPad3:
+                        PermanentVariables();
+                        break;
+                }
+
+            } while (consoleKey != ConsoleKey.Escape);
         }
 
         private static void DisplayMenu()
         {
             Console.WriteLine("--- Math interpreter console menu ---\n");
-            Console.WriteLine($"{EVAL_CODE}. Eval expression");
-            Console.WriteLine($"{SETTINGS_CODE}. Settings");
-            Console.WriteLine($"{EXIT_CODE}. Exit");
+            Console.WriteLine($"1. Write and evaluate an expression");
+            Console.WriteLine($"2. Settings");
+            Console.WriteLine($"3. Permanent variables");
+            Console.WriteLine($"\nPress a key to select an option");
+            Console.WriteLine($"\nPress ESCAPE to exit");
             Console.WriteLine();
         }
 
-        private static uint SelectOption(uint min, uint max)
-        {
-            string input;
-            uint d;
-            do
-            {
-                Console.Write("> ");
-                input = Console.ReadLine();
-
-                if (!uint.TryParse(input, out d) || d < min || d > max)
-                {
-                    Console.WriteLine($"\nWrong entry. Please select option {min} to {max}.");
-                    input = null;
-                }
-            } while (input == null);
-            Console.WriteLine();
-            return d;
-        }
-
-        private static void Execute(uint option)
-        {
-            switch (option)
-            {
-                case EVAL_CODE:
-                    TestMathInterpreter();
-                    break;
-
-                case SETTINGS_CODE:
-                    Settings();
-                    break;
-            }
-        }
+        #region CHOICE 1 : Write and evaluate an expression
 
         private static void TestMathInterpreter()
         {
@@ -110,20 +93,30 @@ namespace MathEvaluatorNetFrameworkConsole
 
         private static Variable[] SetVariables(List<string> variables)
         {
-            Console.WriteLine("The expression depends on: " + string.Join(", ", variables) + "\nPlease set " + (variables.Count == 1 ? "its" : "their") + " value:");
+            Console.WriteLine("The expression depends on: " + string.Join(", ", variables));
 
-            //List<string> variablesToSet = new List<string>(variables.Count);
-            //foreach (string name in variables)
-            //{
-
-            //}
-
-            Variable[] vars = new Variable[variables.Count];
-            for (int i = 0; i < variables.Count; i++)
+            List<string> variablesToSet = new List<string>(variables.Count);
+            foreach (string name in variables)
             {
-                Console.WriteLine();
-                double value = InputNumber(variables[i] + ": ");
-                vars[i] = new Variable(variables[i], value);
+                if (MathEvaluator.VariableManager.Contains(name))
+                {
+                    Console.WriteLine($"{name}: {MathEvaluator.VariableManager.Get(name)}");
+                }
+                else
+                {
+                    variablesToSet.Add(name);
+                }
+            }
+
+            Variable[] vars = new Variable[variablesToSet.Count];
+            if (vars.Length > 0)
+            {
+                for (int i = 0; i < vars.Length; i++)
+                {
+                    Console.WriteLine();
+                    double value = InputNumber(variablesToSet[i] + ": ");
+                    vars[i] = new Variable(variablesToSet[i], value);
+                }
             }
 
             return vars;
@@ -170,6 +163,10 @@ namespace MathEvaluatorNetFrameworkConsole
             }
         }
 
+        #endregion
+
+        #region CHOICE 2 : Settings
+
         private static void DisplaySettingsMenu()
         {
             Console.WriteLine("--- Settings menu ---\n");
@@ -177,6 +174,7 @@ namespace MathEvaluatorNetFrameworkConsole
             Console.WriteLine($"1. Raise divide by zero exception                          " + MathEvaluator.Parameters.RaiseDivideByZeroException);
             Console.WriteLine($"2. Raise domain exception                                  " + MathEvaluator.Parameters.RaiseDomainException);
             Console.WriteLine($"3. Use Gamma function for non natural integer factorial    " + MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial);
+            Console.WriteLine($"4. Angle unit                                              " + (MathEvaluator.Parameters.AngleAreInDegrees ? "Degree" : "Radian"));
             Console.WriteLine($"\nPress a key to change the setting value");
             Console.WriteLine($"\nPress ENTER/ESCAPE to exit");
             Console.WriteLine();
@@ -207,10 +205,180 @@ namespace MathEvaluatorNetFrameworkConsole
                     case ConsoleKey.NumPad3:
                         MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial = !MathEvaluator.Parameters.UseGammaFunctionForNonNaturalIntegerFactorial;
                         break;
+
+                    case ConsoleKey.NumPad4:
+                        MathEvaluator.Parameters.AngleAreInDegrees = !MathEvaluator.Parameters.AngleAreInDegrees;
+                        break;
                 }
 
             } while (consoleKey != ConsoleKey.Escape && consoleKey != ConsoleKey.Enter);
 
         }
+
+        #endregion
+
+        #region CHOICE 3 : Permanent variables
+
+        private static void PermanentVariables()
+        {
+            ConsoleKey consoleKey;
+            do
+            {
+                Console.Clear();
+                DisplayPermanentVariablesMenu();
+                consoleKey = Console.ReadKey(true).Key;
+                switch (consoleKey)
+                {
+                    case ConsoleKey.NumPad1:
+                        DisplayPermanentVariables();
+                        break;
+
+                    case ConsoleKey.NumPad2:
+                        CreateVariable();
+                        break;
+
+                    case ConsoleKey.NumPad3:
+                        UpdateVariable();
+                        break;
+
+                    case ConsoleKey.NumPad4:
+                        DeleteVariable();
+                        break;
+
+                    case ConsoleKey.NumPad5:
+                        MathEvaluator.VariableManager.Clear();
+                        break;
+                }
+
+            } while (consoleKey != ConsoleKey.Escape);
+        }
+
+        private static void DisplayPermanentVariablesMenu()
+        {
+            Console.WriteLine("--- Permanent variables menu ---\n");
+            Console.WriteLine($"1. Display permanent variable");
+            Console.WriteLine($"2. Create variable");
+            Console.WriteLine($"3. Update variable");
+            Console.WriteLine($"4. Delete variable");
+            Console.WriteLine($"5. Delete all variables");
+            Console.WriteLine($"\nPress ENTER/ESCAPE to exit");
+            Console.WriteLine();
+        }
+
+        private static void DisplayPermanentVariables()
+        {
+            List<string> variables = MathEvaluator.VariableManager.GetExistingVariables().ToList();
+
+            if (variables.Count == 0)
+            {
+                Console.WriteLine("No permanent variable registered");
+            }
+            else
+            {
+                uint max_name_length = (uint)variables.Max(v => v.Length) + 10;
+                Console.WriteLine("Permanent variables:\n");
+
+                WriteLine(new string[2] { "Variable", "Value" }, max_name_length);
+                Console.WriteLine();
+                foreach (string variable in variables)
+                {
+                    WriteLine(new string[2] { variable, MathEvaluator.VariableManager.Get(variable).ToString() }, max_name_length);
+                }
+            }
+            Console.WriteLine();
+            Console.ReadKey(true);
+        }
+
+        private static void WriteLine(string[] cells, uint spaceBetweenCell)
+        {
+            for (int i = 0; i < cells.Length; i++)
+            {
+                Console.Write(cells[i]);
+                if (i < cells.Length - 1)
+                {
+                    int spaceToWrite = (int)spaceBetweenCell - cells[i].Length;
+                    for (int j = 0; j < spaceToWrite; j++)
+                    {
+                        Console.Write(' ');
+                    }
+                }
+            }
+        }
+
+        private static void CreateVariable()
+        {
+            string name = InputName("Input the variable name (only letters, digits or _)\n");
+            Console.WriteLine();
+
+            if (MathEvaluator.VariableManager.Contains(name))
+            {
+                Console.WriteLine($"The variable \"{name}\" already exists.");
+            }
+            Console.WriteLine("Input the value of " + name);
+
+            double value = InputNumber("Value: ");
+            MathEvaluator.VariableManager.Create(name, value);
+        }
+
+        private static string InputName(string message, bool checkName = true)
+        {
+            string name;
+            Console.WriteLine(message);
+            do
+            {
+                Console.Write("Name: ");
+                name = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("The name can not be empty\n");
+                    name = null;
+                    continue;
+                }
+                else
+                {
+                    name = name.ToLower();
+                    if (checkName)
+                    {
+                        if (char.IsDigit(name[0]))
+                        {
+                            Console.WriteLine("The name can not start with a number\n");
+                            name = null;
+                            continue;
+                        }
+
+                        foreach (char c in name)
+                        {
+                            if (!char.IsLetter(c) && c != '_')
+                            {
+                                Console.WriteLine($"Invalid character '{c}'");
+                                name = null;
+                                break;
+                            }
+                        }
+
+                        if (Expression.ReservedNames.Contains(name))
+                        {
+                            Console.WriteLine($"{name} is a reserved key word");
+                            name = null;
+                        }
+                    }
+                }
+                Console.WriteLine();
+            } while (name == null);
+            return name;
+        }
+
+        private static void UpdateVariable()
+        {
+
+        }
+
+        private static void DeleteVariable()
+        {
+
+        }
+
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace MathEvaluatorNetFramework.Exceptions
 {
     public class NotDefinedVariableException : InvalidOperationException
     {
-        public NotDefinedVariableException(string variableName) : base("The variable " + variableName + " is not defined.")
+        public NotDefinedVariableException(string variableName) : base("The variable " + variableName + " is not defined or its value null.")
         {
         }
     }

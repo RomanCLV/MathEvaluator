@@ -69,6 +69,19 @@ namespace MathEvaluatorNetFramework
             { BinomialCoefficientOperator.Acronym, BinomialCoefficientOperator.Details }
         };
 
+        private static readonly List<string> s_reservedNames = BuildReservedNames();
+
+        private static List<string> BuildReservedNames()
+        {
+            List<string> reservedNames = new List<string>(s_constants.Count + s_functions.Count);
+            reservedNames.AddRange(s_constants);
+            reservedNames.AddRange(s_functions.Keys);
+            return reservedNames;
+        }
+
+        public static IReadOnlyList<string> ReservedNames => s_reservedNames;
+
+
         private readonly static char[] s_specialCharacters = new char[]
         {
             '(',
