@@ -167,9 +167,20 @@ namespace MathEvaluatorNetFramework
             //"!!"
         };
 
+        public string Name
+        {
+            get;
+        }
+
         public Expression()
         {
             _evaluable = null;
+            Name = string.Empty;
+        }
+
+        public Expression(string name) : this()
+        {
+            Name = name;
         }
 
         /// <summary>
@@ -186,12 +197,13 @@ namespace MathEvaluatorNetFramework
         /// e^(-((x^2+y^2)/2))<br/>
         /// </param>
         /// <exception cref="FormatException"></exception>
-        public Expression(string expression) : this()
+        /// <exception cref="NotSupportedException"></exception>
+        public Expression(string expression, string name = "") : this(name)
         {
             InternalSet(expression, false);
         }
 
-        private Expression(string expression, bool isExpressionCleaned) : this()
+        private Expression(string expression, string name, bool isExpressionCleaned) : this(name)
         {
             InternalSet(expression, isExpressionCleaned);
         }
@@ -210,16 +222,19 @@ namespace MathEvaluatorNetFramework
         /// e^(-((x^2+y^2)/2))<br/>
         /// </param>
         /// <exception cref="FormatException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         public void Set(string expression)
         {
             InternalSet(expression, false);
         }
 
         /// <summary>
-        /// Internal method to prepare the expression before the process.
+        /// Internal method to set an expression and prepare it before the process.
         /// </summary>
         /// <param name="expression">The expression to prepare.</param>
         /// <param name="isExpressionCleaned">If the current is obtained by another expression that already have been prepared.</param>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         private void InternalSet(string expression, bool isExpressionCleaned)
         {
             _evaluable = null;
@@ -253,6 +268,10 @@ namespace MathEvaluatorNetFramework
             SetCleanedExpression(expression);
         }
 
+        /// <summary>
+        /// Prepare the expression before the process.
+        /// </summary>
+        /// <exception cref="FormatException"></exception>
         private string PrepareExpression(string expression)
         {
             expression = string.Join("", expression.Trim().ToLower()/*.Replace(",", ".")*/.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
@@ -383,6 +402,10 @@ namespace MathEvaluatorNetFramework
             return expression;
         }
 
+        /// <summary>
+        /// Check the count of dot.
+        /// </summary>
+        /// <exception cref="FormatException"></exception>
         private void CheckDotCount(string expression)
         {
             bool isReadingANumber = false;
@@ -424,6 +447,10 @@ namespace MathEvaluatorNetFramework
             }
         }
 
+        /// <summary>
+        /// Check the count of coma.
+        /// </summary>
+        /// <exception cref="FormatException"></exception>
         private void CheckComaCount(string expression)
         {
             if (!expression.Contains(','))
@@ -574,6 +601,10 @@ namespace MathEvaluatorNetFramework
             return expressionSplitted;
         }
 
+        /// <summary>
+        /// Add the multiply symbol (*) where it's missing.
+        /// </summary>
+        /// <exception cref="FormatException"></exception>
         private string AddMultiplieBetweenVariables(string expression)
         {
             bool isReadingANumber = false;
@@ -949,6 +980,10 @@ namespace MathEvaluatorNetFramework
             return expression;
         }
 
+        /// <summary>
+        /// Set the current Expression with a cleaned string expression.
+        /// </summary>
+        /// <exception cref="NotSupportedException"></exception>
         private void SetCleanedExpression(string expression)
         {
             if (double.TryParse(expression.Replace('.', ','), out double d) || double.TryParse(expression, out d))
@@ -1004,7 +1039,7 @@ namespace MathEvaluatorNetFramework
         private IEvaluable CheckSubstraction(string expression)
         {
             return expression[0] == '-' ?
-                new NegativeOperator(new Expression(expression.Substring(1), true)) :
+                new NegativeOperator(new Expression(expression.Substring(1), string.Empty, true)) :
                 CheckOperand(expression, '-', "substraction", (l, r) => new Substraction(l, r));
         }
 
@@ -1039,7 +1074,7 @@ namespace MathEvaluatorNetFramework
 
                 CheckEmptyExpression(left, operandName, "left");
 
-                Expression expLeft = new Expression(left, true);
+                Expression expLeft = new Expression(left, string.Empty, true);
 
                 return func(expLeft);
             }
@@ -1059,8 +1094,8 @@ namespace MathEvaluatorNetFramework
                 CheckEmptyExpression(left, operandName, "left");
                 CheckEmptyExpression(right, operandName, "right");
 
-                Expression expLeft = new Expression(left, true);
-                Expression expRight = new Expression(right, true);
+                Expression expLeft = new Expression(left, string.Empty, true);
+                Expression expRight = new Expression(right, string.Empty, true);
 
                 return func(expLeft, expRight);
             }
@@ -1165,122 +1200,145 @@ namespace MathEvaluatorNetFramework
                 else
                 {
                     string func = expression.Substring(0, indexParenthesis);
+                    string funcContent = GetParenthesisContent(expression, indexParenthesis + 1);
+                    string[] argsSplitted = GetParenthesisContentSplitted(funcContent);
                     if (s_functions.ContainsKey(func))
                     {
-                        string funcContent = GetParenthesisContent(expression, indexParenthesis + 1);
-                        string[] argsSplitter = GetParenthesisContentSplitted(funcContent);
-
                         if (func == AbsoluteOperator.Acronym)
                         {
-                            evaluable = AbsoluteOperator.Create(argsSplitter);
+                            evaluable = AbsoluteOperator.Create(argsSplitted);
                         }
                         else if (func == ExponentialOperator.Acronym)
                         {
-                            evaluable = ExponentialOperator.Create(argsSplitter);
+                            evaluable = ExponentialOperator.Create(argsSplitted);
                         }
                         else if (func == LogarithmOperator.Acronym)
                         {
-                            evaluable = LogarithmOperator.Create(argsSplitter);
+                            evaluable = LogarithmOperator.Create(argsSplitted);
                         }
                         else if (func == NaperianLogarithmOperator.Acronym)
                         {
-                            evaluable = NaperianLogarithmOperator.Create(argsSplitter);
+                            evaluable = NaperianLogarithmOperator.Create(argsSplitted);
                         }
                         else if (func == SqrtOperator.Acronym)
                         {
-                            evaluable = SqrtOperator.Create(argsSplitter);
+                            evaluable = SqrtOperator.Create(argsSplitted);
                         }
                         else if (func == CosineOperator.Acronym)
                         {
-                            evaluable = CosineOperator.Create(argsSplitter);
+                            evaluable = CosineOperator.Create(argsSplitted);
                         }
                         else if (func == SineOperator.Acronym)
                         {
-                            evaluable = SineOperator.Create(argsSplitter);
+                            evaluable = SineOperator.Create(argsSplitted);
                         }
                         else if (func == TangentOperator.Acronym)
                         {
-                            evaluable = TangentOperator.Create(argsSplitter);
+                            evaluable = TangentOperator.Create(argsSplitted);
                         }
                         else if (func == ArccosineOperator.Acronym)
                         {
-                            evaluable = ArccosineOperator.Create(argsSplitter);
+                            evaluable = ArccosineOperator.Create(argsSplitted);
                         }
                         else if (func == ArcsineOperator.Acronym)
                         {
-                            evaluable = ArcsineOperator.Create(argsSplitter);
+                            evaluable = ArcsineOperator.Create(argsSplitted);
                         }
                         else if (func == ArctangentOperator.Acronym)
                         {
-                            evaluable = ArctangentOperator.Create(argsSplitter);
+                            evaluable = ArctangentOperator.Create(argsSplitted);
                         }
                         else if (func == SecantOperator.Acronym)
                         {
-                            evaluable = SecantOperator.Create(argsSplitter);
+                            evaluable = SecantOperator.Create(argsSplitted);
                         }
                         else if (func == CosecantOperator.Acronym)
                         {
-                            evaluable = CosecantOperator.Create(argsSplitter);
+                            evaluable = CosecantOperator.Create(argsSplitted);
                         }
                         else if (func == CotangentOperator.Acronym)
                         {
-                            evaluable = CotangentOperator.Create(argsSplitter);
+                            evaluable = CotangentOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicCosineOperator.Acronym)
                         {
-                            evaluable = HyperbolicCosineOperator.Create(argsSplitter);
+                            evaluable = HyperbolicCosineOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicSineOperator.Acronym)
                         {
-                            evaluable = HyperbolicSineOperator.Create(argsSplitter);
+                            evaluable = HyperbolicSineOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicTangentOperator.Acronym)
                         {
-                            evaluable = HyperbolicTangentOperator.Create(argsSplitter);
+                            evaluable = HyperbolicTangentOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicSecantOperator.Acronym)
                         {
-                            evaluable = HyperbolicSecantOperator.Create(argsSplitter);
+                            evaluable = HyperbolicSecantOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicCosecantOperator.Acronym)
                         {
-                            evaluable = HyperbolicCosecantOperator.Create(argsSplitter);
+                            evaluable = HyperbolicCosecantOperator.Create(argsSplitted);
                         }
                         else if (func == HyperbolicCotangentOperator.Acronym)
                         {
-                            evaluable = HyperbolicCotangentOperator.Create(argsSplitter);
+                            evaluable = HyperbolicCotangentOperator.Create(argsSplitted);
                         }
                         else if (func == DegreeOperator.Acronym)
                         {
-                            evaluable = DegreeOperator.Create(argsSplitter);
+                            evaluable = DegreeOperator.Create(argsSplitted);
                         }
                         else if (func == RadianOperator.Acronym)
                         {
-                            evaluable = RadianOperator.Create(argsSplitter);
+                            evaluable = RadianOperator.Create(argsSplitted);
                         }
                         else if (func == DecimalOperator.Acronym)
                         {
-                            evaluable = DecimalOperator.Create(argsSplitter);
+                            evaluable = DecimalOperator.Create(argsSplitted);
                         }
                         else if (func == CeilOperator.Acronym)
                         {
-                            evaluable = CeilOperator.Create(argsSplitter);
+                            evaluable = CeilOperator.Create(argsSplitted);
                         }
                         else if (func == FloorOperator.Acronym)
                         {
-                            evaluable = FloorOperator.Create(argsSplitter);
+                            evaluable = FloorOperator.Create(argsSplitted);
                         }
                         else if (func == RoundOperator.Acronym)
                         {
-                            evaluable = RoundOperator.Create(argsSplitter);
+                            evaluable = RoundOperator.Create(argsSplitted);
                         }
                         else if (func == BinomialCoefficientOperator.Acronym)
                         {
-                            evaluable = BinomialCoefficientOperator.Create(argsSplitter);
+                            evaluable = BinomialCoefficientOperator.Create(argsSplitted);
                         }
                         else
                         {
                             throw new NotImplementedException("Function " + expression + " not implemented");
+                        }
+                    }
+                    else
+                    {
+                        if (MathEvaluator.ExpressionsManager.Contains(func))
+                        {
+                            Expression exp = MathEvaluator.ExpressionsManager.Get(func);
+                            Expression[] parameters = new Expression[0];
+                            if (exp.DependsOnVariables(out List<string> variableNames))
+                            {
+                                if (argsSplitted.Length != variableNames.Count)
+                                {
+                                    string errorMessage = 
+                                        $"Expression {func} required {variableNames.Count} parameters ({string.Join(", ", variableNames.ToArray())}). " +
+                                        $"{argsSplitted.Length} parameter(s) given: {funcContent}";
+                                    throw new ArgumentException(errorMessage);
+                                }
+                                parameters = new Expression[variableNames.Count];
+                                for (int i = 0; i < argsSplitted.Length; i++)
+                                {
+                                    parameters[i] = new Expression(argsSplitted[i], string.Empty, true);
+                                }
+                            }
+                            evaluable = new UnknowFunctionOperator(exp, parameters);
                         }
                     }
                 }
@@ -1288,6 +1346,15 @@ namespace MathEvaluatorNetFramework
             return evaluable;
         }
 
+        /// <summary>
+        /// Evaluate the expression.
+        /// </summary>
+        /// <param name="variables">The variables used in the expression.</param>
+        /// <returns>The result of the given expression.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="Exceptions.NotDefinedException"></exception>
+        /// <exception cref="Exceptions.DomainException"></exception>
+        /// <exception cref="DivideByZeroException"></exception>
         public double Evaluate(params Variable[] variables)
         {
             if (_evaluable == null)
@@ -1304,6 +1371,22 @@ namespace MathEvaluatorNetFramework
                 throw new InvalidOperationException("Expression not set.");
             }
             return _evaluable.DependsOnVariables(out variables);
+        }
+
+        /// <summary>
+        /// Build the name of the expressions depending on its variables.<br />
+        /// If the expression is named f and depends on variables x and y, the default result is f(x, y).<br />
+        /// </summary>
+        /// <param name="separator">Separator to use between each variable.</param>
+        /// <returns>The expression's name depending variables.</returns>
+        public string GetNameWithVariables(string separator = ", ")
+        {
+            string result = Name;
+            if (DependsOnVariables(out List<string> variables))
+            {
+                result += '(' + string.Join(separator, variables.ToArray()) + ')';
+            }
+            return result;
         }
 
         internal bool Is(Type t)

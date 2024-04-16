@@ -31,13 +31,13 @@ namespace MathEvaluatorNetFramework.Operators
 
             if (variable == null || variable.Value == null)
             {
-                if (MathEvaluator.VariableManager.Contains(_variableName))
+                if (MathEvaluator.VariablesManager.Contains(_variableName))
                 {
-                    value = MathEvaluator.VariableManager.Get(_variableName);
+                    value = MathEvaluator.VariablesManager.Get(_variableName);
                 }
                 else
                 {
-                    throw new NotDefinedVariableException(_variableName);
+                    throw new NotDefinedException(_variableName);
                 }
             }
             else

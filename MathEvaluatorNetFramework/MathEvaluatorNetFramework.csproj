@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\DomainException.cs" />
-    <Compile Include="Exceptions\NotDefinedVariableException.cs" />
+    <Compile Include="Exceptions\NotDefinedException.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="Funcs.cs" />
     <Compile Include="Operators\Functions\AbsoluteOperator.cs" />
