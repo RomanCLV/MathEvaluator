@@ -42,7 +42,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 throw new ArgumentException("Too many arguments in " + _acronym + "()");
             }
-            return new CotangentOperator(new Expression(args[0]));
+            return new CotangentOperator(new Expression().Set(args[0]));
         }
 
         /// <summary>

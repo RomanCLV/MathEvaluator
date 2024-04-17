@@ -56,7 +56,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 throw new ArgumentException("Too many arguments in " + _acronym + "()");
             }
-            return new BinomialCoefficientOperator(new Expression(args[0]), new Expression(args[1]));
+            return new BinomialCoefficientOperator(new Expression().Set(args[0]), new Expression().Set(args[1]));
         }
 
         /// <summary>

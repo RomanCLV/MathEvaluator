@@ -69,8 +69,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             return args.Length == 1 ?
-                new RoundOperator(new Expression(args[0])) :
-                new RoundOperator(new Expression(args[0]), new Expression(args[1]));
+                new RoundOperator(new Expression().Set(args[0])) :
+                new RoundOperator(new Expression().Set(args[0]), new Expression().Set(args[1]));
         }
 
         /// <summary>

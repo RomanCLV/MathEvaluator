@@ -194,7 +194,7 @@ namespace MathEvaluatorNetFramework
                     {
                         try
                         {
-                            exp = new Expression(expression, name);
+                            exp = new Expression(name).Set(expression);
                             s_expressions.Add(exp);
                             added = true;
                         }
@@ -321,9 +321,9 @@ namespace MathEvaluatorNetFramework
         /// <returns>The new expression</returns>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
-        public static Expression Expression(string expression)
+        public static Expression Expression(string expression, string name="")
         {
-            return new Expression(expression);
+            return new Expression(name).Set(expression);
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace MathEvaluatorNetFramework
         /// <exception cref="DivideByZeroException"></exception>
         public static double Evaluate(string expression, params Variable[] variables)
         {
-            return new Expression(expression).Evaluate(variables);
+            return new Expression().Set(expression).Evaluate(variables);
         }
 
         /// <summary>

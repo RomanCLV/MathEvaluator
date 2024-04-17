@@ -184,31 +184,6 @@ namespace MathEvaluatorNetFramework
         }
 
         /// <summary>
-        /// Expression constructor with a given expression.
-        /// </summary>
-        /// <param name="expression">
-        /// The literral expression.<br/>
-        /// All values used with trignometric functions are in degrees.<br/>
-        /// Examples:<br/>
-        /// 5+3<br/>
-        /// cos(45)*sin(45)<br/>
-        /// x+2<br/>
-        /// exp(x)+y^2<br/>
-        /// e^(-((x^2+y^2)/2))<br/>
-        /// </param>
-        /// <exception cref="FormatException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        public Expression(string expression, string name = "") : this(name)
-        {
-            InternalSet(expression, false);
-        }
-
-        private Expression(string expression, string name, bool isExpressionCleaned) : this(name)
-        {
-            InternalSet(expression, isExpressionCleaned);
-        }
-
-        /// <summary>
         /// Define the current Expression with the given expression.
         /// </summary>
         /// <param name="expression">
@@ -223,9 +198,10 @@ namespace MathEvaluatorNetFramework
         /// </param>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
-        public void Set(string expression)
+        /// <returns>Return the current object.</returns>
+        public Expression Set(string expression)
         {
-            InternalSet(expression, false);
+            return InternalSet(expression, false);
         }
 
         /// <summary>
@@ -235,7 +211,8 @@ namespace MathEvaluatorNetFramework
         /// <param name="isExpressionCleaned">If the current is obtained by another expression that already have been prepared.</param>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
-        private void InternalSet(string expression, bool isExpressionCleaned)
+        /// <returns>The current object.</returns>
+        private Expression InternalSet(string expression, bool isExpressionCleaned)
         {
             _evaluable = null;
 
@@ -266,6 +243,7 @@ namespace MathEvaluatorNetFramework
 
             //Console.WriteLine("Expression: " + expression);
             SetCleanedExpression(expression);
+            return this;
         }
 
         /// <summary>
@@ -1039,7 +1017,7 @@ namespace MathEvaluatorNetFramework
         private IEvaluable CheckSubstraction(string expression)
         {
             return expression[0] == '-' ?
-                new NegativeOperator(new Expression(expression.Substring(1), string.Empty, true)) :
+                new NegativeOperator(new Expression().InternalSet(expression.Substring(1), true)) :
                 CheckOperand(expression, '-', "substraction", (l, r) => new Substraction(l, r));
         }
 
@@ -1074,7 +1052,7 @@ namespace MathEvaluatorNetFramework
 
                 CheckEmptyExpression(left, operandName, "left");
 
-                Expression expLeft = new Expression(left, string.Empty, true);
+                Expression expLeft = new Expression().InternalSet(left, true);
 
                 return func(expLeft);
             }
@@ -1094,8 +1072,8 @@ namespace MathEvaluatorNetFramework
                 CheckEmptyExpression(left, operandName, "left");
                 CheckEmptyExpression(right, operandName, "right");
 
-                Expression expLeft = new Expression(left, string.Empty, true);
-                Expression expRight = new Expression(right, string.Empty, true);
+                Expression expLeft = new Expression().InternalSet(left, true);
+                Expression expRight = new Expression().InternalSet(right, true);
 
                 return func(expLeft, expRight);
             }
@@ -1335,7 +1313,7 @@ namespace MathEvaluatorNetFramework
                                 parameters = new Expression[variableNames.Count];
                                 for (int i = 0; i < argsSplitted.Length; i++)
                                 {
-                                    parameters[i] = new Expression(argsSplitted[i], string.Empty, true);
+                                    parameters[i] = new Expression().InternalSet(argsSplitted[i], true);
                                 }
                             }
                             evaluable = new UnknowFunctionOperator(exp, parameters);

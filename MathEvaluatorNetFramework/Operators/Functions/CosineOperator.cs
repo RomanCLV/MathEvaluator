@@ -41,7 +41,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 throw new ArgumentException("Too many arguments in " + _acronym + "()");
             }
-            return new CosineOperator(new Expression(args[0]));
+            return new CosineOperator(new Expression().Set(args[0]));
         }
 
         /// <summary>

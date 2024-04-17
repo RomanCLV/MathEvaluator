@@ -41,7 +41,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 throw new ArgumentException("Too many arguments in " + _acronym + "()");
             }
-            return new RadianOperator(new Expression(args[0]));
+            return new RadianOperator(new Expression().Set(args[0]));
         }
 
         /// <summary>

@@ -69,8 +69,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             return args.Length == 1 ?
-                new LogarithmOperator(new Expression(args[0])) :
-                new LogarithmOperator(new Expression(args[0]), new Expression(args[1]));
+                new LogarithmOperator(new Expression().Set(args[0])) :
+                new LogarithmOperator(new Expression().Set(args[0]), new Expression().Set(args[1]));
         }
 
         /// <summary>

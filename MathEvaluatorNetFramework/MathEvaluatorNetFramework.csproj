@@ -95,6 +95,7 @@
     <Compile Include="Operators\Functions\SineOperator.cs" />
     <Compile Include="Operators\Functions\SqrtOperator.cs" />
     <Compile Include="Operators\Functions\TangentOperator.cs" />
+    <Compile Include="Operators\Functions\UnknowFunctionOperator.cs" />
     <Compile Include="Operators\NegativeOperator.cs" />
     <Compile Include="Operators\Operator2.cs" />
     <Compile Include="Operators\PowerOperator.cs" />

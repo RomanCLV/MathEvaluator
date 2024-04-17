@@ -42,7 +42,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             {
                 throw new ArgumentException("Too many arguments in " + _acronym + "()");
             }
-            return new SecantOperator(new Expression(args[0]));
+            return new SecantOperator(new Expression().Set(args[0]));
         }
 
         /// <summary>

@@ -64,8 +64,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             return args.Length == 1 ?
-                new SqrtOperator(new Expression(args[0])) :
-                new SqrtOperator(new Expression(args[0]), new Expression(args[1]));
+                new SqrtOperator(new Expression().Set(args[0])) :
+                new SqrtOperator(new Expression().Set(args[0]), new Expression().Set(args[1]));
         }
 
         /// <summary>
