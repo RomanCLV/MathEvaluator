@@ -321,6 +321,7 @@ namespace MathEvaluatorNetFramework
         /// <returns>The new expression</returns>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static Expression Expression(string expression, string name="")
         {
             return new Expression(name).Set(expression);

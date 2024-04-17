@@ -21,6 +21,9 @@ In the case of this property is equal to `true` and that a division by 0 is appl
 We allow the user to decide what to do in the case of an `invalid domain` operation (eg: 0/0, 0.25!, sqrt(x) where x is negative, ln(x) where x <= 0) thanks to the static property `MathEvaluator.Parameters.RaiseDomainException`, by default set to `true`.
 In the case of this property is equal to `true` and that an `invalid domain` operation is applying, it will raise a `DomainException`. Else it will return `NaN`.
 
+### Angle unit
+We allow the user to set if all the angle are considered as degrees or radians thanks to the property `MathEvaluator.Parameters.AngleAreInDegrees`, by default set to `true`.
+
 ## Basic operators (+, -, *, /)
 
 | Expression | Result | Condition before applying the evaluation / Remarks |
@@ -214,8 +217,27 @@ A variable name can not start with a number. Examples of valid name: x, _x, x2, 
 
 If you use a number before, it will be used a factor: `cos(2x)` -> `cos(2*x)`.
 
-To evaluate an expression that depends on variables, we must give the used variables else a `NotDefinedVariableException` will be throw.
+To evaluate an expression that depends on variables, we must give the used variables else a `NotDefinedException` will be throw.
 
+## Permanent variables and expressions
+
+We allow the user to add content that can be used at any moment thanks to `MathEvaluator.VariablesManager` and `MathEvaluator.ExpressionsManager`.
+
+For instance, the user can create a permanent variable called "a" and defined to 5 and use it later in an expression "a+2" that will give 7.
+
+It also works with expression. We can create an expression called "f" as "x+2". Now the function f(x) can be used anytime. We can use it as "f(2)" that will give 4 ; "f(f(2))" will provide 6.
+
+We can also use different functions as bellow:
+
+f(x) = x^2
+
+g(x, y) = x + y
+
+And now evaluate f(g(3,5)) that will provide 64 (since 3 + 5 = 8 and 8^2 = 64).
+
+We can also evaluate f(g(2, x)) as we provide the value of x.
+
+Also: u(x) = f(g(x, x+1) + 1) and then u(5) will provide 121 (since 5 + 6 + 1 = 12 and 12^2 = 144).
 
 ## More examples
 

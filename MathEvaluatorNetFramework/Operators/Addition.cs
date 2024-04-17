@@ -24,7 +24,8 @@ namespace MathEvaluatorNetFramework.Operators
 
         public override string ToString()
         {
-            return _left.ToString() + '+' + _right.ToString();
+            string right = _right.ToString();
+            return _left.ToString() + (right[0] == '-' ? string.Empty : "+") + right;
         }
     }
 }

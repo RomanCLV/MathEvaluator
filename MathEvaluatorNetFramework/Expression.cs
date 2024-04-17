@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
@@ -198,6 +199,7 @@ namespace MathEvaluatorNetFramework
         /// </param>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         /// <returns>Return the current object.</returns>
         public Expression Set(string expression)
         {
@@ -211,6 +213,7 @@ namespace MathEvaluatorNetFramework
         /// <param name="isExpressionCleaned">If the current is obtained by another expression that already have been prepared.</param>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         /// <returns>The current object.</returns>
         private Expression InternalSet(string expression, bool isExpressionCleaned)
         {
@@ -252,7 +255,7 @@ namespace MathEvaluatorNetFramework
         /// <exception cref="FormatException"></exception>
         private string PrepareExpression(string expression)
         {
-            expression = string.Join("", expression.Trim().ToLower()/*.Replace(",", ".")*/.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+            expression = string.Join("", expression.Trim().ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 
             if (string.IsNullOrEmpty(expression) || string.IsNullOrWhiteSpace(expression))
             {
@@ -283,6 +286,12 @@ namespace MathEvaluatorNetFramework
             if (parenthesisCount > 0)
             {
                 throw new FormatException("Invalid format exception: Too many '(' or too few ')'");
+            }
+
+            char lastChar = expression[expression.Length - 1];
+            if (IsCharOperandSymbol(lastChar) || lastChar == ',' || lastChar == '^')
+            {
+                throw new FormatException("Invalid format exception: Expression can not ends with: " + lastChar);
             }
 
             while (expression.Contains("+-"))
@@ -334,9 +343,10 @@ namespace MathEvaluatorNetFramework
                 }
             }
 
-            expression = expression
-                .Replace("(+", "(")
-                .Replace("()", "");
+            expression = expression.Replace("(+", "(");
+
+            // remove useless ()
+            expression = RemoveUselessOpenCloseParenthesis(expression);
 
             // remove useless point: .(   .)   .+
             for (int i = 0; i < expression.Length - 1; i++)
@@ -380,49 +390,55 @@ namespace MathEvaluatorNetFramework
             return expression;
         }
 
-        /// <summary>
-        /// Check the count of dot.
-        /// </summary>
-        /// <exception cref="FormatException"></exception>
-        private void CheckDotCount(string expression)
+        private string RemoveUselessOpenCloseParenthesis(string expression)
         {
-            bool isReadingANumber = false;
-            bool foundDot = false;
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in expression)
+            StringBuilder stringBuilder = new StringBuilder();
+            int length = expression.Length;
+
+            for (int i = 0; i < length; i++)
             {
-                if (isReadingANumber)
+                if (expression[i] == '(')
                 {
-                    if (char.IsDigit(c))
+                    if (i < length - 1 && expression[i + 1] == ')')
                     {
-                        sb.Append(c);
-                        continue;
-                    }
-                    else
-                    {
-                        if (c == '.')
+                        // case: ()
+
+                        // if function call, let it. Else Remove it
+                        if (i > 0)
                         {
-                            sb.Append(c);
-                            if (foundDot)
+                            StringBuilder sb = new StringBuilder();
+                            int j = i - 1;
+                            while (j >= 0)
                             {
-                                throw new FormatException("Invalid format: " + sb.ToString());
+                                if (!char.IsLetter(expression[j]) && expression[j] != '_')
+                                {
+                                    break;
+                                }
+                                sb.Insert(0, expression[j]);
+                                j--;
                             }
-                            foundDot = true;
+                            string word = sb.ToString();
+                            if (s_functions.ContainsKey(word) || MathEvaluator.ExpressionsManager.Contains(word))
+                            {
+                                stringBuilder.Append(expression[i]);
+                            }
                         }
                         else
                         {
-                            isReadingANumber = false;
-                            sb.Clear();
+                            i++;
                         }
+                    }
+                    else
+                    {
+                        stringBuilder.Append(expression[i]);
                     }
                 }
                 else
                 {
-                    foundDot = c == '.';
-                    isReadingANumber = foundDot || char.IsDigit(c);
-                    sb.Append(c);
+                    stringBuilder.Append(expression[i]);
                 }
             }
+            return stringBuilder.ToString();
         }
 
         /// <summary>
@@ -485,18 +501,16 @@ namespace MathEvaluatorNetFramework
                             string word = sb.ToString();
                             sb = new StringBuilder();
 
-                            if (s_functions.ContainsKey(word))
+                            if (s_functions.ContainsKey(word) || MathEvaluator.ExpressionsManager.Contains(word))
                             {
                                 string content = GetParenthesisContent(expression, i + 1);
                                 sb = new StringBuilder();
 
                                 List<int> indexs = FindSplitIndex(content, ',');
+                                CheckFunctionArgsCount(word, indexs.Count + 1);
                                 if (indexs.Count > 0)
                                 {
-                                    CheckFunctionArgsCount(word, indexs.Count + 1);
-
                                     string[] contentSplitted = GetParenthesisContentSplitted(content, indexs);
-
                                     foreach (string subContent in contentSplitted)
                                     {
                                         CheckComaCount(subContent);
@@ -515,6 +529,51 @@ namespace MathEvaluatorNetFramework
                         throw new FormatException("Invalid character: ,");
                     }
                     isReadingAWord = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check the count of dot.
+        /// </summary>
+        /// <exception cref="FormatException"></exception>
+        private void CheckDotCount(string expression)
+        {
+            bool isReadingANumber = false;
+            bool foundDot = false;
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in expression)
+            {
+                if (isReadingANumber)
+                {
+                    if (char.IsDigit(c))
+                    {
+                        sb.Append(c);
+                        continue;
+                    }
+                    else
+                    {
+                        if (c == '.')
+                        {
+                            sb.Append(c);
+                            if (foundDot)
+                            {
+                                throw new FormatException("Invalid format: " + sb.ToString());
+                            }
+                            foundDot = true;
+                        }
+                        else
+                        {
+                            isReadingANumber = false;
+                            sb.Clear();
+                        }
+                    }
+                }
+                else
+                {
+                    foundDot = c == '.';
+                    isReadingANumber = foundDot || char.IsDigit(c);
+                    sb.Append(c);
                 }
             }
         }
@@ -650,7 +709,7 @@ namespace MathEvaluatorNetFramework
                             string word = sb.ToString();
                             sb = new StringBuilder();
 
-                            if (s_constants.Contains(word) || !s_functions.ContainsKey(word))
+                            if (s_constants.Contains(word) || (!s_functions.ContainsKey(word) && !MathEvaluator.ExpressionsManager.Contains(word)))
                             {
                                 expression = expression.Insert(i, "*");
                                 i++;
@@ -665,7 +724,7 @@ namespace MathEvaluatorNetFramework
                         sb = new StringBuilder();
                         if (s_functions.ContainsKey(word))
                         {
-                            throw new FormatException("Use " + word + " without ()");
+                            throw new FormatException("Call function " + word + " without ()");
                         }
                         isReadingAWord = false;
                         isReadingANumber = false;
@@ -676,9 +735,9 @@ namespace MathEvaluatorNetFramework
             if (isReadingAWord)
             {
                 string word = sb.ToString();
-                if (s_functions.ContainsKey(word))
+                if (s_functions.ContainsKey(word) || MathEvaluator.ExpressionsManager.Contains(word))
                 {
-                    throw new FormatException("Use " + word + " without ()");
+                    throw new FormatException("Call function " + word + " without ()");
                 }
             }
             return expression;
@@ -962,6 +1021,7 @@ namespace MathEvaluatorNetFramework
         /// Set the current Expression with a cleaned string expression.
         /// </summary>
         /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         private void SetCleanedExpression(string expression)
         {
             if (double.TryParse(expression.Replace('.', ','), out double d) || double.TryParse(expression, out d))
@@ -1132,16 +1192,43 @@ namespace MathEvaluatorNetFramework
 
         private void CheckFunctionArgsCount(string func, int argsCount)
         {
-            if (argsCount < s_functions[func].MinArg)
+            if (s_functions.ContainsKey(func))
             {
-                throw new ArgumentException("Too few arguments in " + func + "()");
+                if (argsCount < s_functions[func].MinArg)
+                {
+                    throw new ArgumentException("Too few arguments in " + func + "()");
+                }
+                else if (argsCount > s_functions[func].MaxArg)
+                {
+                    throw new ArgumentException("Too many arguments in " + func + "()");
+                }
             }
-            else if (argsCount > s_functions[func].MaxArg)
+            else
             {
-                throw new ArgumentException("Too many arguments in " + func + "()");
+                if (MathEvaluator.ExpressionsManager.Contains(func))
+                {
+                    if (MathEvaluator.ExpressionsManager.Get(func).DependsOnVariables(out List<string> variables))
+                    {
+                        if (argsCount < variables.Count)
+                        {
+                            throw new ArgumentException("Too few arguments in " + func + "()");
+                        }
+                        else if (argsCount > variables.Count)
+                        {
+                            throw new ArgumentException("Too many arguments in " + func + "()");
+                        }
+                    }
+                }
             }
         }
 
+        /// <summary>
+        /// Try to associate a word with a constant or a mathematical builtin functions or a permanent expression.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns>An <see cref="IEvaluable"/> or <see cref="null"/>.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         private IEvaluable TryFindFunctionOrVariable(string expression)
         {
             IEvaluable evaluable = null;
@@ -1201,6 +1288,10 @@ namespace MathEvaluatorNetFramework
                         else if (func == SqrtOperator.Acronym)
                         {
                             evaluable = SqrtOperator.Create(argsSplitted);
+                        }
+                        else if (func == GammaOperator.Acronym)
+                        {
+                            evaluable = GammaOperator.Create(argsSplitted);
                         }
                         else if (func == CosineOperator.Acronym)
                         {
@@ -1305,16 +1396,12 @@ namespace MathEvaluatorNetFramework
                             {
                                 if (argsSplitted.Length != variableNames.Count)
                                 {
-                                    string errorMessage = 
+                                    string errorMessage =
                                         $"Expression {func} required {variableNames.Count} parameters ({string.Join(", ", variableNames.ToArray())}). " +
                                         $"{argsSplitted.Length} parameter(s) given: {funcContent}";
                                     throw new ArgumentException(errorMessage);
                                 }
-                                parameters = new Expression[variableNames.Count];
-                                for (int i = 0; i < argsSplitted.Length; i++)
-                                {
-                                    parameters[i] = new Expression().InternalSet(argsSplitted[i], true);
-                                }
+                                parameters = argsSplitted.Select(arg => new Expression().InternalSet(arg, true)).ToArray();
                             }
                             evaluable = new UnknowFunctionOperator(exp, parameters);
                         }
