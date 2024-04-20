@@ -67,7 +67,8 @@ namespace MathEvaluatorNetFramework
             { FloorOperator.Acronym, FloorOperator.Details },
             { RoundOperator.Acronym, RoundOperator.Details },
 
-            { BinomialCoefficientOperator.Acronym, BinomialCoefficientOperator.Details }
+            { BinomialCoefficientOperator.Acronym, BinomialCoefficientOperator.Details },
+            { SumOperator.Acronym, SumOperator.Details },
         };
 
         private static readonly List<string> s_reservedNames = BuildReservedNames();
@@ -962,7 +963,7 @@ namespace MathEvaluatorNetFramework
                             char prevC = expression[i - 1];
                             if (prevC != '(')
                             {
-                                if (prevC == '/' || prevC == '*')
+                                if (prevC == '/' || prevC == '*' || prevC == ',')
                                 {
                                     expression = expression.Insert(i, "(");
                                     i++;
@@ -1380,6 +1381,10 @@ namespace MathEvaluatorNetFramework
                         else if (func == BinomialCoefficientOperator.Acronym)
                         {
                             evaluable = BinomialCoefficientOperator.Create(argsSplitted);
+                        }
+                        else if (func == SumOperator.Acronym)
+                        {
+                            evaluable = SumOperator.Create(argsSplitted);
                         }
                         else
                         {

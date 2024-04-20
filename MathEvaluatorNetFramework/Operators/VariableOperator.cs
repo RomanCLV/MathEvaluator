@@ -26,6 +26,7 @@ namespace MathEvaluatorNetFramework.Operators
                 if (v.Name == _variableName)
                 {
                     variable = v;
+                    break;
                 }
             }
 
