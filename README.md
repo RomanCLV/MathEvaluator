@@ -1,6 +1,23 @@
 # MathEvaluator
 A C# library to evaluate mathematical expressions.
 
+Summary:
+
+- General
+	- Division by 0
+	- Invalid domain
+	- Angle unit
+- Basic operators (+, -, *, /)
+- Power (^)
+- Factorial (!)
+- Functions
+- Constants
+- Use variables in expressions
+- Permanent variables and expressions
+- Sum, Product and Integral
+
+## General
+
 The expressions can contain spaces or not and the user is helped to write the fastest expression. eg: 2*-2 instead of 2 * (-2) or .25 instead of 0.25 or 2(5+3) instead of 2 * (5+2)
 
 The **.** is used as the decimal caracter.
@@ -195,7 +212,6 @@ Statitics functions:
 | --------- | ------------------ | ----- |
 | binc(k, n) | Binomial coefficient "n choose k" | binc(expK, expN) |
 
-
 ## Constants
 
 You can find bellow all implemented constants:
@@ -208,8 +224,7 @@ You can find bellow all implemented constants:
 | e | Euler constant : 2.7182818284590451 |
 | phi | The golden ration : 1.6180339887498949 |
 
-
-## Variables
+## Use variables in expressions
 
 Variables can be used in expression.
 
@@ -223,25 +238,84 @@ To evaluate an expression that depends on variables, we must give the used varia
 
 We allow the user to add content that can be used at any moment thanks to `MathEvaluator.VariablesManager` and `MathEvaluator.ExpressionsManager`.
 
-For instance, the user can create a permanent variable called "a" and defined to 5 and use it later in an expression "a+2" that will give 7.
+For instance, the user can create a permanent variable called `a` and defined to 5 and use it later in an expression `a+2` that will give 7.
 
-It also works with expression. We can create an expression called "f" as "x+2". Now the function f(x) can be used anytime. We can use it as "f(2)" that will give 4 ; "f(f(2))" will provide 6.
+It also works with expression. All variables and expressions must have a unique name.
+
+We can create an expression called `f` as `x+2`. Now the function f(x) can be used anytime. We can use it as `f(2)` that will provide 4 - `f(f(2))` will provide 6.
+
+We can create constant expression like: name: `c` - expression: `5+3`. To call it, use `c()` that will always provide 7.
 
 We can also use different functions as bellow:
 
-f(x) = x^2
+`f(x) = x^2`
 
-g(x, y) = x + y
+`g(x, y) = x + y`
 
-And now evaluate f(g(3,5)) that will provide 64 (since 3 + 5 = 8 and 8^2 = 64).
+And now evaluate `f(g(3,5))` that will provide 64 (since 3 + 5 = 8 and 8^2 = 64).
 
-We can also evaluate f(g(2, x)) as we provide the value of x.
+We can also evaluate `f(g(2, x))` since we provide the value of x.
 
-Also: u(x) = f(g(x, x+1) + 1) and then u(5) will provide 121 (since 5 + 6 + 1 = 12 and 12^2 = 144).
+Also: define `u` as `f(g(x, x+1) + 1)` and then `u(5)` will provide 121 (since g(5, 6) + 1 = (5+6)+1 = 12 and f(12) = 12^2 = 144).
 
-## More examples
+## Sum, Product and Integral
 
-| Expression | Result | Condition before applying the evaluation / Remarks |
-| ---------- | ------ | -------------------------------------------------- |
-| (1+((3!+2)/2))!^(2cos(3(5!))) | 14400 |
-| exp(-((x/2)^2+(y/2)^2)) | Expression | Depends on x and y |
+We allow the user to perform complex operation as the sum, the product and the integral of an expression.
+
+### Sum and Product
+
+Use "sum" or "prod" to use these functions.
+
+The way to use them is always like that: `func`(`expression`, `variable_name`, `from`, `to`, `step`)
+
+The `step` parameter is optional and is defined to 1 by default so you can use: `func`(`expression`, `variable_name`, `from`, `to`)
+
+The `expression` can be constant or can depend of a variable. Depending on the case you can provide the name of the variable thanks to `variable_name`.
+If the expression does not depend of any variable, you can provide '_' as a the variable name.
+
+The `from` paramter must be lower than `to` parameter, else it will simply return 0.
+
+If the `step` parameter is evaluated as a 0-negative number, an error will be throwed.
+
+### Examples
+
+`sum(n, n, 1, 10)` is the sum of n from 1 to 10 with a step of 1: `1+2+...+10`. It returns 55.
+
+`sum(1, n, 1, 10)` is the sum of 1 from 1 to 10 with a step of 1: `1+1+...+1` 10 times. The variable name is `n` but it not used. It could be write as `sum(1, _, 1, 10)`. It returns 10.
+
+`sum(n^2, n, 1, 10)` is the sum of n^2 from 1 to 10 with a step of 1: `1+4+9+...+100`. It returns 385.
+
+`sum(n, n, 1, 10, 2)` is the sum of n from 1 to 10 with a step of 2: `1+3+5+7+9`. It returns 25.
+
+`sum(n, n, 0, 10, 2)` is the sum of n from 0 to 10 with a step of 2: `0+2+4+6+8+10`. It returns 30.
+
+You can as well use variables / expressions to define parameters :
+
+`sum(n, n, 1, a)` is the sum of n from 1 to `a` with a step of 1: `1+2+...+a`.
+
+`sum(n, n, 1, n)` is the sum of n from 1 to `n` with a step of 1: `1+2+...+n`. 
+
+In this case, `n` is used as the variable in the `expression` and also define the parameter `to`.
+`n` must be defined previously to evaluate the parameter `to`, then `n` will evolve from 1 to `n` and it will not impact the `expression`.
+
+`sum(n, n, 1, 2, .1)` is the sum from 1 to 2 with a step of 0.1: `1+1.1+...+1.9+2`. It return 16.5
+
+So if  `n` = 10, `sum(n, n, 1, n)` is like `sum(n, n, 1, 10)`.
+
+All these examples are similar for the product:
+
+`prod(n, n, 1, 5)` is the product of n from 1 to 10 with a step of 1: `1*2*...*5`. It returns 120.
+
+`prod(n, n, 1, 2, .2)` is the sum from 1 to 2 with a step of 0.1: `1*1.2*1.4*1.6*1.8*2`. It return 16.5
+
+As well, you can use function inside:
+`f` defined as `x`: so f(x) = x
+
+`sum(f(n), n, 1, 10)` is like `sum(n, n, 1, 10)` that returns 55.
+
+`prod(f(n), n, 1, 10)` is like `prod(n, n, 1, 10)` that returns 3628800. 
+
+
+### Integral
+
+Coming soon.

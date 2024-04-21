@@ -28,7 +28,7 @@ namespace MathEvaluatorNetFramework.Operators
 
         public override string ToString()
         {
-            return _value.ToString();
+            return _value.ToString().Replace(',', '.');
         }
     }
 }

@@ -123,14 +123,17 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             double result = 0.0;
-            for (double n = from; n <= to; n += step)
+            double n = from;
+            while (n <= to)
             {
                 if (sumVariable != null)
                 {
                     sumVariable.Value = n;
                 }
                 result += _left.Evaluate(sumVariables);
+                n = Math.Round(n + step, 6);
             }
+
             return result;
         }
 

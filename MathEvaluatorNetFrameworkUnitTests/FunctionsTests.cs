@@ -123,5 +123,60 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result, EPSILON);
         }
+
+        [TestMethod]
+        public void Test_Sum_1()
+        {
+            string expression = "sum(1, _, 1, 10)";
+            double expected = 10.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Sum_2()
+        {
+            string expression = "sum(n, n, 1, 10)";
+            double expected = 55.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+
+        [TestMethod]
+        public void Test_Sum_3()
+        {
+            string expression = "sum(n, n, 1, 10)";
+            double expected = 55.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
     }
 }
