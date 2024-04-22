@@ -258,7 +258,7 @@ We can also evaluate `f(g(2, x))` since we provide the value of x.
 
 Also: define `u` as `f(g(x, x+1) + 1)` and then `u(5)` will provide 121 (since g(5, 6) + 1 = (5+6)+1 = 12 and f(12) = 12^2 = 144).
 
-## Sum, Product and Integral
+## Sum, Product
 
 We allow the user to perform complex operation as the sum, the product and the integral of an expression.
 
@@ -275,7 +275,7 @@ If the expression does not depend of any variable, you can provide '_' as a the 
 
 The `from` paramter must be lower than `to` parameter, else it will simply return 0.
 
-If the `step` parameter is evaluated as a 0-negative number, an error will be throwed.
+If the `step` parameter is evaluated is lower than 0.000001, an error will be throwed.
 
 ### Examples
 
@@ -316,6 +316,6 @@ As well, you can use function inside:
 `prod(f(n), n, 1, 10)` is like `prod(n, n, 1, 10)` that returns 3628800. 
 
 
-### Integral
+## Integral
 
 Coming soon.
