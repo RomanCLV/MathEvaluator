@@ -86,6 +86,7 @@
     <Compile Include="Operators\Functions\HyperbolicSecantOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicSineOperator.cs" />
     <Compile Include="Operators\Functions\HyperbolicTangentOperator.cs" />
+    <Compile Include="Operators\Functions\IntegralOperator.cs" />
     <Compile Include="Operators\Functions\LogarithmOperator.cs" />
     <Compile Include="Operators\Functions\NaperianLogarithmOperator.cs" />
     <Compile Include="Operators\Functions\RadianOperator.cs" />

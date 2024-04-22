@@ -324,5 +324,95 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result, EPSILON);
         }
+
+        [TestMethod]
+        public void Test_Integral_1()
+        {
+            string expression = "int(1,_,0,5)";
+            double expected = 5;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Integral_2()
+        {
+            string expression = "int(x,x,0,2)";
+            double expected = 2.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Integral_3()
+        {
+            string expression = "int(x^2,x,0,1, 0.001)";
+            double expected = 1.0/3.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Integral_4()
+        {
+            string expression = "int(e^(-(x^2)),x,-100,100)";
+            double expected = Math.Sqrt(Math.PI);
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        //[TestMethod]
+        //public void Test_Integral_5()
+        //{
+        //    string expression = "int(e^(-x^2),x,-100,100)";
+        //    double expected = Math.Sqrt(Math.PI);
+        //    double result = 0.0;
+        //    try
+        //    {
+        //        result = MathEvaluator.Evaluate(expression);
+        //        Console.WriteLine("Result: " + result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+        //    }
+        //    Assert.AreEqual(expected, result, EPSILON);
+        //}
     }
 }
