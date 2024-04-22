@@ -14,7 +14,8 @@ Summary:
 - Constants
 - Use variables in expressions
 - Permanent variables and expressions
-- Sum, Product and Integral
+- Sum, Product
+- Integral
 
 ## General
 
@@ -260,9 +261,7 @@ Also: define `u` as `f(g(x, x+1) + 1)` and then `u(5)` will provide 121 (since g
 
 ## Sum, Product
 
-We allow the user to perform complex operation as the sum, the product and the integral of an expression.
-
-### Sum and Product
+We allow the user to perform complex operation as the sum, the product of an expression.
 
 Use "sum" or "prod" to use these functions.
 
@@ -318,4 +317,20 @@ As well, you can use function inside:
 
 ## Integral
 
-Coming soon.
+We allow the user to perform complex operation as the integral of an expression.
+
+The usage is similar to the sum / product operator.
+
+Use: `int`(`expression`, `variable_name`, `from`, `to`, `step`)
+
+The `step` is optional and by default, it is set to `0.1`.
+
+### Example
+
+`int(1, _, 0, 5)` = 5
+
+`int(x, x, 0, 1)` = 0.5
+
+`f(x) = x^2` and `int(f(x), x, 0, 1, 0.1)` = 0.335
+
+`f(x) = x^2` and `int(f(x), x, 0, 1, 0.001)` = 0.333335
