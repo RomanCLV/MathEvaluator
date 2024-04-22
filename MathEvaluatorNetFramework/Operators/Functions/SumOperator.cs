@@ -101,9 +101,9 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double from = _from.Evaluate(variables);
             double to = _to.Evaluate(variables);
             double step = _step.Evaluate(variables);
-            if (step <= 0)
+            if (step < 0.000001)
             {
-                throw new InvalidOperationException("The step of sum must be a positive number. Step was: " + step);
+                throw new InvalidOperationException("The step of sum must be greater than 0.000001. Step was: " + step);
             }
             Variable[] sumVariables;
             Variable sumVariable = null;

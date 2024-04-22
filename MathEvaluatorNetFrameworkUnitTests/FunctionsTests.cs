@@ -160,16 +160,128 @@ namespace MathEvaluatorNetFrameworkUnitTests
             Assert.AreEqual(expected, result, EPSILON);
         }
 
-
         [TestMethod]
         public void Test_Sum_3()
         {
-            string expression = "sum(n, n, 1, 10)";
-            double expected = 55.0;
+            string expression = "sum(n^2, n, 1, 10)";
+            double expected = 385.0;
             double result = 0.0;
             try
             {
                 result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Sum_4()
+        {
+            string expression = "sum(n, n, 1, 10, 2)";
+            double expected = 25.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+
+        [TestMethod]
+        public void Test_Sum_5()
+        {
+            string expression = "sum(n, n, 0, 10, 2)";
+            double expected = 30.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Sum_6()
+        {
+            string expression = "sum(n, n, 0, 10, 2)";
+            double expected = 30.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Sum_7()
+        {
+            string expression = "sum(n, n, 1, a)";
+            double expected = 55.0;
+            double result = 0.0;
+            Variable a = new Variable("a", 10);
+            try
+            {
+                result = MathEvaluator.Evaluate(expression, new Variable[] { a });
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Sum_8()
+        {
+            string expression = "sum(n, n, 1, n) + n";
+            double expected = 20.0;
+            double result = 0.0;
+            Variable a = new Variable("n", 5);
+            try
+            {
+                result = MathEvaluator.Evaluate(expression, new Variable[] { a });
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+
+        [TestMethod]
+        public void Test_Sum_9()
+        {
+            string expression = "sum(n, n, 1, 2, .1)";
+            double expected = 16.5;
+            double result = 0.0;
+            Variable a = new Variable("n", 5);
+            try
+            {
+                result = MathEvaluator.Evaluate(expression, new Variable[] { a });
                 Console.WriteLine("Result: " + result);
             }
             catch (Exception ex)
