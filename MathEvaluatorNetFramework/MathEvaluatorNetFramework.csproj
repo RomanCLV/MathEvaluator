@@ -94,6 +94,7 @@
     <Compile Include="Operators\Functions\SignedDecimalOperator.cs" />
     <Compile Include="Operators\Functions\SineOperator.cs" />
     <Compile Include="Operators\Functions\SqrtOperator.cs" />
+    <Compile Include="Operators\Functions\ProductOperator.cs" />
     <Compile Include="Operators\Functions\SumOperator.cs" />
     <Compile Include="Operators\Functions\TangentOperator.cs" />
     <Compile Include="Operators\Functions\UnknowFunctionOperator.cs" />

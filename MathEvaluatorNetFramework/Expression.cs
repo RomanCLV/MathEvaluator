@@ -69,6 +69,7 @@ namespace MathEvaluatorNetFramework
 
             { BinomialCoefficientOperator.Acronym, BinomialCoefficientOperator.Details },
             { SumOperator.Acronym, SumOperator.Details },
+            { ProductOperator.Acronym, ProductOperator.Details },
         };
 
         private static readonly List<string> s_reservedNames = BuildReservedNames();
@@ -1385,6 +1386,10 @@ namespace MathEvaluatorNetFramework
                         else if (func == SumOperator.Acronym)
                         {
                             evaluable = SumOperator.Create(argsSplitted);
+                        }
+                        else if (func == ProductOperator.Acronym)
+                        {
+                            evaluable = ProductOperator.Create(argsSplitted);
                         }
                         else
                         {

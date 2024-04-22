@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
-    internal class SumOperator : FunctionNOperator
+    internal class ProductOperator : FunctionNOperator
     {
-        private readonly static string _fullname = "sum";
-        private readonly static string _acronym = "sum";
-        private readonly static string _description = "Returns the sum of the given evaluable. Must give the name of the variable and the boundaries. By default the step is 1.";
+        private readonly static string _fullname = "product";
+        private readonly static string _acronym = "prod";
+        private readonly static string _description = "Returns the product of the given evaluable. Must give the name of the variable and the boundaries. By default the step is 1.";
         private readonly static string[] _usages = new string[4]
         {
-            "sum(evaluable, var_name, from, to)",
-            "sum(evaluable, var_name, from, to, step)",
-            "sum(1, _, 1, 10)",
-            "sum(2*n, n, 1, 10)",
+            "prod(evaluable, var_name, from, to)",
+            "prod(evaluable, var_name, from, to, step)",
+            "prod(1, _, 1, 10)",
+            "prod(2*n, n, 1, 10)",
         };
         private readonly static uint _minArg = 4;
         private readonly static uint _maxArg = 5;
@@ -36,11 +36,11 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         private readonly IEvaluable _step;
         private readonly IEvaluable[] _dependingEvaluable;
 
-        public SumOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to) : this(evaluable, variableName, from, to, new ValueOperator(1.0))
+        public ProductOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to) : this(evaluable, variableName, from, to, new ValueOperator(1.0))
         {
         }
 
-        public SumOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to, IEvaluable step) : base(evaluable)
+        public ProductOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to, IEvaluable step) : base(evaluable)
         {
             _variableName = variableName;
             _from = from;
@@ -80,7 +80,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             return result;
         }
 
-        public new static SumOperator Create(string[] args)
+        public new static ProductOperator Create(string[] args)
         {
             if (args.Length < _minArg)
             {
@@ -92,8 +92,8 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             return args.Length == 4 ?
-               new SumOperator(new Expression().Set(args[0]), args[1], new Expression().Set(args[2]), new Expression().Set(args[3])) :
-               new SumOperator(new Expression().Set(args[0]), args[1], new Expression().Set(args[2]), new Expression().Set(args[3]), new Expression().Set(args[4]));
+               new ProductOperator(new Expression().Set(args[0]), args[1], new Expression().Set(args[2]), new Expression().Set(args[3])) :
+               new ProductOperator(new Expression().Set(args[0]), args[1], new Expression().Set(args[2]), new Expression().Set(args[3]), new Expression().Set(args[4]));
         }
 
         public override double Evaluate(params Variable[] variables)
@@ -103,7 +103,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double step = _step.Evaluate(variables);
             if (step < 0.000001)
             {
-                throw new InvalidOperationException("The step of sum must be greater than 0.000001. Step was: " + step);
+                throw new InvalidOperationException("The step of product must be greater than 0.000001. Step was: " + step);
             }
             Variable[] sumVariables;
             Variable sumVariable = null;
@@ -122,7 +122,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 }
             }
 
-            double result = 0.0;
+            double result = 1.0;
             double n = from;
             while (n <= to)
             {
@@ -130,7 +130,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
                 {
                     sumVariable.Value = n;
                 }
-                result += _left.Evaluate(sumVariables);
+                result *= _left.Evaluate(sumVariables);
                 n = Math.Round(n + step, 6);
             }
 
