@@ -52,7 +52,12 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public override double Evaluate(params Variable[] variables)
         {
             double angle = _left.Evaluate(variables);
-            return Math.Sin(MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+            double sin = Math.Sin(MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+            if (sin < 0.0000001 && sin > -0.0000001)
+            {
+                sin = 0.0;
+            }
+            return sin;
         }
 
         public override string ToString()

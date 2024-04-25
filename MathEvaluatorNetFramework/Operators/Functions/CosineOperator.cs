@@ -52,7 +52,12 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         public override double Evaluate(params Variable[] variables)
         {
             double angle = _left.Evaluate(variables);
-            return Math.Cos(MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+            double cos = Math.Cos(MathEvaluator.Parameters.AngleAreInDegrees ? Funcs.DegreesToRadians(angle) : angle);
+            if (cos < 0.0000001 && cos > -0.0000001)
+            {
+                cos = 0.0;
+            }
+            return cos;
         }
 
         public override string ToString()

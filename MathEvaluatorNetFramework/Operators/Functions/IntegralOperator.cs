@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using MathEvaluatorNetFramework.Exceptions;
 
 namespace MathEvaluatorNetFramework.Operators.Functions
 {
@@ -10,7 +12,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
     {
         private readonly static string _fullname = "integral";
         private readonly static string _acronym = "int";
-        private readonly static string _description = "Returns the integral of the given evaluable. Must give the name of the variable and the boundaries. By default the step is 0.1.";
+        private readonly static string _description = "Returns the integral of the given evaluable. Must give the name of the variable and the boundaries. By default the step is 0.001.";
         private readonly static string[] _usages = new string[3]
         {
             "int(evaluable, var_name, from, to)",
@@ -35,7 +37,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
         private readonly IEvaluable _step;
         private readonly IEvaluable[] _dependingEvaluable;
 
-        public IntegralOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to) : this(evaluable, variableName, from, to, new ValueOperator(0.1))
+        public IntegralOperator(IEvaluable evaluable, string variableName, IEvaluable from, IEvaluable to) : this(evaluable, variableName, from, to, new ValueOperator(0.001))
         {
         }
 
@@ -113,20 +115,72 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             double result = 0.0;
-            xVar.Value = from;
-            double f_x = _left.Evaluate(intVariables);
+            double f_x = GetValue(from, xVar, intVariables);
+            if (double.IsNaN(f_x))
+            {
+                if (MathEvaluator.Parameters.RaiseDomainException)
+                {
+                    throw new DomainException($"Can not evaluate the integrale of {_left} at {from}");
+                }
+                else
+                {
+                    return double.NaN;
+                }
+            }
             double f_x1;
             double lastX = Math.Round(to - step, 6);
             while (xVar.Value <= lastX)
             {
-                xVar.Value = Math.Round((double)xVar.Value + step, 6);
-                f_x1 = _left.Evaluate(intVariables);
-
+                f_x1 = GetValue(Math.Round((double)xVar.Value + step, 6), xVar, intVariables);
+                if (double.IsNaN(f_x1))
+                {
+                    if (MathEvaluator.Parameters.RaiseDomainException)
+                    {
+                        throw new DomainException($"Can not evaluate the integrale of {_left} at {(double)xVar.Value}");
+                    }
+                    else
+                    {
+                        return double.NaN;
+                    }
+                }
                 result += step * (f_x + ((f_x1 - f_x) / 2.0));
                 f_x = f_x1;
             }
-
+            if (result < 0.00000001 && result > -0.00000001)
+            {
+                result = 0.0;
+            }
             return result;
+        }
+
+        private double GetValue(double x, Variable xVar, Variable[] variables)
+        {
+            double fx = 0.0;
+            bool findResult = true;
+            int tryCount = 0;
+            while (findResult)
+            {
+                xVar.Value = x + 0.00001 * tryCount;
+                try
+                {
+                    fx = _left.Evaluate(variables);
+                }
+                catch (DivideByZeroException)
+                { 
+                }
+                catch (DomainException)
+                {
+                    fx = double.NaN;
+                }
+
+                if (double.IsNaN(fx) || !double.IsInfinity(fx))
+                {
+                    findResult = false;
+                }
+                tryCount++;
+            }
+            xVar.Value = x;
+            return fx;
         }
 
         public override string ToString()

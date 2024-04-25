@@ -323,7 +323,7 @@ The usage is similar to the sum / product operator.
 
 Use: `int`(`expression`, `variable_name`, `from`, `to`, `step`)
 
-The `step` is optional and by default, it is set to `0.1`.
+The `step` is optional and by default, it is set to `0.001`.
 
 ### Example
 
