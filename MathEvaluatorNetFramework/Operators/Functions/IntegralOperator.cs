@@ -115,7 +115,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             }
 
             double result = 0.0;
-            double f_x = GetValue(from, xVar, intVariables);
+            double f_x = GetValue(from, xVar, intVariables, true);
             if (double.IsNaN(f_x))
             {
                 if (MathEvaluator.Parameters.RaiseDomainException)
@@ -131,7 +131,7 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             double lastX = Math.Round(to - step, 6);
             while (xVar.Value <= lastX)
             {
-                f_x1 = GetValue(Math.Round((double)xVar.Value + step, 6), xVar, intVariables);
+                f_x1 = GetValue(Math.Round((double)xVar.Value + step, 6), xVar, intVariables, false);
                 if (double.IsNaN(f_x1))
                 {
                     if (MathEvaluator.Parameters.RaiseDomainException)
@@ -153,14 +153,14 @@ namespace MathEvaluatorNetFramework.Operators.Functions
             return result;
         }
 
-        private double GetValue(double x, Variable xVar, Variable[] variables)
+        private double GetValue(double x, Variable xVar, Variable[] variables, bool goForward)
         {
             double fx = 0.0;
             bool findResult = true;
             int tryCount = 0;
             while (findResult)
             {
-                xVar.Value = x + 0.00001 * tryCount;
+                xVar.Value = x + (goForward ? 0.00001 : -0.00001) * tryCount;
                 try
                 {
                     fx = _left.Evaluate(variables);

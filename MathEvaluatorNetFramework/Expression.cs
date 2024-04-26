@@ -811,6 +811,14 @@ namespace MathEvaluatorNetFramework
                         }
                         else if (parenthesisCount == 1 && IsCharOperandSymbol(expression[j]))
                         {
+                            //if (expression[j] == '-')
+                            //{
+                            //    j++;
+                            //    while (j < expression.Length && (char.IsDigit(expression[j]) || char.IsLetter(expression[j]) || expression[j] == '_'))
+                            //    {
+                            //        j++;
+                            //    }
+                            //}
                             j--;
                             break;
                         }
