@@ -876,5 +876,41 @@ namespace MathEvaluatorNetFrameworkUnitTests
             }
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void Test_Complexe_7()
+        {
+            string expression = "3!^2";
+            double expected = 36.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Complexe_8()
+        {
+            string expression = "-3!^(1+1)";
+            double expected = -36.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
     }
 }

@@ -209,6 +209,8 @@ namespace MathEvaluatorNetFramework
             return InternalSet(expression, false);
         }
 
+        #region Prepare and clean expression
+
         /// <summary>
         /// Internal method to set an expression and prepare it before the process.
         /// </summary>
@@ -228,21 +230,16 @@ namespace MathEvaluatorNetFramework
                 //Console.WriteLine("Given: " + expression);
                 expression = PrepareExpression(expression);
             }
+            expression = RemoveGlobalParenthesis(expression);
 
-            // add surround negatives with !
+            // add surround () for negatives with !
             expression = ManageFactorialExpression(expression);
 
-            // add surround negatives with ^
+            // add surround () for negatives with ^
             expression = ManagePowerExpression(expression);
 
             // add surround negatives with ()
             expression = ManageNegativeExpression(expression);
-            bool haveChanged;
-            do
-            {
-                // remove surrounding ()
-                expression = RemoveGlobalParenthesis(expression, out haveChanged);
-            } while (haveChanged);
 
             // last general preparation to be sure...
             expression = PrepareExpression(expression);
@@ -752,6 +749,7 @@ namespace MathEvaluatorNetFramework
             {
                 if (expression[i] == '^')
                 {
+                    // before ^
                     int parenthesisCount = 0;
                     int j = i - 1;
 
@@ -759,11 +757,12 @@ namespace MathEvaluatorNetFramework
                     {
                         if (expression[j] == '(')
                         {
-                            if (parenthesisCount == -1)
+                            parenthesisCount++;
+                            if (parenthesisCount == /*-1*/0)
                             {
                                 break;
                             }
-                            parenthesisCount++;
+                            //parenthesisCount++;
                         }
                         else if (expression[j] == ')')
                         {
@@ -789,7 +788,6 @@ namespace MathEvaluatorNetFramework
                             j++;
                         }
                         expression = expression.Insert(j, "(");
-                        parenthesisCount = 1;
                         i++;
                     }
                     else
@@ -797,8 +795,22 @@ namespace MathEvaluatorNetFramework
                         continue;
                     }
 
+                    parenthesisCount = 0;
+                    for (j = 0; j < i; j++)
+                    {
+                        if (expression[j] == '(')
+                        {
+                            parenthesisCount++;
+                        }
+                        else if (expression[j] == ')')
+                        {
+                            parenthesisCount--;
+                        }
+                    }
+
                     j = i + 1;
 
+                    // after ^
                     while (j < expression.Length)
                     {
                         if (expression[j] == '(')
@@ -842,6 +854,8 @@ namespace MathEvaluatorNetFramework
                     }
                 }
             }
+
+            expression = RemoveGlobalParenthesis(expression);
             return expression;
         }
 
@@ -995,38 +1009,48 @@ namespace MathEvaluatorNetFramework
                 expression += ")";
             }
             expression = expression.Replace(")(", ")*(");
+
+            expression = RemoveGlobalParenthesis(expression);
+
             return expression;
         }
 
-        private string RemoveGlobalParenthesis(string expression, out bool haveChanged)
+        private string RemoveGlobalParenthesis(string expression)
         {
-            haveChanged = false;
-            if (expression.StartsWith("(") && expression.EndsWith(")"))
+            bool haveChanged = true;
+            while (haveChanged)
             {
-                int parenthesisCount = 0;
-                for (int i = 0; parenthesisCount < expression.Length; i++)
+                haveChanged = false;
+                if (expression.StartsWith("(") && expression.EndsWith(")"))
                 {
-                    if (expression[i] == '(')
+                    int parenthesisCount = 0;
+                    for (int i = 0; parenthesisCount < expression.Length; i++)
                     {
-                        parenthesisCount++;
-                    }
-                    else if (expression[i] == ')')
-                    {
-                        parenthesisCount--;
-                    }
-                    if (parenthesisCount == 0)
-                    {
-                        if (i == expression.Length - 1)
+                        if (expression[i] == '(')
                         {
-                            haveChanged = true;
-                            expression = expression.Substring(1, expression.Length - 2);
+                            parenthesisCount++;
                         }
-                        break;
+                        else if (expression[i] == ')')
+                        {
+                            parenthesisCount--;
+                        }
+                        if (parenthesisCount == 0)
+                        {
+                            if (i == expression.Length - 1)
+                            {
+                                haveChanged = true;
+                                expression = expression.Substring(1, expression.Length - 2);
+                            }
+                            break;
+                        }
                     }
                 }
             }
+
             return expression;
         }
+
+        #endregion
 
         /// <summary>
         /// Set the current Expression with a cleaned string expression.
