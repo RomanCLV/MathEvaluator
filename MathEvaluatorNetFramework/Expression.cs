@@ -823,16 +823,17 @@ namespace MathEvaluatorNetFramework
                         }
                         else if (parenthesisCount == 1 && IsCharOperandSymbol(expression[j]))
                         {
-                            //if (expression[j] == '-')
-                            //{
-                            //    j++;
-                            //    while (j < expression.Length && (char.IsDigit(expression[j]) || char.IsLetter(expression[j]) || expression[j] == '_'))
-                            //    {
-                            //        j++;
-                            //    }
-                            //}
-                            j--;
-                            break;
+                            if (expression[j] == '-' && j == i + 1)
+                            {
+                                expression = expression.Insert(j, "(");
+                                parenthesisCount++;
+                                j++;
+                            }
+                            else
+                            {
+                                j--;
+                                break;
+                            }
                         }
                         else if (parenthesisCount == 1 && expression[j] == '!')
                         {
@@ -841,7 +842,7 @@ namespace MathEvaluatorNetFramework
                         }
                         j++;
                     }
-                    if (parenthesisCount == 1)
+                    while (parenthesisCount >= 1)
                     {
                         if (j == expression.Length)
                         {
@@ -851,6 +852,8 @@ namespace MathEvaluatorNetFramework
                         {
                             expression = expression.Insert(j + 1, ")");
                         }
+                        j++;
+                        parenthesisCount--;
                     }
                 }
             }

@@ -8,6 +8,8 @@ namespace MathEvaluatorNetFrameworkUnitTests
     [TestClass]
     public class PowerTests
     {
+        private const double EPSILON = 0.000001;
+
         [TestMethod]
         public void Test_Power_1()
         {
@@ -495,6 +497,86 @@ namespace MathEvaluatorNetFrameworkUnitTests
         {
             string expression = "(-1/0)^(1/0)";
             double expected = double.NegativeInfinity;
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Power_28()
+        {
+            string expression = "e^-2";
+            double expected = Math.Exp(-2.0);
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Test_Power_29()
+        {
+            string expression = "e^-(2+1)";
+            double expected = Math.Exp(-3.0);
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Power_30()
+        {
+            string expression = "e^-(2+1)!";
+            double expected = Math.Exp(-6.0);
+            double result = 0.0;
+            try
+            {
+                MathEvaluator.Parameters.RaiseDivideByZeroException = false;
+                result = MathEvaluator.Evaluate(expression);
+                MathEvaluator.Parameters.RaiseDivideByZeroException = true;
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Power_31()
+        {
+            string expression = "2^-(3-1)!";
+            double expected = 0.25;
             double result = 0.0;
             try
             {
