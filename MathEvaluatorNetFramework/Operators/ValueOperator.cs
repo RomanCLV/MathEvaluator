@@ -10,9 +10,17 @@ namespace MathEvaluatorNetFramework.Operators
     {
         private readonly double _value;
 
+        private readonly string _stringValue;
+
         public ValueOperator(double value)
         {
             _value = value;
+            _stringValue = null;
+        }
+
+        public ValueOperator(double value, string stringValue) : this(value)
+        {
+            _stringValue = stringValue;
         }
 
         public double Evaluate(params Variable[] variables)
@@ -28,7 +36,7 @@ namespace MathEvaluatorNetFramework.Operators
 
         public override string ToString()
         {
-            return _value.ToString().Replace(',', '.');
+            return string.IsNullOrEmpty(_stringValue) ? _value.ToString().Replace(',', '.') : _stringValue;
         }
     }
 }

@@ -1275,19 +1275,19 @@ namespace MathEvaluatorNetFramework
                 switch (expression)
                 {
                     case "pi":
-                        evaluable = new ValueOperator(Funcs.PI);
+                        evaluable = new ValueOperator(Funcs.PI, "pi");
                         break;
                     case "tau":
-                        evaluable = new ValueOperator(Funcs.TAU);
+                        evaluable = new ValueOperator(Funcs.TAU, "tau");
                         break;
                     case "pau":
-                        evaluable = new ValueOperator(Funcs.PAU);
+                        evaluable = new ValueOperator(Funcs.PAU, "pau");
                         break;
                     case "e":
-                        evaluable = new ValueOperator(Funcs.E);
+                        evaluable = new ValueOperator(Funcs.E, "e");
                         break;
                     case "phi":
-                        evaluable = new ValueOperator(Funcs.PHI);
+                        evaluable = new ValueOperator(Funcs.PHI, "phi");
                         break;
                     default:
                         throw new NotImplementedException("Constant " + expression + " not implemented");
