@@ -1,5 +1,15 @@
 # MathEvaluator
-A C# library to evaluate mathematical expressions.
+A C# library to evaluate mathematical expressions. 
+
+It includes: 
+
+- `simple operations` (`+`, `-`, `*`, `/)`
+- `complex operations` (`functions` (`cos`, `sqrt`, `log`, ...), `sum`, `product` and `integral`)
+- `variable handling` as `cos(x)`
+
+DLLs for recent versions of .NetFramework are available at: `DLL/DotNetFramework/` (`4.6.2`, `4.7.2`, `4.8`, `4.8.1`).
+
+See more by reading the following documentation and by downloading this projet (currently using the `.NetFramework 4.8.1`). Run the `MathEvaluatorNetConsole` programm to test the library.
 
 Summary:
 
