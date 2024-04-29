@@ -19,6 +19,8 @@ namespace MathEvaluatorNetFramework
     {
         private IEvaluable _evaluable;
 
+        public bool IsSet => _evaluable != null;
+
         private static readonly List<string> s_constants = new List<string>
         {
             "pi",

@@ -79,6 +79,7 @@ StyleCopReport.xml
 *.iobj
 *.pch
 *.pdb
+!DLL/DotNetFramework/*.pdb
 *.ipdb
 *.pgc
 *.pgd
