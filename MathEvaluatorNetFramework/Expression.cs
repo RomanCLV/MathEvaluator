@@ -17,6 +17,11 @@ namespace MathEvaluatorNetFramework
 {
     public class Expression : IEvaluable
     {
+        /// <summary>
+        /// Invoked when the current expression changed. Boolean parameter indicates if the expression is set (true) or not (false).
+        /// </summary>
+        public event EventHandler<bool> HasChanged;
+
         private IEvaluable _evaluable;
 
         public bool IsSet => _evaluable != null;
@@ -211,6 +216,12 @@ namespace MathEvaluatorNetFramework
             return InternalSet(expression, false);
         }
 
+        public void Reset()
+        {
+            _evaluable = null;
+            OnHasChanged();
+        }
+
         #region Prepare and clean expression
 
         /// <summary>
@@ -224,7 +235,7 @@ namespace MathEvaluatorNetFramework
         /// <returns>The current object.</returns>
         private Expression InternalSet(string expression, bool isExpressionCleaned)
         {
-            _evaluable = null;
+            Reset();
 
             // first general preparation - optionnal
             if (!isExpressionCleaned)
@@ -1107,6 +1118,10 @@ namespace MathEvaluatorNetFramework
             {
                 throw new NotSupportedException(expression);
             }
+            else
+            {
+                OnHasChanged();
+            }
         }
 
         private IEvaluable CheckAddition(string expression)
@@ -1481,6 +1496,26 @@ namespace MathEvaluatorNetFramework
             return _evaluable.Evaluate(variables);
         }
 
+        /// <summary>
+        /// Indicates if an expression depend on variable. Constants as pi, e, ect... are not considered as variable.
+        /// </summary>
+        /// <returns><c>true</c> if the expression depends on variable, else <c>false</c>.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public bool DependsOnVariables()
+        {
+            if (_evaluable == null)
+            {
+                throw new InvalidOperationException("Expression not set.");
+            }
+            return _evaluable.DependsOnVariables(out _);
+        }
+
+        /// <summary>
+        /// Indicates if an expression depend on variable. Constants as pi, e, ect... are not considered as variable.
+        /// </summary>
+        /// <param name="variables">The list of the variables name that depends the expression.</param>
+        /// <returns><c>true</c> if the expression depends on variable, else <c>false</c>.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public bool DependsOnVariables(out List<string> variables)
         {
             if (_evaluable == null)
@@ -1514,6 +1549,11 @@ namespace MathEvaluatorNetFramework
         internal bool Is(params Type[] types)
         {
             return types.Any(t => Is(t));
+        }
+
+        private void OnHasChanged()
+        {
+            HasChanged?.Invoke(this, IsSet);
         }
 
         public override string ToString()
