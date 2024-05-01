@@ -951,7 +951,7 @@ namespace MathEvaluatorNetFramework
                                 hasFoundMinus = false;
                             }
                         }
-                        else if (c == '.')
+                        else if (char.IsLetter(c) || c == '.' || c == '_')
                         {
                             continue;
                         }
