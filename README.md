@@ -117,7 +117,8 @@ We allow the user to set if all the angle are considered as degrees or radians t
 | 2^2^3 | 64 |
 | 2^(2^3) | 256 |
 | 2^-2 | 0.25 |
-| 2^-(3-1)! | 0.25 |
+| 2^-(3-1)! | 0.25 | 2^-(3-1)! -> 2^(-((3-1)!))
+| -2^-3 | -0.125 | -2^-3 -> -(2^(-3)) |
 | 0^0 | DomainException |
 | (2+1-3)^(2-2) | DomainException |
 | 0^0 | NaN | `RaiseDomainException` = `false`
