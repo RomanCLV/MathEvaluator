@@ -552,5 +552,28 @@ namespace MathEvaluatorNetFrameworkUnitTests
             MathEvaluator.ExpressionsManager.Clear();
             Assert.AreEqual(expected, result, EPSILON);
         }
+
+        [TestMethod]
+        public void Test_Created_Functions_8()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "2(x+1)");
+            MathEvaluator.ExpressionsManager.Create("g", "x+y");
+
+            string expression = "f(g(1, 2)^(2*cos(180)^2))";
+            double expected = 20.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
     }
 }
