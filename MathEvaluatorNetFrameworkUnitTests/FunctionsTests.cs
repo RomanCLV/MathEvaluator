@@ -397,22 +397,160 @@ namespace MathEvaluatorNetFrameworkUnitTests
             Assert.AreEqual(expected, result, EPSILON);
         }
 
-        //[TestMethod]
-        //public void Test_Integral_5()
-        //{
-        //    string expression = "int(e^(-x^2),x,-100,100)";
-        //    double expected = Math.Sqrt(Math.PI);
-        //    double result = 0.0;
-        //    try
-        //    {
-        //        result = MathEvaluator.Evaluate(expression);
-        //        Console.WriteLine("Result: " + result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Assert.Fail(ex.GetType().Name + ": " + ex.Message);
-        //    }
-        //    Assert.AreEqual(expected, result, EPSILON);
-        //}
+        [TestMethod]
+        public void Test_Created_Functions_1()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "x-3");
+
+            string expression = "f(13)";
+            double expected = 10.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_2()
+        {
+            MathEvaluator.ExpressionsManager.Create("myfunc", "2(x+y)");
+
+            string expression = "myfunc(5, 1)";
+            double expected = 12.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_3()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "(x+y)^2");
+
+            string expression = "f(5, 2)";
+            double expected = 49.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_4()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "(x+y)^2");
+
+            string expression = "(f(1, 1))^2";
+            double expected = 16.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_5()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "(x+y)^2");
+
+            string expression = "f(1, 1)^2";
+            double expected = 16.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_6()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "2(x+1)");
+            MathEvaluator.ExpressionsManager.Create("g", "x+y");
+
+            string expression = "f(g(1, 2)^2)";
+            double expected = 20.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
+
+        [TestMethod]
+        public void Test_Created_Functions_7()
+        {
+            MathEvaluator.ExpressionsManager.Create("f", "2(x+1)");
+            MathEvaluator.ExpressionsManager.Create("g", "x+y");
+
+            string expression = "f(g(1, 2))^2";
+            double expected = 64.0;
+            double result = 0.0;
+            try
+            {
+                result = MathEvaluator.Evaluate(expression);
+                Console.WriteLine("Result: " + result);
+            }
+            catch (Exception ex)
+            {
+                MathEvaluator.ExpressionsManager.Clear();
+                Assert.Fail(ex.GetType().Name + ": " + ex.Message);
+            }
+            MathEvaluator.ExpressionsManager.Clear();
+            Assert.AreEqual(expected, result, EPSILON);
+        }
     }
 }

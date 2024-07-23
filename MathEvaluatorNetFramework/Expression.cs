@@ -773,6 +773,11 @@ namespace MathEvaluatorNetFramework
                             parenthesisCount++;
                             if (parenthesisCount == /*-1*/0)
                             {
+                                // verifier si c'etait une fonction
+                                while (j >= 1 && (char.IsLetter(expression[j - 1]) || expression[j - 1] == '_'))
+                                {
+                                    j--;
+                                }
                                 break;
                             }
                             //parenthesisCount++;
